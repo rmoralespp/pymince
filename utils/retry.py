@@ -1,3 +1,4 @@
+import functools
 import time
 
 
@@ -11,6 +12,7 @@ def retry_if_none(delay=0, tries=1):
     """
 
     def decorator(function):
+        @functools.wraps(function)
         def apply(*args, **kwargs):
             attempt = 0
             result = None
