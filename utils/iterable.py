@@ -9,7 +9,8 @@ def uniques(iterable, getter):
     return next(result, None) is None
 
 
-def uniquer(iterable, getter):
+def uniquer(iterable, getter=None):
+    getter = getter or (lambda n: n)
     bag = set()
     return (bag.add(check) or val for val in iterable if (check := getter(val)) not in bag)
 
