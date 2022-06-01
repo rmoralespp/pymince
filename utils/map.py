@@ -55,24 +55,16 @@ class DigestGetter:
             ensure_ascii=False
         ).encode
 
-    def __call__(self, obj: dict):
-        """Calculate a digest of a "jsonified" python dict."""
+    def __call__(self, dictionary):
+        """Calculate a digest of a "jsonified" python dictionary."""
         
         # Non recursive copy.
         if self.include:
-            data = {k: v for k, v in obj.items() if k in self.include}
+            data = {k: v for k, v in dictionary.items() if k in self.include}
         elif self.exclude:
-            data = {k: v for k, v in obj.items() if k not in self.exclude}
+            data = {k: v for k, v in dictionary.items() if k not in self.exclude}
         else:
-            data = obj
+            data = dictionary
         string = self.encode(data)
         digest = hashlib.md5(string.encode('utf-8')).hexdigest()
-        return string, digest
-
-    def hash(self, obj: dict):
-        _, digest = self(obj)
         return digest
-
-    def text(self, obj: dict):
-        text, _ = self(obj)
-        return text
