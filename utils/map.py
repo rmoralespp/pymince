@@ -23,7 +23,7 @@ def find_nested_key(key, dictionary):
     return key
 
 
-class DictDigestMaker:
+class DigestGetter:
 
     def __init__(self, include_keys=None, exclude_keys=None):
         if include_keys and exclude_keys:
@@ -56,11 +56,8 @@ class DictDigestMaker:
         ).encode
 
     def __call__(self, obj: dict):
-        """
-        Calculate a digest of a "jsonified" python dict.
-
-        :return: tuple with (jsonified "dict" and calculated digest)
-        """
+        """Calculate a digest of a "jsonified" python dict."""
+        
         # Non recursive copy.
         if self.include:
             data = {k: v for k, v in obj.items() if k in self.include}
