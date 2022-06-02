@@ -11,3 +11,9 @@ def timed_block(name):
         yield None
     finally:
         logging.debug('Finished [%s in %.3f ms.]', name, time.time() - t0)
+
+
+with timed_block("foo"):
+    logging.basicConfig()
+    print("block")
+    time.sleep(10)
