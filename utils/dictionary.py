@@ -5,14 +5,14 @@ import hashlib
 import json
 
 
-def find_nested_key(key, dictionary):
+def key_or_leaf_value(key, dictionary):
     """
-    Find key in dictionary.
+    Find leaf key in dictionary.
 
     egg:
-    * find_nested_key('a', {}) -> 'a'
-    * find_nested_key('a', {'a': 'b', 'b': 'c'}) -> 'c'
-    * find_nested_key('a', {'a': 'a'}) -> 'a'
+    * key_or_leaf_value('a', {}) -> 'a'
+    * key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) -> 'c'
+    * key_or_leaf_value('a', {'a': 'a'}) -> 'a'
     """
     while True:
         if key is not None and key in dictionary:
@@ -26,7 +26,14 @@ def find_nested_key(key, dictionary):
 
 
 class DigestGetter:
-    """Calculate a digest of a "jsonified" python dictionary."""
+    """
+    Calculate a digest of a "jsonified" python dictionary.
+
+    Examples:
+    getter = DigestGetter(include_keys=("a",))
+    getter({"a": 1, "b": 1}) # bb6cb5c68df4652941caf652a366f2d8
+    getter({"a": 1}) # bb6cb5c68df4652941caf652a366f2d8
+    """
 
     def __init__(self, include_keys=None, exclude_keys=None):
         if include_keys and exclude_keys:
