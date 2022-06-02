@@ -3,6 +3,8 @@ import json
 import operator
 import sys
 
+import utils.json
+
 
 def bind_json_std(encoding="utf-8"):
     """
@@ -22,7 +24,7 @@ def bind_json_std(encoding="utf-8"):
             data = json.load(sys.stdin)
             resp = function(*args, **kwargs, data=data)
             if resp:
-                json.dump(resp, sys.stdout, ensure_ascii=False)
+                utils.json.dump(resp, sys.stdout)
 
         return apply
 

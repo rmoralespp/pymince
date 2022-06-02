@@ -3,6 +3,22 @@ import enum
 import functools
 import hashlib
 import json
+import operator
+
+
+def all_true_values(dictionary, keys):
+    """
+    Check if an dictionary has all specified keys and
+    key-related values as True.
+    """
+
+    getter = operator.itemgetter(*keys)
+    try:
+        values = getter(dictionary)
+    except KeyError:
+        return False
+    else:
+        return all(values) if len(keys) > 1 else bool(values)
 
 
 def key_or_leaf_value(key, dictionary):
@@ -46,7 +62,7 @@ class DigestGetter:
         return hashlib.md5(string.encode('utf-8')).hexdigest()
 
     @functools.cached_property
-    def jsonify(self):
+    def stringify(self):
         """
         Return a function to encode a dict into json using the most compact form.
         Dictionary keys are sorted.
@@ -80,4 +96,4 @@ class DigestGetter:
             data = {k: v for k, v in dictionary.items() if k not in self.exclude}
         else:
             data = dictionary
-        return self.jsonify(data)
+        return self.stringify(data)
