@@ -1,7 +1,9 @@
 import datetime
 import enum
 import functools
+import hashlib
 import json
+
 
 def find_nested_key(key, dictionary):
     """
@@ -24,6 +26,7 @@ def find_nested_key(key, dictionary):
 
 
 class DigestGetter:
+    """Calculate a digest of a "jsonified" python dictionary."""
 
     def __init__(self, include_keys=None, exclude_keys=None):
         if include_keys and exclude_keys:
@@ -31,13 +34,18 @@ class DigestGetter:
         self.include = include_keys and frozenset(include_keys)
         self.exclude = exclude_keys and frozenset(exclude_keys)
 
+    def __call__(self, dictionary):
+        string = self.to_string(dictionary)
+        return hashlib.md5(string.encode('utf-8')).hexdigest()
+
     @functools.cached_property
-    def encode(self):
+    def jsonify(self):
         """
         Return a function to encode a dict into json using the most compact form.
         Dictionary keys are sorted.
         Encodes datetime objects into isoformat strings.
         Encodes enum objects according to "value" attribute.
+        Encode sets by ordering their values.
         """
 
         class Encoder(json.JSONEncoder):
@@ -46,6 +54,8 @@ class DigestGetter:
                     return obj.isoformat()
                 elif isinstance(obj, enum.Enum):
                     return obj.value
+                elif isinstance(obj, set):
+                    return sorted(obj)
                 return super().default(obj)
 
         return Encoder(
@@ -55,9 +65,7 @@ class DigestGetter:
             ensure_ascii=False
         ).encode
 
-    def __call__(self, dictionary):
-        """Calculate a digest of a "jsonified" python dictionary."""
-        
+    def to_string(self, dictionary):
         # Non recursive copy.
         if self.include:
             data = {k: v for k, v in dictionary.items() if k in self.include}
@@ -65,6 +73,4 @@ class DigestGetter:
             data = {k: v for k, v in dictionary.items() if k not in self.exclude}
         else:
             data = dictionary
-        string = self.encode(data)
-        digest = hashlib.md5(string.encode('utf-8')).hexdigest()
-        return digest
+        return self.jsonify(data)
