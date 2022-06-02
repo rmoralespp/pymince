@@ -25,7 +25,7 @@ def key_or_leaf_value(key, dictionary):
     """
     Find leaf key in dictionary.
 
-    egg:
+    Examples:
     * key_or_leaf_value('a', {}) -> 'a'
     * key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) -> 'c'
     * key_or_leaf_value('a', {'a': 'a'}) -> 'a'
