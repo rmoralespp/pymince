@@ -20,7 +20,6 @@ setup(
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Topic :: Software Development :: Libraries :: Python Modules',
@@ -35,5 +34,5 @@ setup(
     include_package_data=True,
     zip_safe=False,  # https://mypy.readthedocs.io/en/latest/installed_packages.html
     # install_requires=read('requirements.txt'),
-    python_requires='>=3.8',
+    python_requires='>=3.9',
 )
