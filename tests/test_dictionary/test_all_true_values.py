@@ -1,6 +1,6 @@
 import pytest
 
-import utils.dictionary
+import pymince.dictionary
 
 
 @pytest.mark.parametrize(
@@ -15,5 +15,5 @@ import utils.dictionary
     ]
 )
 def test_all_keys_and_values(dictionary, keys, expected):
-    result = utils.dictionary.all_true_values(dictionary, keys)
+    result = pymince.dictionary.all_true_values(dictionary, keys)
     assert result == expected

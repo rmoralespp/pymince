@@ -1,10 +1,10 @@
 import pytest
 
-import utils.iterator
+import pymince.iterator
 
 
 def test_consume():
     check = iter((1, 2, 3))
-    utils.iterator.consume(check)
+    pymince.iterator.consume(check)
     with pytest.raises(StopIteration):
         next(check)

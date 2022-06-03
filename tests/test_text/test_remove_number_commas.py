@@ -1,6 +1,6 @@
 import pytest
 
-import utils.text
+import pymince.text
 
 
 @pytest.mark.parametrize(
@@ -19,5 +19,5 @@ import utils.text
 
 )
 def test_remove_number_commas(value, expected):
-    result = utils.text.remove_number_commas(value)
+    result = pymince.text.remove_number_commas(value)
     assert result == expected

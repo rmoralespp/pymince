@@ -1,6 +1,6 @@
 import pytest
 
-import utils.text
+import pymince.text
 
 
 @pytest.mark.parametrize('ini_amount, end_amount_for', [
@@ -16,5 +16,5 @@ import utils.text
 ])
 def test_remove_decimal_zeros(ini_amount, end_amount_for):
     for case in end_amount_for:
-        res = utils.text.remove_decimal_zeros(ini_amount, min_decimals=case.get('min_dec'))
+        res = pymince.text.remove_decimal_zeros(ini_amount, min_decimals=case.get('min_dec'))
         assert res == case['end_amount']

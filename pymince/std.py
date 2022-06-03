@@ -3,7 +3,7 @@ import json
 import operator
 import sys
 
-import utils.json
+import pymince.json
 
 
 def bind_json_std(encoding="utf-8"):
@@ -24,7 +24,7 @@ def bind_json_std(encoding="utf-8"):
             data = json.load(sys.stdin)
             resp = function(*args, **kwargs, data=data)
             if resp:
-                utils.json.dump(resp, sys.stdout)
+                pymince.json.dump(resp, sys.stdout)
 
         return apply
 
