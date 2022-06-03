@@ -1,10 +1,10 @@
 import pytest
 
-import utils.iterable
+import utils.iterator
 
 
 def test_consume():
     check = iter((1, 2, 3))
-    utils.iterable.consume(check)
+    utils.iterator.consume(check)
     with pytest.raises(StopIteration):
         next(check)

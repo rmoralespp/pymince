@@ -1,14 +1,14 @@
 import operator
 
-import utils.iterable
+import utils.iterator
 
 
 def test_all_equal_true():
-    assert utils.iterable.all_equal((1, 1))
+    assert utils.iterator.all_equal((1, 1))
 
 
 def test_all_equal_false():
-    assert not utils.iterable.all_equal((1, 2))
+    assert not utils.iterator.all_equal((1, 2))
 
 
 def test_all_equal_true_given_itemgetter():
@@ -17,7 +17,7 @@ def test_all_equal_true_given_itemgetter():
         {"id": 1, "name": "n1"},
         {"id": 2, "name": "n1"},
     )
-    assert utils.iterable.all_equal(data, getter=getter)
+    assert utils.iterator.all_equal(data, getter=getter)
 
 
 def test_all_equal_false_given_itemgetter():
@@ -26,4 +26,4 @@ def test_all_equal_false_given_itemgetter():
         {"id": 1, "name": "n1"},
         {"id": 2, "name": "n2"},
     )
-    assert not utils.iterable.all_equal(data, getter=getter)
+    assert not utils.iterator.all_equal(data, getter=getter)

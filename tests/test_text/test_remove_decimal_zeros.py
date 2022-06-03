@@ -14,7 +14,7 @@ import utils.text
     ('.323', ({'end_amount': '0.323'}, {'end_amount': '0.323', 'min_dec': 2})),
     ('', ({'end_amount': ''},)),
 ])
-def test_remove_non_significant_decimal(ini_amount, end_amount_for):
+def test_remove_decimal_zeros(ini_amount, end_amount_for):
     for case in end_amount_for:
-        res = utils.text.remove_non_significant_decimal(ini_amount, min_decimals=case.get('min_dec'))
+        res = utils.text.remove_decimal_zeros(ini_amount, min_decimals=case.get('min_dec'))
         assert res == case['end_amount']

@@ -1,9 +1,17 @@
 import operator
 
-import utils.iterable
+import utils.iterator
 
 
 def test_uniques_true():
+    assert utils.iterator.uniques((1, (1,), "1", False))
+
+
+def test_uniques_false():
+    assert not utils.iterator.uniques((1, True, 1.0))
+
+
+def test_uniques_true_given_itemgetter():
     data = [
         {
             'id': 1,
@@ -18,11 +26,11 @@ def test_uniques_true():
             'name': 'n3',
         }
     ]
-    uniques = utils.iterable.uniques(data, operator.itemgetter('id', 'name'))
+    uniques = utils.iterator.uniques(data, operator.itemgetter('id', 'name'))
     assert uniques
 
 
-def test_uniques_false():
+def test_uniques_false_given_itemgetter():
     data = [
         {
             'id': 1,
@@ -37,5 +45,5 @@ def test_uniques_false():
             'name': 'n3',
         }
     ]
-    uniques = utils.iterable.uniques(data, operator.itemgetter('id', 'name'))
+    uniques = utils.iterator.uniques(data, operator.itemgetter('id', 'name'))
     assert not uniques

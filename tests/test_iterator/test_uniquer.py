@@ -2,7 +2,7 @@ import operator
 
 import pytest
 
-import utils.iterable
+import utils.iterator
 
 
 @pytest.mark.parametrize(
@@ -13,7 +13,7 @@ import utils.iterable
     ],
 )
 def test_uniquer(data, expected):
-    result = utils.iterable.uniquer(data)
+    result = utils.iterator.uniquer(data)
     assert tuple(result) == expected
 
 
@@ -24,5 +24,5 @@ def test_uniquer_given_itemgetter():
         {"id": 2, "name": "n1"},
         {"id": 3, "name": "n2"}
     )
-    result = utils.iterable.uniquer(data, getter=getter)
+    result = utils.iterator.uniquer(data, getter=getter)
     assert tuple(result) == ({"id": 1, "name": "n1"}, {"id": 3, "name": "n2"})

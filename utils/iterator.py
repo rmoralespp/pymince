@@ -1,25 +1,28 @@
+"""
+Functions that use iterators for efficient loops
+"""
 import collections
 import itertools
 
 
-def uniques(iterable, getter):
+def uniques(iterable, getter=None):
     bag = set()
-    values = (getter(obj) for obj in iterable)
+    values = (getter(obj) for obj in iterable) if getter else iter(iterable)
     result = (val for val in values if val in bag or bag.add(val))
     return next(result, None) is None
 
 
 def uniquer(iterable, getter=None):
-    getter = getter or (lambda n: n)
     bag = set()
-    return (bag.add(check) or val for val in iterable if (check := getter(val)) not in bag)
+    getter = getter or (lambda n: n)
+    return (bag.add(check) or val for val in iter(iterable) if (check := getter(val)) not in bag)
 
 
 def grouper(iterable, size):
     slicer = itertools.islice
-    iterator = iter(iterable)
+    values = iter(iterable)
     while True:
-        sliced = slicer(iterator, size)
+        sliced = slicer(values, size)
         try:
             obj = next(sliced)
         except StopIteration:
@@ -35,3 +38,12 @@ def consume(iterator):
 def all_equal(iterable, getter=None):
     grouped = itertools.groupby(iterable, key=getter)
     return next(grouped, True) and not next(grouped, False)
+
+
+def not_empty(iterator):
+    empty = object()
+    first = next(iterator, empty)
+    if first is not empty:
+        return True, itertools.chain((first,), iterator)
+    else:
+        return False, iterator
