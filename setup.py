@@ -15,7 +15,7 @@ setup(
     name=__title__,
     version=__version__,
     description="Python shredded utilities",
-    long_description=read('README.md'),
+    # long_description=read('README.md'),
     long_description_content_type='text/markdown',
     classifiers=[
         'Programming Language :: Python',
@@ -34,6 +34,6 @@ setup(
     packages=['pymince'],
     include_package_data=True,
     zip_safe=False,  # https://mypy.readthedocs.io/en/latest/installed_packages.html
-    install_requires=read('requirements.txt'),
+    # install_requires=read('requirements.txt'),
     python_requires='>=3.8',
 )
