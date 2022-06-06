@@ -73,12 +73,8 @@ def split(iterable, sep):
             else:
                 yield obj
 
-    iterator = iter(iterable)
-    try:
-        one = next(iterator)
-    except StopIteration:
-        return
-    else:
-        iterator = itertools.chain((one,), iterator)
+    if iterator := as_not_empty(iter(iterable)):
         yield group(iterator)
         yield from split(iterator, sep)
+    else:
+        return
