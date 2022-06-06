@@ -5,6 +5,29 @@ import collections
 import itertools
 
 
+def replace(iterable, matcher, new_value, count=-1):
+    """
+    Returns a generator with all matches of the old "iterable"
+    replaced by "new_value".
+
+    :param iterable:
+    :param matcher:
+    :param new_value:
+    :param count:
+        Maximum number of occurrences to replace.
+        -1 (the default value) means replace all occurrences.
+    :return: Replacement generator
+    """
+
+    changed = 0
+    for obj in iterable:
+        if matcher(obj) and (count == -1 or changed < count):
+            changed += 1
+            yield new_value
+        else:
+            yield obj
+
+
 def uniques(iterable, key=None):
     getter = key or (lambda x: x)
     bag = set()
