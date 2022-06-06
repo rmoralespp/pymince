@@ -40,10 +40,45 @@ def all_equal(iterable, getter=None):
     return next(grouped, True) and not next(grouped, False)
 
 
-def not_empty(iterator):
+def all_distinct(iterable, getter=None):
+    grouped = itertools.groupby(iterable, key=getter)
+    return all(is_only_one(group) for _, group in grouped)
+
+
+def as_not_empty(iterator):
     empty = object()
     first = next(iterator, empty)
-    if first is not empty:
-        return True, itertools.chain((first,), iterator)
+    return itertools.chain((first,), iterator) if first else None
+
+
+def is_only_one(iterable):
+    flag = object()
+    return next(iterable, flag) is not flag and next(iterable, flag) is flag
+
+
+def split(iterable, sep):
+    """
+    Split iterable into groups of iterators according
+    to given delimiter.
+
+    :param iterable:
+    :param sep: The delimiter to split the iterable.
+    :return: Generator with consecutive groups from "iterable" without the delimiter element.
+    """
+
+    def group(objects):
+        for obj in objects:
+            if obj == sep:
+                break
+            else:
+                yield obj
+
+    iterator = iter(iterable)
+    try:
+        one = next(iterator)
+    except StopIteration:
+        return
     else:
-        return False, iterator
+        iterator = itertools.chain((one,), iterator)
+        yield group(iterator)
+        yield from split(iterator, sep)
