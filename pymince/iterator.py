@@ -48,7 +48,7 @@ def all_distinct(iterable, getter=None):
 def as_not_empty(iterator):
     empty = object()
     first = next(iterator, empty)
-    return itertools.chain((first,), iterator) if first else None
+    return itertools.chain((first,), iterator) if first is not empty else None
 
 
 def is_only_one(iterable):
