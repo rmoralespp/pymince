@@ -5,16 +5,17 @@ import collections
 import itertools
 
 
-def uniques(iterable, getter=None):
+def uniques(iterable, key=None):
+    getter = key or (lambda x: x)
     bag = set()
     values = (getter(obj) for obj in iterable) if getter else iter(iterable)
     result = (val for val in values if val in bag or bag.add(val))
     return next(result, None) is None
 
 
-def uniquer(iterable, getter=None):
+def uniquer(iterable, key=None):
+    getter = key or (lambda x: x)
     bag = set()
-    getter = getter or (lambda n: n)
     return (bag.add(check) or val for val in iter(iterable) if (check := getter(val)) not in bag)
 
 
@@ -35,13 +36,13 @@ def consume(iterator):
     collections.deque(iterator, maxlen=0)
 
 
-def all_equal(iterable, getter=None):
-    grouped = itertools.groupby(iterable, key=getter)
+def all_equal(iterable, key=None):
+    grouped = itertools.groupby(iterable, key=key)
     return next(grouped, True) and not next(grouped, False)
 
 
-def all_distinct(iterable, getter=None):
-    grouped = itertools.groupby(iterable, key=getter)
+def all_distinct(iterable, key=None):
+    grouped = itertools.groupby(iterable, key=key)
     return all(is_only_one(group) for _, group in grouped)
 
 
@@ -56,20 +57,27 @@ def is_only_one(iterable):
     return next(iterable, flag) is not flag and next(iterable, flag) is flag
 
 
-def split(iterable, sep, maxsplit=-1):
+def split(iterable, sep, key=None, maxsplit=-1):
     """
     Split iterable into groups of iterators according
     to given delimiter.
 
     :param iterable:
     :param sep: The delimiter to split the iterable.
-    :param maxsplit: Maximum number of splits to do. -1 (the default value) means no limit.
+    :param key
+        A function to compare the equality of each element with the given delimiter.
+        If the key function is not specified or is None, the element itself is used for compare.
+
+    :param maxsplit:
+        Maximum number of splits to do.
+        -1 (the default value) means no limit.
+
     :return: Generator with consecutive groups from "iterable" without the delimiter element.
     """
 
     def group(objects):
         for obj in objects:
-            if obj == sep:
+            if getter(obj) == sep:
                 break
             else:
                 yield obj
@@ -84,4 +92,5 @@ def split(iterable, sep, maxsplit=-1):
         else:
             return
 
+    getter = key or (lambda x: x)
     return recursive(iter(iterable), 0) if maxsplit else iterable

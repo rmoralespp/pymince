@@ -26,7 +26,7 @@ def test_uniques_true_given_itemgetter():
             'name': 'n3',
         }
     ]
-    uniques = pymince.iterator.uniques(data, operator.itemgetter('id', 'name'))
+    uniques = pymince.iterator.uniques(data, key=operator.itemgetter('id', 'name'))
     assert uniques
 
 
@@ -45,5 +45,5 @@ def test_uniques_false_given_itemgetter():
             'name': 'n3',
         }
     ]
-    uniques = pymince.iterator.uniques(data, operator.itemgetter('id', 'name'))
+    uniques = pymince.iterator.uniques(data, key=operator.itemgetter('id', 'name'))
     assert not uniques

@@ -24,5 +24,5 @@ def test_uniquer_given_itemgetter():
         {"id": 2, "name": "n1"},
         {"id": 3, "name": "n2"}
     )
-    result = pymince.iterator.uniquer(data, getter=getter)
+    result = pymince.iterator.uniquer(data, key=getter)
     assert tuple(result) == ({"id": 1, "name": "n1"}, {"id": 3, "name": "n2"})
