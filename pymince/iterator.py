@@ -56,13 +56,14 @@ def is_only_one(iterable):
     return next(iterable, flag) is not flag and next(iterable, flag) is flag
 
 
-def split(iterable, sep):
+def split(iterable, sep, maxsplit=-1):
     """
     Split iterable into groups of iterators according
     to given delimiter.
 
     :param iterable:
     :param sep: The delimiter to split the iterable.
+    :param maxsplit: Maximum number of splits to do. -1 (the default value) means no limit.
     :return: Generator with consecutive groups from "iterable" without the delimiter element.
     """
 
@@ -73,8 +74,14 @@ def split(iterable, sep):
             else:
                 yield obj
 
-    if iterator := as_not_empty(iter(iterable)):
-        yield group(iterator)
-        yield from split(iterator, sep)
-    else:
-        return
+    def recursive(objects, counter):
+        if (iterator := as_not_empty(objects)) and (maxsplit == -1 or counter < maxsplit):
+            counter += 1
+            yield group(iterator)
+            yield from recursive(iterator, counter)
+        elif iterator:
+            yield iterator
+        else:
+            return
+
+    return recursive(iter(iterable), 0) if maxsplit else iterable
