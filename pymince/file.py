@@ -10,9 +10,14 @@ def open_on_zip(zip_file, filename):
     """
     Open a file that is inside a zip file.
 
+    :param zip_file: instance of ZipFile class
+    :param str filename:
+
     Usage:
     -------------------------------------------------
     import zipfile
+    from pymince.file import open_on_zip
+
     with zipfile.ZipFile(zip_filename) as zf:
         # example1
         with open_on_zip(zf, "foo1.txt") as fd1:
@@ -40,7 +45,7 @@ def match_on_zip(zip_file, pattern):
 
 def ensure_directory(path, cleaning=False):
     """
-    Make sure the given file structure is an existing directory.
+    Make sure the given file path is an existing directory.
     If it does not exist, a new directory will be created.
 
     :param str path:

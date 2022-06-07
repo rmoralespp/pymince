@@ -18,8 +18,10 @@ def replacer(iterable, matcher, new_value, count=-1):
         -1 (the default value) means replace all occurrences.
 
     Usage:
-    >> replacer([1,2,3,1,2,3], lambda n: n == 1, None) --> None 2 3 None 2 3
-    >> replacer([1,2,3,1,2,3], lambda n: n == 1, None, count=1) --> None 2 3 1 2 3
+        from pymince.iterator import replacer
+
+        replacer([1,2,3,1,2,3], lambda n: n == 1, None) # --> None 2 3 None 2 3
+        replacer([1,2,3,1,2,3], lambda n: n == 1, None, count=1) # --> None 2 3 1 2 3
     """
     changed = 0
     for obj in iterable:
@@ -39,8 +41,10 @@ def uniques(iterable, key=None):
     :rtype: bool
 
     Usage:
-    >> uniques([1,2]) --> True
-    >> uniques([1,1]) --> False
+        from pymince.iterator import uniques
+
+        uniques([1,2]) # --> True
+        uniques([1,1]) # --> False
     """
     getter = key or (lambda x: x)
     bag = set()
@@ -68,7 +72,10 @@ def grouper(iterable, size):
     :param int size: maximum size of element groups.
 
     Usage:
-    >> list(list(g) for g in grouper([1, 2, 3, 4, 5])) == [[1, 2], [3, 4], [5]]
+        from pymince.iterator import grouper
+
+        groups = grouper([1, 2, 3, 4, 5], 2)
+        list(list(g) for g in groups) # --> [[1, 2], [3, 4], [5]]
     """
     slicer = itertools.islice
     values = iter(iterable)
@@ -94,8 +101,10 @@ def all_equal(iterable, key=None):
     :rtype: bool
 
     Usage:
-    >> all_equal([1, 1]) --> True
-    >> all_equal([1, 2]) --> False
+        from pymince.iterator import all_equal
+
+        all_equal([1, 1]) # --> True
+        all_equal([1, 2]) # --> False
     """
     grouped = itertools.groupby(iterable, key=key)
     return next(grouped, True) and not next(grouped, False)
@@ -110,8 +119,10 @@ def all_distinct(iterable, key=None):
     :rtype: bool
 
     Usage:
-    >> all_distinct([1, 1]) --> False
-    >> all_distinct([1, 2]) --> True
+        from pymince.iterator import all_distinct
+
+        all_distinct([1, 1]) # --> False
+        all_distinct([1, 2]) # --> True
     """
     grouped = itertools.groupby(iterable, key=key)
     return all(is_only_one(group) for _, group in grouped)
@@ -125,8 +136,10 @@ def non_empty_or_none(iterator):
     :return: Iterator or None
 
     Usage:
-    >> non_empty_or_none([]) --> None
-    >> non_empty_or_none([1,2]) --> 1 2
+        from pymince.iterator import non_empty_or_none
+
+        non_empty_or_none([]) # --> None
+        non_empty_or_none([1,2]) # --> 1 2
     """
 
     empty = object()
@@ -163,9 +176,14 @@ def splitter(iterable, sep, key=None, maxsplit=-1):
     :return: Generator with consecutive groups from "iterable" without the delimiter element.
 
     Usage:
-    >> data = ["a", "b", "c", "d", "b", "e"]
-    >> list(list(s) for s in splitter(data, "b")) --> [["a"], ["c", "d"], ["e"]]
-    >> list(list(s) for s in splitter(data, "b"), maxsplit=1) --> [["a"], ["c", "d", "b", "e"]]
+        from pymince.iterator import splitter
+
+        data = ["a", "b", "c", "d", "b", "e"]
+
+        undefined_split = splitter(data, "b")
+        one_split = splitter(data, "b", maxsplit=1)
+        list(list(s) for s in undefined_split) # --> [["a"], ["c", "d"], ["e"]]
+        list(list(s) for s in one_split) # --> [["a"], ["c", "d", "b", "e"]]
     """
 
     def group(objects):

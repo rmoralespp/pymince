@@ -9,12 +9,15 @@ def timed_block(name):
     Logger the duration of the handled context.
 
     Usage:
-    >> logging.basicConfig(level=logging.DEBUG)
-    >> with timed_block("sleeping"):
-        >> time.sleep(1)
+        from pymince.logging import timed_block
 
-    INFO:root:Generating [sleeping]
-    DEBUG:root:Finished [sleeping in 1.002 ms.]
+        logging.basicConfig(level=logging.DEBUG)
+        with timed_block("sleeping"):
+            time.sleep(1)
+
+        >>Output<<
+        INFO:root:Generating [sleeping]
+        DEBUG:root:Finished [sleeping in 1.002 ms.]
     """
     logging.info('Generating [%s]', name)
     t0 = time.time()

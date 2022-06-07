@@ -28,10 +28,16 @@ DigestGetter(include_keys=None, exclude_keys=None)
 
 Calculate a digest of a "jsonified" python dictionary.
 
+:param include_keys: dictionary keys to exclude
+:param exclude_keys: dictionary keys to include
+:rtype: str
+
 Usage:
->> getter = DigestGetter(include_keys=("a",))
->> getter({"a": 1, "b": 1}) # bb6cb5c68df4652941caf652a366f2d8
->> getter({"a": 1}) # bb6cb5c68df4652941caf652a366f2d8
+    from pymince.dictionary import DigestGetter
+
+    getter = DigestGetter(include_keys=("a",))
+    getter({"a": 1, "b": 1}) # --> bb6cb5c68df4652941caf652a366f2d8
+    getter({"a": 1}) # --> bb6cb5c68df4652941caf652a366f2d8
 ```
 ##### all_true_values
 ```
@@ -43,6 +49,13 @@ key-related values as True.
 :param dict dictionary:
 :param keys: keys sequence
 :rtype: bool
+
+Usage:
+from pymince.dictionary import all_true_values
+
+all_true_values({"a": 1, "b": 2}, ("a", "b")) # --> True
+all_true_values({"a": 1, "b": 0}, ("a", "b")) # --> False
+all_true_values({"a": 1, "b": 0}, ("a",)) # --> True
 ```
 ##### key_or_leaf_value
 ```
@@ -54,16 +67,18 @@ Find leaf key in dictionary.
 :param dict dictionary:
 
 Usage:
-* key_or_leaf_value('a', {}) -> 'a'
-* key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) -> 'c'
-* key_or_leaf_value('a', {'a': 'a'}) -> 'a'
+    from pymince.dictionary import key_or_leaf_value
+
+    key_or_leaf_value('a', {}) # --> 'a'
+    key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) # --> 'c'
+    key_or_leaf_value('a', {'a': 'a'}) # --> 'a'
 ```
 #### file.py
 ##### ensure_directory
 ```
 ensure_directory(path, cleaning=False)
 
-Make sure the given file structure is an existing directory.
+Make sure the given file path is an existing directory.
 If it does not exist, a new directory will be created.
 
 :param str path:
@@ -87,9 +102,14 @@ open_on_zip(zip_file, filename)
 
 Open a file that is inside a zip file.
 
+:param zip_file: instance of ZipFile class
+:param str filename:
+
 Usage:
 -------------------------------------------------
 import zipfile
+from pymince.file import open_on_zip
+
 with zipfile.ZipFile(zip_filename) as zf:
     # example1
     with open_on_zip(zf, "foo1.txt") as fd1:
@@ -111,8 +131,10 @@ Check if all the elements of a key-based iterable are distinct.
 :rtype: bool
 
 Usage:
->> all_distinct([1, 1]) --> False
->> all_distinct([1, 2]) --> True
+    from pymince.iterator import all_distinct
+
+    all_distinct([1, 1]) # --> False
+    all_distinct([1, 2]) # --> True
 ```
 ##### all_equal
 ```
@@ -125,8 +147,10 @@ Check if all the elements of a key-based iterable are equals.
 :rtype: bool
 
 Usage:
->> all_equal([1, 1]) --> True
->> all_equal([1, 2]) --> False
+    from pymince.iterator import all_equal
+
+    all_equal([1, 1]) # --> True
+    all_equal([1, 2]) # --> False
 ```
 ##### consume
 ```
@@ -145,7 +169,10 @@ with "size" as the maximum number of elements.
 :param int size: maximum size of element groups.
 
 Usage:
->> list(list(g) for g in grouper([1, 2, 3, 4, 5])) == [[1, 2], [3, 4], [5]]
+    from pymince.iterator import grouper
+
+    groups = grouper([1, 2, 3, 4, 5], 2)
+    list(list(g) for g in groups) # --> [[1, 2], [3, 4], [5]]
 ```
 ##### is_only_one
 ```
@@ -166,8 +193,10 @@ Returns an non-empty iterator or None according to given "iterator".
 :return: Iterator or None
 
 Usage:
->> non_empty_or_none([]) --> None
->> non_empty_or_none([1,2]) --> 1 2
+    from pymince.iterator import non_empty_or_none
+
+    non_empty_or_none([]) # --> None
+    non_empty_or_none([1,2]) # --> 1 2
 ```
 ##### replacer
 ```
@@ -184,8 +213,10 @@ replaced by "new_value".
     -1 (the default value) means replace all occurrences.
 
 Usage:
->> replacer([1,2,3,1,2,3], lambda n: n == 1, None) --> None 2 3 None 2 3
->> replacer([1,2,3,1,2,3], lambda n: n == 1, None, count=1) --> None 2 3 1 2 3
+    from pymince.iterator import replacer
+
+    replacer([1,2,3,1,2,3], lambda n: n == 1, None) # --> None 2 3 None 2 3
+    replacer([1,2,3,1,2,3], lambda n: n == 1, None, count=1) # --> None 2 3 1 2 3
 ```
 ##### splitter
 ```
@@ -207,9 +238,14 @@ to given delimiter.
 :return: Generator with consecutive groups from "iterable" without the delimiter element.
 
 Usage:
->> data = ["a", "b", "c", "d", "b", "e"]
->> list(list(s) for s in splitter(data, "b")) --> [["a"], ["c", "d"], ["e"]]
->> list(list(s) for s in splitter(data, "b"), maxsplit=1) --> [["a"], ["c", "d", "b", "e"]]
+    from pymince.iterator import splitter
+
+    data = ["a", "b", "c", "d", "b", "e"]
+
+    undefined_split = splitter(data, "b")
+    one_split = splitter(data, "b", maxsplit=1)
+    list(list(s) for s in undefined_split) # --> [["a"], ["c", "d"], ["e"]]
+    list(list(s) for s in one_split) # --> [["a"], ["c", "d", "b", "e"]]
 ```
 ##### uniquer
 ```
@@ -229,8 +265,10 @@ Check if all the elements of a key-based iterable are unique.
 :rtype: bool
 
 Usage:
->> uniques([1,2]) --> True
->> uniques([1,1]) --> False
+    from pymince.iterator import uniques
+
+    uniques([1,2]) # --> True
+    uniques([1,1]) # --> False
 ```
 #### json.py
 ##### dump_into
@@ -240,7 +278,9 @@ dump_into(filename, payload, indent=2)
 Dump JSON to a file.
 
 Usage:
->> dump_into("foo.json", {"key": "value"})
+    from pymince.json import dump_into
+
+    dump_into("foo.json", {"key": "value"})
 ```
 ##### load_from
 ```
@@ -249,7 +289,9 @@ load_from(filename)
 Load JSON from a file.
 
 Usage:
->> dictionary = load_from("foo.json")
+    from pymince.json import load_from
+
+    dictionary = load_from("foo.json")
 ```
 #### logging.py
 ##### timed_block
@@ -259,12 +301,15 @@ timed_block(name)
 Logger the duration of the handled context.
 
 Usage:
->> logging.basicConfig(level=logging.DEBUG)
->> with timed_block("sleeping"):
-    >> time.sleep(1)
+    from pymince.logging import timed_block
 
-INFO:root:Generating [sleeping]
-DEBUG:root:Finished [sleeping in 1.002 ms.]
+    logging.basicConfig(level=logging.DEBUG)
+    with timed_block("sleeping"):
+        time.sleep(1)
+
+    >>Output<<
+    INFO:root:Generating [sleeping]
+    DEBUG:root:Finished [sleeping in 1.002 ms.]
 ```
 #### retry.py
 ##### retry_if_none
@@ -278,9 +323,9 @@ returns None.
 :param int tries: number of attempts. default: 1
 
 Usage:
-@retry_if_none(delay=0, tries=1)
-def foo():
-    return 1
+    @retry_if_none(delay=0, tries=1)
+    def foo():
+        return 1
 ```
 #### std.py
 ##### bind_json_std

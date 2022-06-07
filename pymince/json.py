@@ -10,7 +10,9 @@ def load_from(filename):
     Load JSON from a file.
 
     Usage:
-    >> dictionary = load_from("foo.json")
+        from pymince.json import load_from
+
+        dictionary = load_from("foo.json")
     """
     with open(filename, encoding="uft-8") as file:
         return json.load(file)
@@ -21,7 +23,9 @@ def dump_into(filename, payload, indent=2):
     Dump JSON to a file.
 
     Usage:
-    >> dump_into("foo.json", {"key": "value"})
+        from pymince.json import dump_into
+
+        dump_into("foo.json", {"key": "value"})
     """
     with open(filename, "wt", encoding="uft-8") as file:
         dump(payload, file, indent=indent)

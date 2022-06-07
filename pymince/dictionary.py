@@ -14,6 +14,13 @@ def all_true_values(dictionary, keys):
     :param dict dictionary:
     :param keys: keys sequence
     :rtype: bool
+
+    Usage:
+    from pymince.dictionary import all_true_values
+
+    all_true_values({"a": 1, "b": 2}, ("a", "b")) # --> True
+    all_true_values({"a": 1, "b": 0}, ("a", "b")) # --> False
+    all_true_values({"a": 1, "b": 0}, ("a",)) # --> True
     """
 
     getter = operator.itemgetter(*keys)
@@ -33,9 +40,11 @@ def key_or_leaf_value(key, dictionary):
     :param dict dictionary:
 
     Usage:
-    * key_or_leaf_value('a', {}) -> 'a'
-    * key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) -> 'c'
-    * key_or_leaf_value('a', {'a': 'a'}) -> 'a'
+        from pymince.dictionary import key_or_leaf_value
+
+        key_or_leaf_value('a', {}) # --> 'a'
+        key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) # --> 'c'
+        key_or_leaf_value('a', {'a': 'a'}) # --> 'a'
     """
     while True:
         if key is not None and key in dictionary:
@@ -52,10 +61,16 @@ class DigestGetter:
     """
     Calculate a digest of a "jsonified" python dictionary.
 
+    :param include_keys: dictionary keys to exclude
+    :param exclude_keys: dictionary keys to include
+    :rtype: str
+
     Usage:
-    >> getter = DigestGetter(include_keys=("a",))
-    >> getter({"a": 1, "b": 1}) # bb6cb5c68df4652941caf652a366f2d8
-    >> getter({"a": 1}) # bb6cb5c68df4652941caf652a366f2d8
+        from pymince.dictionary import DigestGetter
+
+        getter = DigestGetter(include_keys=("a",))
+        getter({"a": 1, "b": 1}) # --> bb6cb5c68df4652941caf652a366f2d8
+        getter({"a": 1}) # --> bb6cb5c68df4652941caf652a366f2d8
     """
 
     def __init__(self, include_keys=None, exclude_keys=None):
