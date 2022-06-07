@@ -32,5 +32,5 @@ setup(
     include_package_data=True,
     zip_safe=False,  # https://mypy.readthedocs.io/en/latest/installed_packages.html
     # install_requires=read('requirements.txt'),
-    python_requires='>=3.9',
+    python_requires='>=3.8',
 )
