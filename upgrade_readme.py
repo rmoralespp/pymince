@@ -23,11 +23,15 @@ modules = (
 
 def member2markdown(member):
     name = member.__name__
+
+    doctring = member.__doc__
+    doctring = inspect.cleandoc(doctring) if doctring else ''
     lines = (
         f"##### {name}",
         "```",
         f"{name}{inspect.signature(member)}",
-        f"{member.__doc__ or ''}",
+        "",
+        f"{doctring}",
         "```",
     )
     return "\n".join(lines)
