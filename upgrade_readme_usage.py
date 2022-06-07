@@ -1,5 +1,7 @@
 import inspect
+import logging
 import os
+import re
 
 import pymince.dictionary
 import pymince.file
@@ -17,8 +19,7 @@ modules = (
     pymince.json,
     pymince.logging,
     pymince.retry,
-    pymince.std,
-)
+    pymince.std)
 
 
 def member2markdown(member):
@@ -52,10 +53,16 @@ def module2markdown(module):
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.basename(__file__))
     readme_path = os.path.join(base_dir, "README.md")
-    content = "".join(module2markdown(module) for module in modules)
-    with open(readme_path, mode="r", encoding="utf-8") as f:
-        string = f.read()
 
-    string = string.replace("__usage__", content)
-    with open(readme_path, mode="wt", encoding="utf-8") as f:
-        f.write(string)
+    pattern = re.compile(r"### Usage.*(?=###)", flags=re.DOTALL)
+    content = "".join(module2markdown(module) for module in modules)
+    content = "### Usage\n" + content + "\n"
+    with open(readme_path, mode="r", encoding="utf-8") as f:
+        old_string = f.read()
+        new_string = pattern.sub(content, old_string)
+
+    if new_string != old_string:
+        logging.basicConfig(level=logging.DEBUG)
+        with pymince.logging.timed_block("upgrade_readme_usage"):
+            with open(readme_path, mode="wt", encoding="utf-8") as f:
+                f.write(new_string)

@@ -1,4 +1,3 @@
-
 # pymince
 
 [![CI](https://github.com/rmoralespp/pymince/workflows/CI/badge.svg)](https://github.com/rmoralespp/pymince/actions?query=event%3Arelease+workflow%3ACI)
@@ -40,6 +39,10 @@ all_true_values(dictionary, keys)
 
 Check if an dictionary has all specified keys and
 key-related values as True.
+
+:param dict dictionary:
+:param keys: keys sequence
+:rtype: bool
 ```
 ##### key_or_leaf_value
 ```
@@ -47,7 +50,10 @@ key_or_leaf_value(key, dictionary)
 
 Find leaf key in dictionary.
 
-Examples:
+:param str key: Key to find.
+:param dict dictionary:
+
+Usage:
 * key_or_leaf_value('a', {}) -> 'a'
 * key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) -> 'c'
 * key_or_leaf_value('a', {'a': 'a'}) -> 'a'
@@ -57,13 +63,23 @@ Examples:
 ```
 ensure_directory(path, cleaning=False)
 
+Make sure the given file structure is an existing directory.
+If it does not exist, a new directory will be created.
 
+:param str path:
+:param bool cleaning:
+    If "cleaning" is True and the directory already exists,
+    existing content will be deleted.
 ```
 ##### match_on_zip
 ```
 match_on_zip(zip_file, pattern)
 
+Make an iterator that returns file names in the zip file that
+match the given pattern.
 
+:param zip_file: instance of ZipFile class
+:param pattern: Callable to filter filename list
 ```
 ##### open_on_zip
 ```
@@ -222,17 +238,25 @@ Usage:
 dump_into(filename, payload, indent=2)
 
 Dump JSON to a file.
+
+Usage:
+>> dump_into("foo.json", {"key": "value"})
 ```
 ##### load_from
 ```
 load_from(filename)
 
 Load JSON from a file.
+
+Usage:
+>> dictionary = load_from("foo.json")
 ```
 #### logging.py
 ##### timed_block
 ```
 timed_block(name)
+
+Logger the duration of the handled context.
 
 Usage:
 >> logging.basicConfig(level=logging.DEBUG)
@@ -252,6 +276,11 @@ returns None.
 
 :param int delay: seconds delay between attempts. default: 0.
 :param int tries: number of attempts. default: 1
+
+Usage:
+@retry_if_none(delay=0, tries=1)
+def foo():
+    return 1
 ```
 #### std.py
 ##### bind_json_std
@@ -261,4 +290,10 @@ bind_json_std(encoding='utf-8')
 Decorator to call "function" passing the json read from
 "stdin" in the keyword parameter "data" and dump the json that the callback returns
 to "stdout".
+```
+### Upgrade README.md
+
+Upgrade README.md `Usage` section according to current *pymince* code.
+```
+(env) python upgrade_readme_usage.py
 ```

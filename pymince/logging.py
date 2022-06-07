@@ -6,6 +6,8 @@ import time
 @contextlib.contextmanager
 def timed_block(name):
     """
+    Logger the duration of the handled context.
+
     Usage:
     >> logging.basicConfig(level=logging.DEBUG)
     >> with timed_block("sleeping"):

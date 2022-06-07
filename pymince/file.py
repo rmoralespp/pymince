@@ -27,11 +27,27 @@ def open_on_zip(zip_file, filename):
 
 
 def match_on_zip(zip_file, pattern):
-    match = re.compile(pattern, re.IGNORECASE).match
-    return filter(match, zip_file.namelist())
+    """
+    Make an iterator that returns file names in the zip file that
+    match the given pattern.
+
+    :param zip_file: instance of ZipFile class
+    :param pattern: Callable to filter filename list
+    """
+    matcher = re.compile(pattern, re.IGNORECASE).match
+    return iter(filter(matcher, zip_file.namelist()))
 
 
 def ensure_directory(path, cleaning=False):
+    """
+    Make sure the given file structure is an existing directory.
+    If it does not exist, a new directory will be created.
+
+    :param str path:
+    :param bool cleaning:
+        If "cleaning" is True and the directory already exists,
+        existing content will be deleted.
+    """
     if os.path.exists(path):
         if cleaning:
             shutil.rmtree(path)

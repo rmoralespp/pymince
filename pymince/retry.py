@@ -9,6 +9,11 @@ def retry_if_none(delay=0, tries=1):
 
     :param int delay: seconds delay between attempts. default: 0.
     :param int tries: number of attempts. default: 1
+
+    Usage:
+    @retry_if_none(delay=0, tries=1)
+    def foo():
+        return 1
     """
 
     def decorator(function):

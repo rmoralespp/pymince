@@ -10,6 +10,10 @@ def all_true_values(dictionary, keys):
     """
     Check if an dictionary has all specified keys and
     key-related values as True.
+
+    :param dict dictionary:
+    :param keys: keys sequence
+    :rtype: bool
     """
 
     getter = operator.itemgetter(*keys)
@@ -25,7 +29,10 @@ def key_or_leaf_value(key, dictionary):
     """
     Find leaf key in dictionary.
 
-    Examples:
+    :param str key: Key to find.
+    :param dict dictionary:
+
+    Usage:
     * key_or_leaf_value('a', {}) -> 'a'
     * key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) -> 'c'
     * key_or_leaf_value('a', {'a': 'a'}) -> 'a'
