@@ -45,10 +45,10 @@ class DigestGetter:
     """
     Calculate a digest of a "jsonified" python dictionary.
 
-    Examples:
-    getter = DigestGetter(include_keys=("a",))
-    getter({"a": 1, "b": 1}) # bb6cb5c68df4652941caf652a366f2d8
-    getter({"a": 1}) # bb6cb5c68df4652941caf652a366f2d8
+    Usage:
+    >> getter = DigestGetter(include_keys=("a",))
+    >> getter({"a": 1, "b": 1}) # bb6cb5c68df4652941caf652a366f2d8
+    >> getter({"a": 1}) # bb6cb5c68df4652941caf652a366f2d8
     """
 
     def __init__(self, include_keys=None, exclude_keys=None):

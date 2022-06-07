@@ -10,7 +10,7 @@ def open_on_zip(zip_file, filename):
     """
     Open a file that is inside a zip file.
 
-    Example:
+    Usage:
     -------------------------------------------------
     import zipfile
     with zipfile.ZipFile(zip_filename) as zf:

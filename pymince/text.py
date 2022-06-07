@@ -9,7 +9,7 @@ def remove_decimal_zeros(value, decimal_sep='.', min_decimals=None):
     """
     Removes non-significant decimal zeros from a formatted text number.
 
-    Examples:
+    Usage:
     >> remove_decimal_zeros("2.000100", ".") => "2.0001"
     >> remove_decimal_zeros("2.000000", ".") => "2"
     >> remove_decimal_zeros("2.000000", ".", min_decimals=2) => "2.00"

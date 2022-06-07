@@ -16,11 +16,11 @@ def replacer(iterable, matcher, new_value, count=-1):
     :param int count:
         Maximum number of occurrences to replace.
         -1 (the default value) means replace all occurrences.
+
+    Usage:
+    >> replacer([1,2,3,1,2,3], lambda n: n == 1, None) --> None 2 3 None 2 3
+    >> replacer([1,2,3,1,2,3], lambda n: n == 1, None, count=1) --> None 2 3 1 2 3
     """
-
-    # replacer([1,2,3,1,2,3], lambda n: n == 1, None) --> None 2 3 None 2 3
-    # replacer([1,2,3,1,2,3], lambda n: n == 1, None, count=1) --> None 2 3 1 2 3
-
     changed = 0
     for obj in iterable:
         if matcher(obj) and (count == -1 or changed < count):
@@ -37,9 +37,11 @@ def uniques(iterable, key=None):
     :param iterable:
     :param key: None or "Callable" to compare if iterable items.
     :rtype: bool
+
+    Usage:
+    >> uniques([1,2]) --> True
+    >> uniques([1,1]) --> False
     """
-    # uniques([1,2]) --> True
-    # uniques([1,1]) --> False
     getter = key or (lambda x: x)
     bag = set()
     values = (getter(obj) for obj in iterable) if getter else iter(iterable)
@@ -64,9 +66,10 @@ def grouper(iterable, size):
 
     :param iterable:
     :param int size: maximum size of element groups.
-    """
-    # list(list(g) for g in grouper([1, 2, 3, 4, 5])) == [[1, 2], [3, 4], [5]]
 
+    Usage:
+    >> list(list(g) for g in grouper([1, 2, 3, 4, 5])) == [[1, 2], [3, 4], [5]]
+    """
     slicer = itertools.islice
     values = iter(iterable)
     while True:
@@ -89,9 +92,11 @@ def all_equal(iterable, key=None):
     :param iterable:
     :param key: None or "Callable" to compare if iterable items.
     :rtype: bool
+
+    Usage:
+    >> all_equal([1, 1]) --> True
+    >> all_equal([1, 2]) --> False
     """
-    # all_equal([1, 1]) --> True
-    # all_equal([1, 2]) --> False
     grouped = itertools.groupby(iterable, key=key)
     return next(grouped, True) and not next(grouped, False)
 
@@ -103,9 +108,11 @@ def all_distinct(iterable, key=None):
     :param iterable:
     :param key: None or "Callable" to compare if iterable items.
     :rtype: bool
+
+    Usage:
+    >> all_distinct([1, 1]) --> False
+    >> all_distinct([1, 2]) --> True
     """
-    # all_distinct([1, 1]) --> False
-    # all_distinct([1, 2]) --> True
     grouped = itertools.groupby(iterable, key=key)
     return all(is_only_one(group) for _, group in grouped)
 
@@ -113,11 +120,15 @@ def all_distinct(iterable, key=None):
 def non_empty_or_none(iterator):
     """
     Returns an non-empty iterator or None according to given "iterator".
+
     :param iterator:
     :return: Iterator or None
+
+    Usage:
+    >> non_empty_or_none([]) --> None
+    >> non_empty_or_none([1,2]) --> 1 2
     """
-    # non_empty_or_none([]) --> None
-    # non_empty_or_none([1,2]) --> 1 2
+
     empty = object()
     first = next(iterator, empty)
     return itertools.chain((first,), iterator) if first is not empty else None
@@ -150,11 +161,12 @@ def splitter(iterable, sep, key=None, maxsplit=-1):
         -1 (the default value) means no limit.
 
     :return: Generator with consecutive groups from "iterable" without the delimiter element.
-    """
 
-    # data = ["a", "b", "c", "d", "b", "e"]
-    # list(list(s) for s in splitter(data, "b")) --> [["a"], ["c", "d"], ["e"]]
-    # list(list(s) for s in splitter(data, "b"), maxsplit=1) --> [["a"], ["c", "d", "b", "e"]]
+    Usage:
+    >> data = ["a", "b", "c", "d", "b", "e"]
+    >> list(list(s) for s in splitter(data, "b")) --> [["a"], ["c", "d"], ["e"]]
+    >> list(list(s) for s in splitter(data, "b"), maxsplit=1) --> [["a"], ["c", "d", "b", "e"]]
+    """
 
     def group(objects):
         for obj in objects:
