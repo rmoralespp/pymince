@@ -5,19 +5,21 @@ import collections
 import itertools
 
 
-def replace(iterable, matcher, new_value, count=-1):
+def replacer(iterable, matcher, new_value, count=-1):
     """
-    Returns a generator with all matches of the old "iterable"
+    Make an iterator that returns all occurrences of the old "iterable"
     replaced by "new_value".
 
     :param iterable:
-    :param matcher:
-    :param new_value:
-    :param count:
+    :param matcher: Callable to find occurrences. It is an occurrence if the matcher returns True.
+    :param new_value: Any value to replace found occurrences.
+    :param int count:
         Maximum number of occurrences to replace.
         -1 (the default value) means replace all occurrences.
-    :return: Replacement generator
     """
+
+    # replacer([1,2,3,1,2,3], lambda n: n == 1, None) --> None 2 3 None 2 3
+    # replacer([1,2,3,1,2,3], lambda n: n == 1, None, count=1) --> None 2 3 1 2 3
 
     changed = 0
     for obj in iterable:
@@ -29,6 +31,15 @@ def replace(iterable, matcher, new_value, count=-1):
 
 
 def uniques(iterable, key=None):
+    """
+    Check if all the elements of a key-based iterable are unique.
+
+    :param iterable:
+    :param key: None or "Callable" to compare if iterable items.
+    :rtype: bool
+    """
+    # uniques([1,2]) --> True
+    # uniques([1,1]) --> False
     getter = key or (lambda x: x)
     bag = set()
     values = (getter(obj) for obj in iterable) if getter else iter(iterable)
@@ -37,50 +48,93 @@ def uniques(iterable, key=None):
 
 
 def uniquer(iterable, key=None):
+    """
+    Make an iterator that returns each element from iterable only once
+    respecting the input order.
+    """
     getter = key or (lambda x: x)
     bag = set()
     return (bag.add(check) or val for val in iter(iterable) if (check := getter(val)) not in bag)
 
 
 def grouper(iterable, size):
+    """
+    Make an iterator that returns each element being iterable
+    with "size" as the maximum number of elements.
+
+    :param iterable:
+    :param int size: maximum size of element groups.
+    """
+    # list(list(g) for g in grouper([1, 2, 3, 4, 5])) == [[1, 2], [3, 4], [5]]
+
     slicer = itertools.islice
     values = iter(iterable)
     while True:
         sliced = slicer(values, size)
-        try:
-            obj = next(sliced)
-        except StopIteration:
-            break
+        if non_empty_sliced := non_empty_or_none(sliced):
+            yield non_empty_sliced
         else:
-            yield itertools.chain((obj,), sliced)
+            break
 
 
 def consume(iterator):
+    """Completely consume the given iterator."""
     collections.deque(iterator, maxlen=0)
 
 
 def all_equal(iterable, key=None):
+    """
+    Check if all the elements of a key-based iterable are equals.
+
+    :param iterable:
+    :param key: None or "Callable" to compare if iterable items.
+    :rtype: bool
+    """
+    # all_equal([1, 1]) --> True
+    # all_equal([1, 2]) --> False
     grouped = itertools.groupby(iterable, key=key)
     return next(grouped, True) and not next(grouped, False)
 
 
 def all_distinct(iterable, key=None):
+    """
+    Check if all the elements of a key-based iterable are distinct.
+
+    :param iterable:
+    :param key: None or "Callable" to compare if iterable items.
+    :rtype: bool
+    """
+    # all_distinct([1, 1]) --> False
+    # all_distinct([1, 2]) --> True
     grouped = itertools.groupby(iterable, key=key)
     return all(is_only_one(group) for _, group in grouped)
 
 
-def as_not_empty(iterator):
+def non_empty_or_none(iterator):
+    """
+    Returns an non-empty iterator or None according to given "iterator".
+    :param iterator:
+    :return: Iterator or None
+    """
+    # non_empty_or_none([]) --> None
+    # non_empty_or_none([1,2]) --> 1 2
     empty = object()
     first = next(iterator, empty)
     return itertools.chain((first,), iterator) if first is not empty else None
 
 
 def is_only_one(iterable):
+    """
+    Check if given iterable has only one element.
+
+    :param iterable:
+    :rtype: bool
+    """
     flag = object()
     return next(iterable, flag) is not flag and next(iterable, flag) is flag
 
 
-def split(iterable, sep, key=None, maxsplit=-1):
+def splitter(iterable, sep, key=None, maxsplit=-1):
     """
     Split iterable into groups of iterators according
     to given delimiter.
@@ -98,6 +152,10 @@ def split(iterable, sep, key=None, maxsplit=-1):
     :return: Generator with consecutive groups from "iterable" without the delimiter element.
     """
 
+    # data = ["a", "b", "c", "d", "b", "e"]
+    # list(list(s) for s in splitter(data, "b")) --> [["a"], ["c", "d"], ["e"]]
+    # list(list(s) for s in splitter(data, "b"), maxsplit=1) --> [["a"], ["c", "d", "b", "e"]]
+
     def group(objects):
         for obj in objects:
             if getter(obj) == sep:
@@ -106,7 +164,7 @@ def split(iterable, sep, key=None, maxsplit=-1):
                 yield obj
 
     def recursive(objects, counter):
-        if (iterator := as_not_empty(objects)) and (maxsplit == -1 or counter < maxsplit):
+        if (iterator := non_empty_or_none(objects)) and (maxsplit == -1 or counter < maxsplit):
             counter += 1
             yield group(iterator)
             yield from recursive(iterator, counter)
