@@ -13,6 +13,7 @@ jobs:
         python-version: 3.8
     - name: Generate Report
       run: |
+        pip install build
         pip install pytest coverage
         coverage run --branch -m pytest -Wd --quiet tests/
         coverage report --show-missing --skip-covered
