@@ -14,6 +14,7 @@ jobs:
     - name: Generate Report
       run: |
         pip install coverage
-        coverage run -m unittest
+        coverage run --branch -m pytest -Wd --quiet tests/
+        coverage report --show-missing --skip-covered
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v2
