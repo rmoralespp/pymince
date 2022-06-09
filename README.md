@@ -18,6 +18,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ```
 (env)$ pip install -r requirements.txt   # Ignore this command if it has already been executed
 (env)$ pytest tests/
+(env)# pytest --cov pymince # Tests with coverge
 ```
 
 ### Usage
@@ -158,6 +159,12 @@ Usage:
 consume(iterator)
 
 Completely consume the given iterator.
+
+Usage:
+    from pymince.iterator import consume
+    it = iter([1, 2])
+    consume(it)
+    next(it) # --> StopIteration
 ```
 ##### grouper
 ```
@@ -175,14 +182,21 @@ Usage:
     groups = grouper([1, 2, 3, 4, 5], 2)
     list(list(g) for g in groups) # --> [[1, 2], [3, 4], [5]]
 ```
-##### is_only_one
+##### has_only_one
 ```
-is_only_one(iterable)
+has_only_one(iterable)
 
 Check if given iterable has only one element.
 
 :param iterable:
 :rtype: bool
+
+Usage:
+    from pymince.iterator import has_only_one
+
+    has_only_one([1]) # --> True
+    has_only_one([1, 2]) # --> False
+    has_only_one([]) # --> False
 ```
 ##### non_empty_or_none
 ```
@@ -254,6 +268,11 @@ uniquer(iterable, key=None)
 
 Make an iterator that returns each element from iterable only once
 respecting the input order.
+
+Usage:
+    from pymince.iterator import uniquer
+
+    uniquer([1, 2, 3, 2]) # --> 1 2 3
 ```
 ##### uniques
 ```

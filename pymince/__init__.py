@@ -1,2 +1,2 @@
 __title__ = 'pymince'
-__version__ = '1.0.6'
+__version__ = '1.0.7'
