@@ -1,21 +1,18 @@
-name: CodeCov
+name: Codecov
 on: [push, pull_request]
 jobs:
   run:
     runs-on: ubuntu-latest
-    env:
-      OS: ubuntu-latest
-      PYTHON: '3.8'
     steps:
-    - name: Setup Python
-      uses: actions/setup-python@master
-      with:
-        python-version: 3.8
-    - name: Generate Report
-      run: |
-        pip install build
-        pip install pytest coverage
-        coverage run --branch -m pytest -Wd --quiet tests/
-        coverage report --show-missing --skip-covered
-    - name: Upload Coverage to Codecov
-      uses: codecov/codecov-action@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests and collect coverage
+        run: pytest --cov pymince
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3

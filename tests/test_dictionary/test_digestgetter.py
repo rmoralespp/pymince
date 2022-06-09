@@ -54,3 +54,8 @@ def test_digest_exclude(payload):
     expected = '55b0acefacd6b0614cb5e4ec8506db0a'
     res = pymince.dictionary.DigestGetter(exclude_keys=("text",))(payload)
     assert res == expected
+
+
+def test_digest_with_value_error():
+    with pytest.raises(ValueError):
+        pymince.dictionary.DigestGetter(include_keys=("a",), exclude_keys=("a",))

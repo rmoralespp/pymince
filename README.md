@@ -3,6 +3,7 @@
 [![CI](https://github.com/rmoralespp/pymince/workflows/CI/badge.svg)](https://github.com/rmoralespp/pymince/actions?query=event%3Arelease+workflow%3ACI)
 [![pypi](https://img.shields.io/pypi/v/pymince.svg)](https://pypi.python.org/pypi/pymince)
 [![versions](https://img.shields.io/pypi/pyversions/pymince.svg)](https://github.com/rmoralespp/pymince)
+[![codecov](https://codecov.io/gh/pyminnce/branch/main/graph/badge.svg)](https://codecov.io/gh/pymince)
 
 
 ### About

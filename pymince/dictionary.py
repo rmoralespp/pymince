@@ -101,7 +101,8 @@ class DigestGetter:
                     return obj.value
                 elif isinstance(obj, set):
                     return sorted(obj)
-                return super().default(obj)
+                else:
+                    return super().default(obj)
 
         return Encoder(
             separators=(',', ':'),
