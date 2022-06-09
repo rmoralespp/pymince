@@ -13,7 +13,7 @@ jobs:
         python-version: 3.8
     - name: Generate Report
       run: |
-        pip install coverage
+        pip install pytest coverage
         coverage run --branch -m pytest -Wd --quiet tests/
         coverage report --show-missing --skip-covered
     - name: Upload Coverage to Codecov
