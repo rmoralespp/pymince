@@ -7,10 +7,6 @@ jobs:
       OS: ubuntu-latest
       PYTHON: '3.8'
     steps:
-    - uses: checkout@v2
-      with:
-        fetch-depth: ‘2’
-
     - name: Setup Python
       uses: actions/setup-python@master
       with:
