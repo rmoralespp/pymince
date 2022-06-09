@@ -37,7 +37,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / codecov reports
+# Unit test / codecov.yml reports
 htmlcov/
 .tox/
 .nox/
