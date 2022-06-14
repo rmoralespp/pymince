@@ -5,8 +5,21 @@ Useful functions for working with strings.
 import functools
 import re
 
-remove_number_commas = functools.partial(re.compile("(?<=\\d),(?=\\d{3})").sub, "")
-remove_number_commas.__doc__ = """Removes commas from a formatted text number having commas as group separator."""
+
+def remove_number_commas(string):
+    """
+    Removes commas from a formatted text number having commas
+    as group separator.
+
+    :param str string:
+    :rtype str
+
+    Usage:
+        from pymince.text import remove_number_commas
+        remove_number_commas('1,234,567.8') # --> '1234567.8'
+    """
+    sub = functools.partial(re.compile("(?<=\\d),(?=\\d{3})").sub, "")
+    return sub(string)
 
 
 def replace(value, old_values, new_value, count=-1):

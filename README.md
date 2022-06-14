@@ -291,6 +291,13 @@ Usage:
     uniques([1,1]) # --> False
 ```
 #### json.py 
+##### dump
+```
+dump(obj, fp, *, skipkeys=False, ensure_ascii=False, check_circular=True, allow_nan=True, cls=None, indent=None, separators=None, default=None, sort_keys=False, **kw)
+
+partial(func, *args, **keywords) - new function with partial application
+of the given arguments and keywords.
+```
 ##### dump_into
 ```
 dump_into(filename, payload, indent=2)
@@ -301,6 +308,13 @@ Usage:
     from pymince.json import dump_into
 
     dump_into("foo.json", {"key": "value"})
+```
+##### dumps
+```
+dumps(obj, *, skipkeys=False, ensure_ascii=False, check_circular=True, allow_nan=True, cls=None, indent=None, separators=None, default=None, sort_keys=False, **kw)
+
+partial(func, *args, **keywords) - new function with partial application
+of the given arguments and keywords.
 ```
 ##### load_from
 ```
@@ -369,6 +383,20 @@ Usage:
     remove_decimal_zeros("2.000100", ".") # --> "2.0001"
     remove_decimal_zeros("2.000000", ".") # --> "2"
     remove_decimal_zeros("2.000000", ".", min_decimals=2) # --> "2.00"
+```
+##### remove_number_commas
+```
+remove_number_commas(string)
+
+Removes commas from a formatted text number having commas
+as group separator.
+
+:param str string:
+:rtype str
+
+Usage:
+    from pymince.text import remove_number_commas
+    remove_number_commas('1,234,567.8') # --> '1234567.8'
 ```
 ##### replace
 ```
