@@ -1,3 +1,7 @@
+"""
+Useful functions that use dictionaries
+"""
+
 import datetime
 import enum
 import functools

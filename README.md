@@ -23,7 +23,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 
 ### Usage
 
-#### dictionary.py
+#### dictionary.py *Useful functions that use dictionaries*
 ##### DigestGetter
 ```
 DigestGetter(include_keys=None, exclude_keys=None)
@@ -75,7 +75,7 @@ Usage:
     key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) # --> 'c'
     key_or_leaf_value('a', {'a': 'a'}) # --> 'a'
 ```
-#### file.py
+#### file.py 
 ##### ensure_directory
 ```
 ensure_directory(path, cleaning=False)
@@ -121,7 +121,7 @@ with zipfile.ZipFile(zip_filename) as zf:
         foo2_string = fd2.read()
 -------------------------------------------------
 ```
-#### iterator.py
+#### iterator.py *Functions that use iterators for efficient loops*
 ##### all_distinct
 ```
 all_distinct(iterable, key=None)
@@ -290,7 +290,7 @@ Usage:
     uniques([1,2]) # --> True
     uniques([1,1]) # --> False
 ```
-#### json.py
+#### json.py 
 ##### dump_into
 ```
 dump_into(filename, payload, indent=2)
@@ -313,7 +313,7 @@ Usage:
 
     dictionary = load_from("foo.json")
 ```
-#### logging.py
+#### logging.py 
 ##### timed_block
 ```
 timed_block(name)
@@ -331,7 +331,7 @@ Usage:
     INFO:root:Generating [sleeping]
     DEBUG:root:Finished [sleeping in 1.002 ms.]
 ```
-#### retry.py
+#### retry.py 
 ##### retry_if_none
 ```
 retry_if_none(delay=0, tries=1)
@@ -347,7 +347,7 @@ Usage:
     def foo():
         return 1
 ```
-#### std.py
+#### std.py 
 ##### bind_json_std
 ```
 bind_json_std(encoding='utf-8')
@@ -355,6 +355,40 @@ bind_json_std(encoding='utf-8')
 Decorator to call "function" passing the json read from
 "stdin" in the keyword parameter "data" and dump the json that the callback returns
 to "stdout".
+```
+#### text.py *Useful functions for working with strings.*
+##### remove_decimal_zeros
+```
+remove_decimal_zeros(value, decimal_sep='.', min_decimals=None)
+
+Removes non-significant decimal zeros from a formatted text number.
+
+Usage:
+    from pymince.text import remove_decimal_zeros
+
+    remove_decimal_zeros("2.000100", ".") # --> "2.0001"
+    remove_decimal_zeros("2.000000", ".") # --> "2"
+    remove_decimal_zeros("2.000000", ".", min_decimals=2) # --> "2.00"
+```
+##### replace
+```
+replace(value, old_values, new_value, count=-1)
+
+Replace matching values ​​in the given string with new_value.
+
+:param str value:
+:param old_values: iterable of values ​​to replace.
+:param str new_value: replacement value.
+:param int count:
+    Maximum number of occurrences to replace.
+    -1 (the default value) means replace all occurrences.
+:rtype: str
+
+Usage:
+    from pymince.text import replace
+
+    replace("No, woman, no cry", [","], ";") # --> "No; woman; no cry"
+    replace("No, woman, no cry", [","], ";", count=1) # --> "No; woman, no cry"
 ```
 ### Upgrade README.md
 

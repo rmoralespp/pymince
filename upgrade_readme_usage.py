@@ -2,6 +2,7 @@ import inspect
 import logging
 import os
 import re
+import itertools
 
 import pymince.dictionary
 import pymince.file
@@ -19,14 +20,19 @@ modules = (
     pymince.json,
     pymince.logging,
     pymince.retry,
-    pymince.std)
+    pymince.std,
+    pymince.text,
+)
 
+
+def cleandoc(obj):
+    doctring = obj.__doc__
+    doctring = inspect.cleandoc(doctring) if doctring else ''
+    return doctring
 
 def member2markdown(member):
     name = member.__name__
-
-    doctring = member.__doc__
-    doctring = inspect.cleandoc(doctring) if doctring else ''
+    doctring = cleandoc(member)
     lines = (
         f"##### {name}",
         "```",
@@ -44,9 +50,11 @@ def module2markdown(module):
             yield member2markdown(member)
 
     module_name = os.path.basename(module.__file__)
+    docstring = cleandoc(module)
+    docstring = docstring and f"*{docstring}*"
     matcher = lambda n: inspect.isclass(n) or inspect.isfunction(n)
 
-    lines = (f"\n#### {module_name}",) + tuple(members2markdown())
+    lines = itertools.chain((f"\n#### {module_name} {docstring}",), members2markdown())
     return "\n".join(lines)
 
 
