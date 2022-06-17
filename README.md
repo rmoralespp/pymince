@@ -432,7 +432,7 @@ truth to True or False.
 :param str value: value to convert.
 :param bool ignorecase: Uppercase/lowercase letters of given "value" are ignored.
 
-:raise: ValueError if "value" is anything else.
+:raise: "ValueError" if "value" is anything else.
 :rtype: bool
 
 Usage:
@@ -446,6 +446,34 @@ Usage:
 
     string2bool("FALSE") # --> ValueError
     string2bool("FALSE", ignorecase=True) # --> False
+```
+##### string2year
+```
+string2year(value, gte=None, lte=None, shift=None)
+
+Function to convert a string year representation to integer year.
+
+:param str value: Value to convert.
+:param Optional[int] gte: if it is specified is required that: year >= gte
+:param Optional[int] lte: if it is specified is required that: year <= lte
+:param Optional[int] shift: use a two-digit year on shift
+
+:raise: "ValueError" if "value" cannot be converted.
+:rtype: int
+
+Usage:
+    from pymince.text import string2year
+
+    string2year("53", shift=None) # --> 2053
+    string2year("53", shift=1953) # --> 1953
+    string2year("52", shift=1953) # --> 2052
+    string2year("54", shift=1953) # --> 1954
+
+    string2year("1954") # --> 1954
+
+    string2year("123") # --> ValueError
+    string2year("1955", gte=1956) # --> ValueError
+    string2year("1955", lte=1954) # --> ValueError
 ```
 ### Upgrade README.md
 
