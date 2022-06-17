@@ -85,8 +85,20 @@ If it does not exist, a new directory will be created.
 
 :param str path:
 :param bool cleaning:
-    If "cleaning" is True and the directory already exists,
-    existing content will be deleted.
+    If "cleaning" is True and a directory already exists,
+    this directory and the files contained in it will be deleted.
+
+    If "cleaning" is True and a file already exists,
+    this file will be deleted.
+```
+##### is_empty_directory
+```
+is_empty_directory(path)
+
+Function to check if the given path is an empty directory.
+
+:param str path:
+:rtype: bool
 ```
 ##### match_on_zip
 ```
@@ -94,9 +106,15 @@ match_on_zip(zip_file, pattern)
 
 Make an iterator that returns file names in the zip file that
 match the given pattern.
+Uppercase/lowercase letters are ignored.
 
 :param zip_file: instance of ZipFile class
-:param pattern: Callable to filter filename list
+:param pattern: "re.Pattern" to filter filename list
+:return: Iterator with the filenames found
+
+Usage:
+    import pymince.file
+    pymince.file.match_on_zip(zip_file, "^file") # --> file1.log file2.txt
 ```
 ##### open_on_zip
 ```
@@ -291,13 +309,6 @@ Usage:
     uniques([1,1]) # --> False
 ```
 #### json.py 
-##### dump
-```
-dump(obj, fp, *, skipkeys=False, ensure_ascii=False, check_circular=True, allow_nan=True, cls=None, indent=None, separators=None, default=None, sort_keys=False, **kw)
-
-partial(func, *args, **keywords) - new function with partial application
-of the given arguments and keywords.
-```
 ##### dump_into
 ```
 dump_into(filename, payload, indent=2)
@@ -308,13 +319,6 @@ Usage:
     from pymince.json import dump_into
 
     dump_into("foo.json", {"key": "value"})
-```
-##### dumps
-```
-dumps(obj, *, skipkeys=False, ensure_ascii=False, check_circular=True, allow_nan=True, cls=None, indent=None, separators=None, default=None, sort_keys=False, **kw)
-
-partial(func, *args, **keywords) - new function with partial application
-of the given arguments and keywords.
 ```
 ##### load_from
 ```

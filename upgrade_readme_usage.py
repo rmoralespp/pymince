@@ -1,4 +1,3 @@
-import functools
 import inspect
 import itertools
 import logging
@@ -33,10 +32,7 @@ def cleandoc(obj):
 
 
 def member2markdown(member):
-    if isinstance(member, functools.partial):
-        name = member.func.__name__
-    else:
-        name = member.__name__
+    name = member.__name__
     doctring = cleandoc(member)
 
     lines = (
@@ -52,13 +48,13 @@ def member2markdown(member):
 
 def module2markdown(module):
     def members2markdown():
-        for name, member in inspect.getmembers(module, matcher):
+        for name, member in inspect.getmembers(module, filtering):
             yield member2markdown(member)
 
     module_name = os.path.basename(module.__file__)
     docstring = cleandoc(module)
     docstring = docstring and f"*{docstring}*"
-    matcher = lambda n: inspect.isclass(n) or inspect.isfunction(n) or isinstance(n, functools.partial)
+    filtering = lambda n: inspect.isclass(n) or inspect.isfunction(n)
 
     lines = itertools.chain((f"\n#### {module_name} {docstring}",), members2markdown())
     return "\n".join(lines)

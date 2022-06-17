@@ -35,9 +35,16 @@ def match_on_zip(zip_file, pattern):
     """
     Make an iterator that returns file names in the zip file that
     match the given pattern.
+    Uppercase/lowercase letters are ignored.
 
     :param zip_file: instance of ZipFile class
-    :param pattern: Callable to filter filename list
+    :param pattern: "re.Pattern" to filter filename list
+    :return: Iterator with the filenames found
+
+    Usage:
+        import pymince.file
+        pymince.file.match_on_zip(zip_file, "^file") # --> file1.log file2.txt
+
     """
     matcher = re.compile(pattern, re.IGNORECASE).match
     return iter(filter(matcher, zip_file.namelist()))
@@ -50,12 +57,30 @@ def ensure_directory(path, cleaning=False):
 
     :param str path:
     :param bool cleaning:
-        If "cleaning" is True and the directory already exists,
-        existing content will be deleted.
+        If "cleaning" is True and a directory already exists,
+        this directory and the files contained in it will be deleted.
+
+        If "cleaning" is True and a file already exists,
+        this file will be deleted.
     """
     if os.path.exists(path):
         if cleaning:
-            shutil.rmtree(path)
+            if os.path.isdir(path):
+                # Delete a directory and the files contained in it.
+                shutil.rmtree(path)
+            else:
+                os.remove(path)  # Removes the specified file.
             os.makedirs(path)
     else:
         os.makedirs(path)
+
+
+def is_empty_directory(path):
+    """
+    Function to check if the given path is an empty directory.
+
+    :param str path:
+    :rtype: bool
+    """
+
+    return os.path.exists(path) and not os.path.isfile(path) and not os.listdir(path)
