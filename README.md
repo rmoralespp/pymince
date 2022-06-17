@@ -9,7 +9,6 @@
 ### About
 pymince is a collection of useful tools that are "missing" from the Python standard library.
 
-Process finished with exit code 0
 
 ### Installation (via pip)
 
