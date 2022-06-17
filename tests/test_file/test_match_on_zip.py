@@ -19,4 +19,4 @@ def test_match_on_zip():
         zip_path = shutil.make_archive(tmpdir, "zip", root_dir=tmpdir)
         with zipfile.ZipFile(zip_path) as zp:
             result = pymince.file.match_on_zip(zp, "^file")
-            assert tuple(result) == (basename1, basename2)
+            assert sorted(result) == sorted((basename1, basename2))
