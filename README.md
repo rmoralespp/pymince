@@ -26,8 +26,8 @@ Process finished with exit code 0
 ### Usage
 | dictionary.py | file.py | iterator.py | json.py | logging.py | retry.py | std.py | text.py |
 | -------------: | -------: | -----------: | -------: | ----------: | --------: | ------: | -------: |
-| [DigestGetter](#DigestGetter) | [ensure_directory](#ensure_directory) | [all_distinct](#all_distinct) | [dump_into](#dump_into) | [timed_block](#timed_block) | [retry_if_none](#retry_if_none) | [bind_json_std](#bind_json_std) | [remove_decimal_zeros](#remove_decimal_zeros) |
-| [all_true_values](#all_true_values) | [is_empty_directory](#is_empty_directory) | [all_equal](#all_equal) | [load_from](#load_from) |  |  |  | [remove_number_commas](#remove_number_commas) |
+| [DigestGetter](#DigestGetter) | [ensure_directory](#ensure_directory) | [all_distinct](#all_distinct) | [dump_into](#dump_into) | [StructuredFormatter](#StructuredFormatter) | [retry_if_none](#retry_if_none) | [bind_json_std](#bind_json_std) | [remove_decimal_zeros](#remove_decimal_zeros) |
+| [all_true_values](#all_true_values) | [is_empty_directory](#is_empty_directory) | [all_equal](#all_equal) | [load_from](#load_from) | [timed_block](#timed_block) |  |  | [remove_number_commas](#remove_number_commas) |
 | [key_or_leaf_value](#key_or_leaf_value) | [match_on_zip](#match_on_zip) | [consume](#consume) |  |  |  |  | [replace](#replace) |
 |  | [open_on_zip](#open_on_zip) | [grouper](#grouper) |  |  |  |  | [string2bool](#string2bool) |
 |  |  | [has_only_one](#has_only_one) |  |  |  |  | [string2year](#string2year) |
@@ -346,9 +346,31 @@ Usage:
     dictionary = load_from("foo.json")
 ```
 #### logging.py 
+##### StructuredFormatter
+```
+StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True)
+
+Implementation of JSON structured logging that works
+for most handlers.
+
+Usage in runtime
+    from pymince.logging in StructuredFormatter
+
+    # Config
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    formatter = StructuredFormatter('%(message)s')
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
+    # Usage
+    logger.debug('', {"key": "value", "numb": 1, "bool": True, "nested": [1, 2, 3]})
+```
 ##### timed_block
 ```
-timed_block(name)
+timed_block(name, logger=None)
 
 Logger the duration of the handled context.
 

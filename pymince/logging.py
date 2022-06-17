@@ -1,10 +1,11 @@
 import contextlib
+import json
 import logging
 import time
 
 
 @contextlib.contextmanager
-def timed_block(name):
+def timed_block(name, logger=None):
     """
     Logger the duration of the handled context.
 
@@ -19,9 +20,63 @@ def timed_block(name):
         INFO:root:Generating [sleeping]
         DEBUG:root:Finished [sleeping in 1.002 ms.]
     """
-    logging.info('Generating [%s]', name)
+
+    on_logger = logger or logging.getLogger()
+    on_logger.info('Generating [%s]', name)
     t0 = time.time()
     try:
         yield None
     finally:
-        logging.debug('Finished [%s in %.3f ms.]', name, time.time() - t0)
+        on_logger.debug('Finished [%s in %.3f ms.]', name, time.time() - t0)
+
+
+class StructuredFormatter(logging.Formatter):
+    """
+    Implementation of JSON structured logging that works
+    for most handlers.
+
+    Usage in runtime
+        from pymince.logging in StructuredFormatter
+
+        # Config
+        logger = logging.getLogger()
+        logger.setLevel(logging.DEBUG)
+        formatter = StructuredFormatter('%(message)s')
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setLevel(logging.DEBUG)
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+
+        # Usage
+        logger.debug('', {"key": "value", "numb": 1, "bool": True, "nested": [1, 2, 3]})
+    """
+
+    json_dumper = json.JSONEncoder(separators=(',', ':')).encode  # Most compact form
+
+    def format(self, record: logging.LogRecord) -> str:
+        """
+        Overrides parent format function.
+
+        :param record: logging.LogRecord object
+        :return: JSON string
+        """
+
+        payload = self.make_structured_dict(record)
+        return self.json_dumper(payload)
+
+    def make_structured_dict(self, record: logging.LogRecord) -> dict:
+        """
+        Create the dictionary that requires (json_dumper).
+
+        :param record: logging.LogRecord object
+        :return: dict
+        """
+
+        if not isinstance(record.args, dict):
+            raise TypeError('Invalid logger arguments.')
+
+        return {
+            'timestamp': self.formatTime(record, self.datefmt),
+            'level': record.levelname,
+            'payload': record.args
+        }
