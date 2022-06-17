@@ -36,7 +36,9 @@ class StructuredFormatter(logging.Formatter):
     for most handlers.
 
     Usage in runtime
-        from pymince.logging in StructuredFormatter
+        import logging
+        import sys
+        from pymince.logging import StructuredFormatter
 
         # Config
         logger = logging.getLogger()
@@ -48,7 +50,12 @@ class StructuredFormatter(logging.Formatter):
         logger.addHandler(handler)
 
         # Usage
-        logger.debug('', {"key": "value", "numb": 1, "bool": True, "nested": [1, 2, 3]})
+        logger.debug('', {"string": "value1", "number": 1})
+        logger.debug('', {"string": "value2", "number": 2})
+
+        >>Output<<
+        {"timestamp":"2022-06-17 18:37:48,789","level":"DEBUG","payload":{"string":"value1","number":1}}
+        {"timestamp":"2022-06-17 18:37:48,789","level":"DEBUG","payload":{"string":"value2","number":2}}
     """
 
     json_dumper = json.JSONEncoder(separators=(',', ':')).encode  # Most compact form

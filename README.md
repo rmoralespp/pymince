@@ -19,7 +19,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ```
 (env)$ pip install -r requirements.txt   # Ignore this command if it has already been executed
 (env)$ pytest tests/
-(env)# pytest --cov pymince # Tests with coverge
+(env)$ pytest --cov pymince # Tests with coverge
 ```
 
 ### Usage
@@ -353,7 +353,9 @@ Implementation of JSON structured logging that works
 for most handlers.
 
 Usage in runtime
-    from pymince.logging in StructuredFormatter
+    import logging
+    import sys
+    from pymince.logging import StructuredFormatter
 
     # Config
     logger = logging.getLogger()
@@ -365,7 +367,12 @@ Usage in runtime
     logger.addHandler(handler)
 
     # Usage
-    logger.debug('', {"key": "value", "numb": 1, "bool": True, "nested": [1, 2, 3]})
+    logger.debug('', {"string": "value1", "number": 1})
+    logger.debug('', {"string": "value2", "number": 2})
+
+    >>Output<<
+    {"timestamp":"2022-06-17 18:37:48,789","level":"DEBUG","payload":{"string":"value1","number":1}}
+    {"timestamp":"2022-06-17 18:37:48,789","level":"DEBUG","payload":{"string":"value2","number":2}}
 ```
 ##### timed_block
 ```
@@ -408,6 +415,14 @@ bind_json_std(encoding='utf-8')
 Decorator to call "function" passing the json read from
 "stdin" in the keyword parameter "data" and dump the json that the callback returns
 to "stdout".
+
+Usage:
+from pymince.std import bind_json_std
+
+@bind_json_std()
+def foo(data=None):
+    print("Processing data from sys.stdin", data)
+    return data
 ```
 #### text.py *Useful functions for working with strings.*
 ##### remove_decimal_zeros
