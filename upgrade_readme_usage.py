@@ -36,7 +36,7 @@ def member2markdown(member):
     doctring = cleandoc(member)
 
     lines = (
-        f"##### {name}",
+        f"##### {member.__name__}",
         "```",
         f"{name}{inspect.signature(member)}",
         "",
@@ -46,18 +46,46 @@ def member2markdown(member):
     return "\n".join(lines)
 
 
+def getmembers(module):
+    filtering = lambda n: inspect.isclass(n) or inspect.isfunction(n)
+    yield from inspect.getmembers(module, filtering)
+
+
 def module2markdown(module):
     def members2markdown():
-        for name, member in inspect.getmembers(module, filtering):
+        for name, member in getmembers(module):
             yield member2markdown(member)
 
     module_name = os.path.basename(module.__file__)
     docstring = cleandoc(module)
     docstring = docstring and f"*{docstring}*"
-    filtering = lambda n: inspect.isclass(n) or inspect.isfunction(n)
 
     lines = itertools.chain((f"\n#### {module_name} {docstring}",), members2markdown())
     return "\n".join(lines)
+
+
+def make_table():
+    """
+    | dictionary | file | iterator |
+    | ---------- | ---- | -------  |
+    | a | b | b  |
+    | d | e | f  |
+    """
+
+    table = []
+    for module in modules:
+        row = []
+        header = os.path.basename(module.__file__)
+        border = "-" * len(header) + ":"
+        row.extend((header, border))
+        for _, member in getmembers(module):
+            name = member.__name__
+            link = f"[{name}](#{name})"
+            row.append(link)
+        table.append(row)
+    table = itertools.zip_longest(*table, fillvalue="")
+    table = "\n".join("| " + " | ".join(row) + " |" for row in table)
+    return table
 
 
 if __name__ == "__main__":
@@ -66,7 +94,7 @@ if __name__ == "__main__":
 
     pattern = re.compile(r"### Usage.*(?=###)", flags=re.DOTALL)
     content = "".join(module2markdown(module) for module in modules)
-    content = "### Usage\n" + content + "\n"
+    content = "### Usage\n" + make_table() + "\n" + content + "\n"
     with open(readme_path, mode="r", encoding="utf-8") as f:
         old_string = f.read()
         new_string = pattern.sub(content, old_string)

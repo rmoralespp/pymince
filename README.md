@@ -9,6 +9,8 @@
 ### About
 pymince is a collection of useful tools that are "missing" from the Python standard library.
 
+Process finished with exit code 0
+
 ### Installation (via pip)
 
 ```pip install pymince```
@@ -22,6 +24,18 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ```
 
 ### Usage
+| dictionary.py | file.py | iterator.py | json.py | logging.py | retry.py | std.py | text.py |
+| -------------: | -------: | -----------: | -------: | ----------: | --------: | ------: | -------: |
+| [DigestGetter](#DigestGetter) | [ensure_directory](#ensure_directory) | [all_distinct](#all_distinct) | [dump_into](#dump_into) | [timed_block](#timed_block) | [retry_if_none](#retry_if_none) | [bind_json_std](#bind_json_std) | [remove_decimal_zeros](#remove_decimal_zeros) |
+| [all_true_values](#all_true_values) | [is_empty_directory](#is_empty_directory) | [all_equal](#all_equal) | [load_from](#load_from) |  |  |  | [remove_number_commas](#remove_number_commas) |
+| [key_or_leaf_value](#key_or_leaf_value) | [match_on_zip](#match_on_zip) | [consume](#consume) |  |  |  |  | [replace](#replace) |
+|  | [open_on_zip](#open_on_zip) | [grouper](#grouper) |  |  |  |  | [string2bool](#string2bool) |
+|  |  | [has_only_one](#has_only_one) |  |  |  |  | [string2year](#string2year) |
+|  |  | [non_empty_or_none](#non_empty_or_none) |  |  |  |  |  |
+|  |  | [replacer](#replacer) |  |  |  |  |  |
+|  |  | [splitter](#splitter) |  |  |  |  |  |
+|  |  | [uniquer](#uniquer) |  |  |  |  |  |
+|  |  | [uniques](#uniques) |  |  |  |  |  |
 
 #### dictionary.py *Useful functions that use dictionaries*
 ##### DigestGetter
