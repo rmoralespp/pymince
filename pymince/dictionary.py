@@ -8,6 +8,7 @@ import functools
 import hashlib
 import json
 import operator
+import types
 
 
 def all_true_values(dictionary, keys):
@@ -19,7 +20,7 @@ def all_true_values(dictionary, keys):
     :param keys: keys sequence
     :rtype: bool
 
-    Usage:
+    Examples:
     from pymince.dictionary import all_true_values
 
     all_true_values({"a": 1, "b": 2}, ("a", "b")) # --> True
@@ -43,7 +44,7 @@ def key_or_leaf_value(key, dictionary):
     :param str key: Key to find.
     :param dict dictionary:
 
-    Usage:
+    Examples:
         from pymince.dictionary import key_or_leaf_value
 
         key_or_leaf_value('a', {}) # --> 'a'
@@ -69,7 +70,7 @@ class DigestGetter:
     :param exclude_keys: dictionary keys to include
     :rtype: str
 
-    Usage:
+    Examples:
         from pymince.dictionary import DigestGetter
 
         getter = DigestGetter(include_keys=("a",))
@@ -124,3 +125,18 @@ class DigestGetter:
         else:
             data = dictionary
         return self.stringify(data)
+
+
+def frozendict(*args, **kwargs):
+    """
+    Returns a "MappingProxyType" from a dictionary built according to given parameters.
+    Add immutability only on a first level.
+
+    Examples:
+        from pymince.dictionary import frozendict
+
+        my_dict = frozendict(a=1, b=2)
+        my_dict["a"] # --> 1
+        list(my_dict.items())  # --> [("a", 1), ("b", 2)]
+    """
+    return types.MappingProxyType(dict(*args, **kwargs))

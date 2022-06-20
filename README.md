@@ -27,8 +27,8 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | -------------: | -------: | -----------: | -------: | ----------: | --------: | ------: | -------: |
 | [DigestGetter](#DigestGetter) | [ensure_directory](#ensure_directory) | [all_distinct](#all_distinct) | [dump_into](#dump_into) | [StructuredFormatter](#StructuredFormatter) | [retry_if_none](#retry_if_none) | [bind_json_std](#bind_json_std) | [remove_decimal_zeros](#remove_decimal_zeros) |
 | [all_true_values](#all_true_values) | [is_empty_directory](#is_empty_directory) | [all_equal](#all_equal) | [load_from](#load_from) | [timed_block](#timed_block) |  |  | [remove_number_commas](#remove_number_commas) |
-| [key_or_leaf_value](#key_or_leaf_value) | [match_on_zip](#match_on_zip) | [consume](#consume) |  |  |  |  | [replace](#replace) |
-|  | [open_on_zip](#open_on_zip) | [grouper](#grouper) |  |  |  |  | [string2bool](#string2bool) |
+| [frozendict](#frozendict) | [match_on_zip](#match_on_zip) | [consume](#consume) |  |  |  |  | [replace](#replace) |
+| [key_or_leaf_value](#key_or_leaf_value) | [open_on_zip](#open_on_zip) | [grouper](#grouper) |  |  |  |  | [string2bool](#string2bool) |
 |  |  | [has_only_one](#has_only_one) |  |  |  |  | [string2year](#string2year) |
 |  |  | [non_empty_or_none](#non_empty_or_none) |  |  |  |  |  |
 |  |  | [replacer](#replacer) |  |  |  |  |  |
@@ -47,7 +47,7 @@ Calculate a digest of a "jsonified" python dictionary.
 :param exclude_keys: dictionary keys to include
 :rtype: str
 
-Usage:
+Examples:
     from pymince.dictionary import DigestGetter
 
     getter = DigestGetter(include_keys=("a",))
@@ -65,12 +65,26 @@ key-related values as True.
 :param keys: keys sequence
 :rtype: bool
 
-Usage:
+Examples:
 from pymince.dictionary import all_true_values
 
 all_true_values({"a": 1, "b": 2}, ("a", "b")) # --> True
 all_true_values({"a": 1, "b": 0}, ("a", "b")) # --> False
 all_true_values({"a": 1, "b": 0}, ("a",)) # --> True
+```
+##### frozendict
+```
+frozendict(*args, **kwargs)
+
+Returns a "MappingProxyType" from a dictionary built according to given parameters.
+Add immutability only on a first level.
+
+Examples:
+    from pymince.dictionary import frozendict
+
+    my_dict = frozendict(a=1, b=2)
+    my_dict["a"] # --> 1
+    list(my_dict.items())  # --> [("a", 1), ("b", 2)]
 ```
 ##### key_or_leaf_value
 ```
@@ -81,7 +95,7 @@ Find leaf key in dictionary.
 :param str key: Key to find.
 :param dict dictionary:
 
-Usage:
+Examples:
     from pymince.dictionary import key_or_leaf_value
 
     key_or_leaf_value('a', {}) # --> 'a'
@@ -125,7 +139,7 @@ Uppercase/lowercase letters are ignored.
 :param pattern: "re.Pattern" to filter filename list
 :return: Iterator with the filenames found
 
-Usage:
+Examples:
     import pymince.file
     pymince.file.match_on_zip(zip_file, "^file") # --> file1.log file2.txt
 ```
@@ -138,7 +152,7 @@ Open a file that is inside a zip file.
 :param zip_file: instance of ZipFile class
 :param str filename:
 
-Usage:
+Examples:
 -------------------------------------------------
 import zipfile
 from pymince.file import open_on_zip
@@ -163,7 +177,7 @@ Check if all the elements of a key-based iterable are distinct.
 :param key: None or "Callable" to compare if iterable items.
 :rtype: bool
 
-Usage:
+Examples:
     from pymince.iterator import all_distinct
 
     all_distinct([1, 1]) # --> False
@@ -179,7 +193,7 @@ Check if all the elements of a key-based iterable are equals.
 :param key: None or "Callable" to compare if iterable items.
 :rtype: bool
 
-Usage:
+Examples:
     from pymince.iterator import all_equal
 
     all_equal([1, 1]) # --> True
@@ -191,7 +205,7 @@ consume(iterator)
 
 Completely consume the given iterator.
 
-Usage:
+Examples:
     from pymince.iterator import consume
     it = iter([1, 2])
     consume(it)
@@ -207,7 +221,7 @@ with "size" as the maximum number of elements.
 :param iterable:
 :param int size: maximum size of element groups.
 
-Usage:
+Examples:
     from pymince.iterator import grouper
 
     groups = grouper([1, 2, 3, 4, 5], 2)
@@ -222,7 +236,7 @@ Check if given iterable has only one element.
 :param iterable:
 :rtype: bool
 
-Usage:
+Examples:
     from pymince.iterator import has_only_one
 
     has_only_one([1]) # --> True
@@ -238,7 +252,7 @@ Returns an non-empty iterator or None according to given "iterator".
 :param iterator:
 :return: Iterator or None
 
-Usage:
+Examples:
     from pymince.iterator import non_empty_or_none
 
     non_empty_or_none([]) # --> None
@@ -258,7 +272,7 @@ replaced by "new_value".
     Maximum number of occurrences to replace.
     -1 (the default value) means replace all occurrences.
 
-Usage:
+Examples:
     from pymince.iterator import replacer
 
     replacer([1,2,3,1,2,3], lambda n: n == 1, None) # --> None 2 3 None 2 3
@@ -283,7 +297,7 @@ to given delimiter.
 
 :return: Generator with consecutive groups from "iterable" without the delimiter element.
 
-Usage:
+Examples:
     from pymince.iterator import splitter
 
     data = ["a", "b", "c", "d", "b", "e"]
@@ -300,7 +314,7 @@ uniquer(iterable, key=None)
 Make an iterator that returns each element from iterable only once
 respecting the input order.
 
-Usage:
+Examples:
     from pymince.iterator import uniquer
 
     uniquer([1, 2, 3, 2]) # --> 1 2 3
@@ -315,7 +329,7 @@ Check if all the elements of a key-based iterable are unique.
 :param key: None or "Callable" to compare if iterable items.
 :rtype: bool
 
-Usage:
+Examples:
     from pymince.iterator import uniques
 
     uniques([1,2]) # --> True
@@ -328,7 +342,7 @@ dump_into(filename, payload, indent=2)
 
 Dump JSON to a file.
 
-Usage:
+Examples:
     from pymince.json import dump_into
 
     dump_into("foo.json", {"key": "value"})
@@ -339,7 +353,7 @@ load_from(filename)
 
 Load JSON from a file.
 
-Usage:
+Examples:
     from pymince.json import load_from
 
     dictionary = load_from("foo.json")
@@ -352,7 +366,7 @@ StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True)
 Implementation of JSON structured logging that works
 for most handlers.
 
-Usage in runtime
+Examples:
     import logging
     import sys
     from pymince.logging import StructuredFormatter
@@ -380,7 +394,8 @@ timed_block(name, logger=None)
 
 Logger the duration of the handled context.
 
-Usage:
+Examples:
+    import logging
     from pymince.logging import timed_block
 
     logging.basicConfig(level=logging.DEBUG)
@@ -402,7 +417,7 @@ returns None.
 :param int delay: seconds delay between attempts. default: 0.
 :param int tries: number of attempts. default: 1
 
-Usage:
+Examples:
     @retry_if_none(delay=0, tries=1)
     def foo():
         return 1
@@ -416,13 +431,17 @@ Decorator to call "function" passing the json read from
 "stdin" in the keyword parameter "data" and dump the json that the callback returns
 to "stdout".
 
-Usage:
+Examples:
 from pymince.std import bind_json_std
 
 @bind_json_std()
 def foo(data=None):
     print("Processing data from sys.stdin", data)
-    return data
+
+    result = data and {**data, "new": "value"}
+
+    print("Result to write in sys.stdout", result)
+    return result
 ```
 #### text.py *Useful functions for working with strings.*
 ##### remove_decimal_zeros
@@ -431,7 +450,7 @@ remove_decimal_zeros(value, decimal_sep='.', min_decimals=None)
 
 Removes non-significant decimal zeros from a formatted text number.
 
-Usage:
+Examples:
     from pymince.text import remove_decimal_zeros
 
     remove_decimal_zeros("2.000100", ".") # --> "2.0001"
@@ -448,7 +467,7 @@ as group separator.
 :param str string:
 :rtype str
 
-Usage:
+Examples:
     from pymince.text import remove_number_commas
     remove_number_commas('1,234,567.8') # --> '1234567.8'
 ```
@@ -466,7 +485,7 @@ Replace matching values ​​in the given string with new_value.
     -1 (the default value) means replace all occurrences.
 :rtype: str
 
-Usage:
+Examples:
     from pymince.text import replace
 
     replace("No, woman, no cry", [","], ";") # --> "No; woman; no cry"
@@ -485,7 +504,7 @@ truth to True or False.
 :raise: "ValueError" if "value" is anything else.
 :rtype: bool
 
-Usage:
+Examples:
     from pymince.text import string2bool
 
     string2bool("true") # --> True
@@ -511,7 +530,7 @@ Function to convert a string year representation to integer year.
 :raise: "ValueError" if "value" cannot be converted.
 :rtype: int
 
-Usage:
+Examples:
     from pymince.text import string2year
 
     string2year("53", shift=None) # --> 2053

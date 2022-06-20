@@ -17,7 +17,7 @@ def remove_number_commas(string):
     :param str string:
     :rtype str
 
-    Usage:
+    Examples:
         from pymince.text import remove_number_commas
         remove_number_commas('1,234,567.8') # --> '1234567.8'
     """
@@ -37,7 +37,7 @@ def replace(value, old_values, new_value, count=-1):
         -1 (the default value) means replace all occurrences.
     :rtype: str
 
-    Usage:
+    Examples:
         from pymince.text import replace
 
         replace("No, woman, no cry", [","], ";") # --> "No; woman; no cry"
@@ -53,7 +53,7 @@ def remove_decimal_zeros(value, decimal_sep='.', min_decimals=None):
     """
     Removes non-significant decimal zeros from a formatted text number.
 
-    Usage:
+    Examples:
         from pymince.text import remove_decimal_zeros
 
         remove_decimal_zeros("2.000100", ".") # --> "2.0001"
@@ -89,7 +89,7 @@ def string2bool(value, ignorecase=False):
     :raise: "ValueError" if "value" is anything else.
     :rtype: bool
 
-    Usage:
+    Examples:
         from pymince.text import string2bool
 
         string2bool("true") # --> True
@@ -123,7 +123,7 @@ def string2year(value, gte=None, lte=None, shift=None):
     :raise: "ValueError" if "value" cannot be converted.
     :rtype: int
 
-    Usage:
+    Examples:
         from pymince.text import string2year
 
         string2year("53", shift=None) # --> 2053

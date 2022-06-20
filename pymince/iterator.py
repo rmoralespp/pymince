@@ -17,7 +17,7 @@ def replacer(iterable, matcher, new_value, count=-1):
         Maximum number of occurrences to replace.
         -1 (the default value) means replace all occurrences.
 
-    Usage:
+    Examples:
         from pymince.iterator import replacer
 
         replacer([1,2,3,1,2,3], lambda n: n == 1, None) # --> None 2 3 None 2 3
@@ -40,7 +40,7 @@ def uniques(iterable, key=None):
     :param key: None or "Callable" to compare if iterable items.
     :rtype: bool
 
-    Usage:
+    Examples:
         from pymince.iterator import uniques
 
         uniques([1,2]) # --> True
@@ -58,7 +58,7 @@ def uniquer(iterable, key=None):
     Make an iterator that returns each element from iterable only once
     respecting the input order.
 
-    Usage:
+    Examples:
         from pymince.iterator import uniquer
 
         uniquer([1, 2, 3, 2]) # --> 1 2 3
@@ -76,7 +76,7 @@ def grouper(iterable, size):
     :param iterable:
     :param int size: maximum size of element groups.
 
-    Usage:
+    Examples:
         from pymince.iterator import grouper
 
         groups = grouper([1, 2, 3, 4, 5], 2)
@@ -96,7 +96,7 @@ def consume(iterator):
     """
     Completely consume the given iterator.
 
-    Usage:
+    Examples:
         from pymince.iterator import consume
         it = iter([1, 2])
         consume(it)
@@ -113,7 +113,7 @@ def all_equal(iterable, key=None):
     :param key: None or "Callable" to compare if iterable items.
     :rtype: bool
 
-    Usage:
+    Examples:
         from pymince.iterator import all_equal
 
         all_equal([1, 1]) # --> True
@@ -131,7 +131,7 @@ def all_distinct(iterable, key=None):
     :param key: None or "Callable" to compare if iterable items.
     :rtype: bool
 
-    Usage:
+    Examples:
         from pymince.iterator import all_distinct
 
         all_distinct([1, 1]) # --> False
@@ -148,7 +148,7 @@ def non_empty_or_none(iterator):
     :param iterator:
     :return: Iterator or None
 
-    Usage:
+    Examples:
         from pymince.iterator import non_empty_or_none
 
         non_empty_or_none([]) # --> None
@@ -167,7 +167,7 @@ def has_only_one(iterable):
     :param iterable:
     :rtype: bool
 
-    Usage:
+    Examples:
         from pymince.iterator import has_only_one
 
         has_only_one([1]) # --> True
@@ -195,7 +195,7 @@ def splitter(iterable, sep, key=None, maxsplit=-1):
 
     :return: Generator with consecutive groups from "iterable" without the delimiter element.
 
-    Usage:
+    Examples:
         from pymince.iterator import splitter
 
         data = ["a", "b", "c", "d", "b", "e"]

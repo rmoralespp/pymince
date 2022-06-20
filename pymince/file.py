@@ -13,7 +13,7 @@ def open_on_zip(zip_file, filename):
     :param zip_file: instance of ZipFile class
     :param str filename:
 
-    Usage:
+    Examples:
     -------------------------------------------------
     import zipfile
     from pymince.file import open_on_zip
@@ -41,7 +41,7 @@ def match_on_zip(zip_file, pattern):
     :param pattern: "re.Pattern" to filter filename list
     :return: Iterator with the filenames found
 
-    Usage:
+    Examples:
         import pymince.file
         pymince.file.match_on_zip(zip_file, "^file") # --> file1.log file2.txt
 

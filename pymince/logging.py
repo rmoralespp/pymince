@@ -9,7 +9,8 @@ def timed_block(name, logger=None):
     """
     Logger the duration of the handled context.
 
-    Usage:
+    Examples:
+        import logging
         from pymince.logging import timed_block
 
         logging.basicConfig(level=logging.DEBUG)
@@ -35,7 +36,7 @@ class StructuredFormatter(logging.Formatter):
     Implementation of JSON structured logging that works
     for most handlers.
 
-    Usage in runtime
+    Examples:
         import logging
         import sys
         from pymince.logging import StructuredFormatter

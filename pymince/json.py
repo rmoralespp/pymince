@@ -9,7 +9,7 @@ def load_from(filename):
     """
     Load JSON from a file.
 
-    Usage:
+    Examples:
         from pymince.json import load_from
 
         dictionary = load_from("foo.json")
@@ -22,7 +22,7 @@ def dump_into(filename, payload, indent=2):
     """
     Dump JSON to a file.
 
-    Usage:
+    Examples:
         from pymince.json import dump_into
 
         dump_into("foo.json", {"key": "value"})
