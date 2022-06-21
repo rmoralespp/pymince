@@ -242,9 +242,9 @@ def pad_start(iterable, length, fill_value=None):
      Examples:
         from pymince.iterator import pad_start
 
-        pymince.iterator.pad_start(("a", "b"), 3, fill_value="1") # --> "1" "a" "b"
-        pymince.iterator.pad_start(("a", "b"), 3) # --> None "a" "b"
-        pymince.iterator.pad_start(("a", "b", "c"), 3) # --> "a" "b" "c"
+        pad_start(("a", "b"), 3, fill_value="1") # --> "1" "a" "b"
+        pad_start(("a", "b"), 3) # --> None "a" "b"
+        pad_start(("a", "b", "c"), 3) # --> "a" "b" "c"
 
     """
 
