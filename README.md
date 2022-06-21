@@ -31,6 +31,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | [key_or_leaf_value](#key_or_leaf_value) | [open_on_zip](#open_on_zip) | [grouper](#grouper) |  |  |  |  | [string2bool](#string2bool) |
 |  |  | [has_only_one](#has_only_one) |  |  |  |  | [string2year](#string2year) |
 |  |  | [non_empty_or_none](#non_empty_or_none) |  |  |  |  |  |
+|  |  | [pad_start](#pad_start) |  |  |  |  |  |
 |  |  | [replacer](#replacer) |  |  |  |  |  |
 |  |  | [splitter](#splitter) |  |  |  |  |  |
 |  |  | [uniquer](#uniquer) |  |  |  |  |  |
@@ -257,6 +258,27 @@ Examples:
 
     non_empty_or_none([]) # --> None
     non_empty_or_none([1,2]) # --> 1 2
+```
+##### pad_start
+```
+pad_start(iterable, length, fill_value=None)
+
+The function adds "fill_value" at the beginning of the iterable,
+until it reaches the specified length.
+If the value of the "length" param is less than the length of
+the given "iterable", no filling is done.
+
+:param iterable:
+:param int length: A number specifying the desired length of the resulting iterable.
+:param any fill_value: Any value to fill the given iterable.
+:rtype: Generator
+
+ Examples:
+    from pymince.iterator import pad_start
+
+    pymince.iterator.pad_start(("a", "b"), 3, fill_value="1") # --> "1" "a" "b"
+    pymince.iterator.pad_start(("a", "b"), 3) # --> None "a" "b"
+    pymince.iterator.pad_start(("a", "b", "c"), 3) # --> "a" "b" "c"
 ```
 ##### replacer
 ```

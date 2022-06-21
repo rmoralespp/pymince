@@ -225,3 +225,35 @@ def splitter(iterable, sep, key=None, maxsplit=-1):
 
     getter = key or (lambda x: x)
     return recursive(iter(iterable), 0) if maxsplit else iterable
+
+
+def pad_start(iterable, length, fill_value=None):
+    """
+    The function adds "fill_value" at the beginning of the iterable,
+    until it reaches the specified length.
+    If the value of the "length" param is less than the length of
+    the given "iterable", no filling is done.
+
+    :param iterable:
+    :param int length: A number specifying the desired length of the resulting iterable.
+    :param any fill_value: Any value to fill the given iterable.
+    :rtype: Generator
+
+     Examples:
+        from pymince.iterator import pad_start
+
+        pymince.iterator.pad_start(("a", "b"), 3, fill_value="1") # --> "1" "a" "b"
+        pymince.iterator.pad_start(("a", "b"), 3) # --> None "a" "b"
+        pymince.iterator.pad_start(("a", "b", "c"), 3) # --> "a" "b" "c"
+
+    """
+
+    deque = collections.deque(iter(iterable))
+    deque_length = len(deque)
+    if deque_length < length:
+        fill = 0
+        diff = length - deque_length
+        while fill < diff:
+            fill += 1
+            yield fill_value
+    yield from deque
