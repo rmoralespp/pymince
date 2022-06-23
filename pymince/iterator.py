@@ -92,9 +92,10 @@ def grouper(iterable, size):
             break
 
 
-def consume(iterator):
+def consume(iterator, n=None):
     """
-    Completely consume the given iterator.
+    Advance *iterator* by *n* steps. If *n* is ``None``, consume it
+    entirely.
 
     Examples:
         from pymince.iterator import consume
@@ -102,7 +103,11 @@ def consume(iterator):
         consume(it)
         next(it) # --> StopIteration
     """
-    collections.deque(iterator, maxlen=0)
+
+    if n is None:
+        collections.deque(iterator, maxlen=0)
+    else:
+        next(itertools.islice(iterator, n, n), None)
 
 
 def all_equal(iterable, key=None):

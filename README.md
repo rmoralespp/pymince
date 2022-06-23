@@ -229,9 +229,10 @@ Examples:
 ```
 ##### consume
 ```
-consume(iterator)
+consume(iterator, n=None)
 
-Completely consume the given iterator.
+Advance *iterator* by *n* steps. If *n* is ``None``, consume it
+entirely.
 
 Examples:
     from pymince.iterator import consume
