@@ -142,10 +142,10 @@ def frozendict(*args, **kwargs):
     return types.MappingProxyType(dict(*args, **kwargs))
 
 
-def dict_from_iterable(iterable, key_getter, value_getter):
+def from_objects(iterable, key_getter, value_getter):
     """
-    Create a new dictionary from "iterable" using "key_getter" and
-    "value_getter" to generate its items.
+    Create a new dictionary with items generated from
+    "key_getter" and "value_getter".
 
     :param Iterable[any] iterable:
     :param Callable key_getter: Function to generate the dictionary keys from elements of iterable.
@@ -155,12 +155,13 @@ def dict_from_iterable(iterable, key_getter, value_getter):
     :rtype: dict
 
     Examples:
-        from pymince.dictionary import dict_from_iterable
+        from pymince.dictionary import from_objects
 
         keygetter = operator.itemgetter(0)
         valgetter = operator.itemgetter(1, 2)
+
         values = iter([(1, "a", "b"), (2, "a", "b")])
-        dict_from_iterable(values, keygetter, valgetter) # --> {1: ('a', 'b'), 2: ('a', 'b')}
+        from_objects(values, keygetter, valgetter) # --> {1: ('a', 'b'), 2: ('a', 'b')}
     """
 
     dictionary = {}
