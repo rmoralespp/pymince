@@ -245,15 +245,37 @@ def pad_start(iterable, length, fill_value=None):
         pad_start(("a", "b"), 3, fill_value="1") # --> "1" "a" "b"
         pad_start(("a", "b"), 3) # --> None "a" "b"
         pad_start(("a", "b", "c"), 3) # --> "a" "b" "c"
+    """
+    pool = tuple(iter(iterable))
+    diff = length - len(pool)
+    if diff:
+        yield from itertools.repeat(fill_value, diff)
+    yield from pool
 
+
+def pad_end(iterable, length, fill_value=None):
+    """
+    The function adds "fill_value" at the finishing of the iterable,
+    until it reaches the specified length.
+    If the value of the "length" param is less than the length of
+    the given "iterable", no filling is done.
+
+    :param iterable:
+    :param int length: A number specifying the desired length of the resulting iterable.
+    :param any fill_value: Any value to fill the given iterable.
+    :rtype: Generator
+
+     Examples:
+        from pymince.iterator import pad_end
+
+        pad_end(("a", "b"), 3, fill_value="1") # --> "a" "b" "1"
+        pad_end(("a", "b"), 3) # --> "a" "b" None
+        pad_end(("a", "b", "c"), 3) # --> "a" "b" "c"
     """
 
-    deque = collections.deque(iter(iterable))
-    deque_length = len(deque)
-    if deque_length < length:
-        fill = 0
-        diff = length - deque_length
-        while fill < diff:
-            fill += 1
-            yield fill_value
-    yield from deque
+    fill = length
+    for obj in iter(iterable):
+        fill -= 1
+        yield obj
+    if fill > 0:
+        yield from itertools.repeat(fill_value, fill)
