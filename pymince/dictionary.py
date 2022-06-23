@@ -140,3 +140,37 @@ def frozendict(*args, **kwargs):
         list(my_dict.items())  # --> [("a", 1), ("b", 2)]
     """
     return types.MappingProxyType(dict(*args, **kwargs))
+
+
+def dict_from_iterable(iterable, key_getter, value_getter):
+    """
+    Create a new dictionary from "iterable" using "key_getter" and
+    "value_getter" to generate its items.
+
+    :param Iterable[any] iterable:
+    :param Callable key_getter: Function to generate the dictionary keys from elements of iterable.
+    :param Callable value_getter: Function to generate the dictionary values from elements of iterable.
+
+    :raise: ValueError if any generated key is duplicate.
+    :rtype: dict
+
+    Examples:
+        from pymince.dictionary import dict_from_iterable
+
+        keygetter = operator.itemgetter(0)
+        valgetter = operator.itemgetter(1, 2)
+        values = iter([(1, "a", "b"), (2, "a", "b")])
+        dict_from_iterable(values, keygetter, valgetter) # --> {1: ('a', 'b'), 2: ('a', 'b')}
+    """
+
+    batch = set()
+    result = {}
+
+    for obj in iter(iterable):
+        key = key_getter(obj)
+        if key not in batch:
+            result[key] = value_getter(obj)
+            batch.add(key)
+        else:
+            raise ValueError
+    return result

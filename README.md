@@ -27,9 +27,9 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | -------------: | -------: | -----------: | -------: | ----------: | --------: | ------: | -------: |
 | [DigestGetter](#DigestGetter) | [ensure_directory](#ensure_directory) | [all_distinct](#all_distinct) | [dump_into](#dump_into) | [StructuredFormatter](#StructuredFormatter) | [retry_if_none](#retry_if_none) | [bind_json_std](#bind_json_std) | [remove_decimal_zeros](#remove_decimal_zeros) |
 | [all_true_values](#all_true_values) | [is_empty_directory](#is_empty_directory) | [all_equal](#all_equal) | [load_from](#load_from) | [timed_block](#timed_block) |  |  | [remove_number_commas](#remove_number_commas) |
-| [frozendict](#frozendict) | [match_on_zip](#match_on_zip) | [consume](#consume) |  |  |  |  | [replace](#replace) |
-| [key_or_leaf_value](#key_or_leaf_value) | [open_on_zip](#open_on_zip) | [grouper](#grouper) |  |  |  |  | [string2bool](#string2bool) |
-|  |  | [has_only_one](#has_only_one) |  |  |  |  | [string2year](#string2year) |
+| [dict_from_iterable](#dict_from_iterable) | [match_on_zip](#match_on_zip) | [consume](#consume) |  |  |  |  | [replace](#replace) |
+| [frozendict](#frozendict) | [open_on_zip](#open_on_zip) | [grouper](#grouper) |  |  |  |  | [string2bool](#string2bool) |
+| [key_or_leaf_value](#key_or_leaf_value) |  | [has_only_one](#has_only_one) |  |  |  |  | [string2year](#string2year) |
 |  |  | [non_empty_or_none](#non_empty_or_none) |  |  |  |  |  |
 |  |  | [pad_end](#pad_end) |  |  |  |  |  |
 |  |  | [pad_start](#pad_start) |  |  |  |  |  |
@@ -73,6 +73,28 @@ from pymince.dictionary import all_true_values
 all_true_values({"a": 1, "b": 2}, ("a", "b")) # --> True
 all_true_values({"a": 1, "b": 0}, ("a", "b")) # --> False
 all_true_values({"a": 1, "b": 0}, ("a",)) # --> True
+```
+##### dict_from_iterable
+```
+dict_from_iterable(iterable, key_getter, value_getter)
+
+Create a new dictionary from "iterable" using "key_getter" and
+"value_getter" to generate its items.
+
+:param Iterable[any] iterable:
+:param Callable key_getter: Function to generate the dictionary keys from elements of iterable.
+:param Callable value_getter: Function to generate the dictionary values from elements of iterable.
+
+:raise: ValueError if any generated key is duplicate.
+:rtype: dict
+
+Examples:
+    from pymince.dictionary import dict_from_iterable
+
+    keygetter = operator.itemgetter(0)
+    valgetter = operator.itemgetter(1, 2)
+    values = iter([(1, "a", "b"), (2, "a", "b")])
+    dict_from_iterable(values, keygetter, valgetter) # --> {1: ('a', 'b'), 2: ('a', 'b')}
 ```
 ##### frozendict
 ```
