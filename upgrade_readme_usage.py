@@ -57,34 +57,31 @@ def module2markdown(module):
             yield member2markdown(member)
 
     module_name = os.path.basename(module.__file__)
-    docstring = cleandoc(module)
-    docstring = docstring and f"*{docstring}*"
+    module_desc = cleandoc(module)
 
-    lines = itertools.chain((f"\n#### {module_name} {docstring}",), members2markdown())
+    lines = itertools.chain((f"\n#### {module_name}\n{module_desc}",), members2markdown())
     return "\n".join(lines)
 
 
 def make_table():
     """
-    | dictionary | file | iterator |
-    | ---------- | ---- | -------  |
-    | a | b | b  |
-    | d | e | f  |
+    | Modules | Tools |
+    | -----:  | ----: |
+    | dictionary.py   | [from_objects](#from_objects), [frozendict](#frozendict) |
+    | file.py         | [ensure_directory](#ensure_directory) |
     """
 
-    table = []
+    header = "| PyModules  | Tools  |"
+    border = "| :--------  | :----- |"
+    table = [header, border]
     for module in modules:
-        row = []
-        header = os.path.basename(module.__file__)
-        border = "-" * len(header) + ":"
-        row.extend((header, border))
-        for _, member in getmembers(module):
-            name = member.__name__
-            link = f"[{name}](#{name})"
-            row.append(link)
+        row = ""
+        module_name = os.path.basename(module.__file__)
+        row += f"| **{module_name}** |"
+        row += ", ".join((f"[*{m.__name__}*](#{m.__name__})" for _, m in getmembers(module)))
+        row += "|"
         table.append(row)
-    table = itertools.zip_longest(*table, fillvalue="")
-    table = "\n".join("| " + " | ".join(row) + " |" for row in table)
+    table = "\n".join(table)
     return table
 
 

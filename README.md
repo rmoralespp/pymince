@@ -23,22 +23,19 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ```
 
 ### Usage
-| dictionary.py | file.py | iterator.py | json.py | logging.py | retry.py | std.py | text.py |
-| -------------: | -------: | -----------: | -------: | ----------: | --------: | ------: | -------: |
-| [DigestGetter](#DigestGetter) | [ensure_directory](#ensure_directory) | [all_distinct](#all_distinct) | [dump_into](#dump_into) | [StructuredFormatter](#StructuredFormatter) | [retry_if_none](#retry_if_none) | [bind_json_std](#bind_json_std) | [remove_decimal_zeros](#remove_decimal_zeros) |
-| [all_true_values](#all_true_values) | [is_empty_directory](#is_empty_directory) | [all_equal](#all_equal) | [load_from](#load_from) | [timed_block](#timed_block) |  |  | [remove_number_commas](#remove_number_commas) |
-| [from_objects](#from_objects) | [match_on_zip](#match_on_zip) | [consume](#consume) |  |  |  |  | [replace](#replace) |
-| [frozendict](#frozendict) | [open_on_zip](#open_on_zip) | [grouper](#grouper) |  |  |  |  | [string2bool](#string2bool) |
-| [key_or_leaf_value](#key_or_leaf_value) |  | [has_only_one](#has_only_one) |  |  |  |  | [string2year](#string2year) |
-|  |  | [non_empty_or_none](#non_empty_or_none) |  |  |  |  |  |
-|  |  | [pad_end](#pad_end) |  |  |  |  |  |
-|  |  | [pad_start](#pad_start) |  |  |  |  |  |
-|  |  | [replacer](#replacer) |  |  |  |  |  |
-|  |  | [splitter](#splitter) |  |  |  |  |  |
-|  |  | [uniquer](#uniquer) |  |  |  |  |  |
-|  |  | [uniques](#uniques) |  |  |  |  |  |
+| PyModules  | Tools  |
+| :--------  | :----- |
+| **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*key_or_leaf_value*](#key_or_leaf_value)|
+| **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip)|
+| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
+| **json.py** |[*dump_into*](#dump_into), [*load_from*](#load_from)|
+| **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
+| **retry.py** |[*retry_if_none*](#retry_if_none)|
+| **std.py** |[*bind_json_std*](#bind_json_std)|
+| **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*string2bool*](#string2bool), [*string2year*](#string2year)|
 
-#### dictionary.py *Useful functions that use dictionaries*
+#### dictionary.py
+Useful functions that use dictionaries
 ##### DigestGetter
 ```
 DigestGetter(include_keys=None, exclude_keys=None)
@@ -131,7 +128,8 @@ Examples:
     key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) # --> 'c'
     key_or_leaf_value('a', {'a': 'a'}) # --> 'a'
 ```
-#### file.py 
+#### file.py
+
 ##### ensure_directory
 ```
 ensure_directory(path, cleaning=False)
@@ -195,7 +193,8 @@ with zipfile.ZipFile(zip_filename) as zf:
         foo2_string = fd2.read()
 -------------------------------------------------
 ```
-#### iterator.py *Functions that use iterators for efficient loops*
+#### iterator.py
+Functions that use iterators for efficient loops
 ##### all_distinct
 ```
 all_distinct(iterable, key=None)
@@ -406,7 +405,8 @@ Examples:
     uniques([1,2]) # --> True
     uniques([1,1]) # --> False
 ```
-#### json.py 
+#### json.py
+
 ##### dump_into
 ```
 dump_into(filename, payload, indent=2)
@@ -429,7 +429,8 @@ Examples:
 
     dictionary = load_from("foo.json")
 ```
-#### logging.py 
+#### logging.py
+
 ##### StructuredFormatter
 ```
 StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True)
@@ -477,7 +478,8 @@ Examples:
     INFO:root:Generating [sleeping]
     DEBUG:root:Finished [sleeping in 1.002 ms.]
 ```
-#### retry.py 
+#### retry.py
+
 ##### retry_if_none
 ```
 retry_if_none(delay=0, tries=1)
@@ -493,7 +495,8 @@ Examples:
     def foo():
         return 1
 ```
-#### std.py 
+#### std.py
+
 ##### bind_json_std
 ```
 bind_json_std(encoding='utf-8')
@@ -514,7 +517,8 @@ def foo(data=None):
     print("Result to write in sys.stdout", result)
     return result
 ```
-#### text.py *Useful functions for working with strings.*
+#### text.py
+Useful functions for working with strings.
 ##### remove_decimal_zeros
 ```
 remove_decimal_zeros(value, decimal_sep='.', min_decimals=None)
