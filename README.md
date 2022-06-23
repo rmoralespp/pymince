@@ -78,12 +78,16 @@ all_true_values({"a": 1, "b": 0}, ("a",)) # --> True
 ```
 from_objects(iterable, key_getter, value_getter)
 
-Create a new dictionary with items generated from
-"key_getter" and "value_getter".
+Create a new dictionary with elements generated from
+the "key_getter" and "value_getter" callbacks applied to each element of the iterable.
 
 :param Iterable[any] iterable:
-:param Callable key_getter: Function to generate the dictionary keys from elements of iterable.
-:param Callable value_getter: Function to generate the dictionary values from elements of iterable.
+:param Callable key_getter:
+    Dictionary keys getter.
+    It is called with each element of "iterable" passing it as an argument.
+:param Callable value_getter:
+    Dictionary values getter.
+    It is called with each element of "iterable" passing it as an argument.
 
 :raise: ValueError if any generated key is duplicate.
 :rtype: dict
