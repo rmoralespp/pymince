@@ -26,21 +26,21 @@ modules = (
 
 
 def cleandoc(obj):
-    doctring = obj.__doc__
-    doctring = inspect.cleandoc(doctring) if doctring else ''
-    return doctring
+    docstring = obj.__doc__
+    docstring = inspect.cleandoc(docstring) if docstring else ''
+    return docstring
 
 
 def member2markdown(member):
     name = member.__name__
-    doctring = cleandoc(member)
+    docstring = cleandoc(member)
 
     lines = (
         f"##### {member.__name__}",
         "```",
         f"{name}{inspect.signature(member)}",
         "",
-        f"{doctring}",
+        f"{docstring}",
         "```",
     )
     return "\n".join(lines)
@@ -93,8 +93,19 @@ if __name__ == "__main__":
     readme_path = os.path.join(base_dir, "README.md")
 
     pattern = re.compile(r"### Usage.*(?=###)", flags=re.DOTALL)
-    content = "".join(module2markdown(module) for module in modules)
-    content = "### Usage\n" + make_table() + "\n" + content + "\n"
+
+    content_title = "### Usage"
+    content_table = make_table()
+    content_items = "".join(module2markdown(module) for module in modules)
+
+    content_lines = (
+        content_title,
+        content_table,
+        content_items,
+        "",  # ensure last \n
+    )
+    content = "\n".join(content_lines)
+
     with open(readme_path, mode="r", encoding="utf-8") as f:
         old_string = f.read()
         new_string = pattern.sub(content, old_string)
