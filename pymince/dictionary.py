@@ -163,14 +163,11 @@ def dict_from_iterable(iterable, key_getter, value_getter):
         dict_from_iterable(values, keygetter, valgetter) # --> {1: ('a', 'b'), 2: ('a', 'b')}
     """
 
-    batch = set()
-    result = {}
-
+    dictionary = {}
     for obj in iter(iterable):
         key = key_getter(obj)
-        if key not in batch:
-            result[key] = value_getter(obj)
-            batch.add(key)
-        else:
+        if key in dictionary:
             raise ValueError
-    return result
+        else:
+            dictionary[key] = value_getter(obj)
+    return dictionary
