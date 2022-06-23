@@ -27,7 +27,7 @@ setup(
     author='rmoralespp',
     author_email='rmoralespp@gmail.com',
     url='https://github.com/rmoralespp/pymince',
-    license='',
+    license='MIT',
     packages=['pymince'],
     include_package_data=True,
     zip_safe=False,  # https://mypy.readthedocs.io/en/latest/installed_packages.html
