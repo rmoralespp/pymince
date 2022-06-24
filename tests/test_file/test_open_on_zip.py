@@ -13,8 +13,8 @@ def test_open_on_zip():
         basename2, content2 = "file2.log", "contentOfFile2"
         filename1 = os.path.join(tmpdir, basename1)
         filename2 = os.path.join(tmpdir, basename2)
-        tests.test_file.make_file(filename1, content=content1)
-        tests.test_file.make_file(filename2, content=content2)
+        tests.make_file(filename1, content=content1)
+        tests.make_file(filename2, content=content2)
 
         zip_path = shutil.make_archive(tmpdir, "zip", root_dir=tmpdir)
         with zipfile.ZipFile(zip_path) as zp:

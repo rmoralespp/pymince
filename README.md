@@ -33,6 +33,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **retry.py** |[*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*string2bool*](#string2bool), [*string2year*](#string2year)|
+| **xml.py** |[*iterparse*](#iterparse)|
 
 #### dictionary.py
 Useful functions that use dictionaries
@@ -642,6 +643,37 @@ Examples:
     string2year("123") # --> ValueError
     string2year("1955", gte=1956) # --> ValueError
     string2year("1955", lte=1954) # --> ValueError
+```
+#### xml.py
+
+##### iterparse
+```
+iterparse(filename)
+
+Incrementally parse XML document into ElementTree.
+
+This function is based on: https://github.com/python/cpython/issues/93618
+
+'Fix misleading hint for original ElementTree.iterparse.'
+'''
+The code below deletes a root child once it is completed, then processes and removes
+it from the memory (if nothing more references to it ofc).
+This allows to process 7GB XML with with a memory usage up to 10MB (in case of great number of root children).
+'''
+
+:param str filename: XML filename
+:rtype: Generator
+
+ Examples:
+    from pymince.xml import iterparse
+
+    for event, obj in iterparse("countries.xml")
+        if event == 'start'
+            print(obj, obj.tag, obj.attrib, obj.text)
+
+    >>Output<<
+    <Element 'country' at 0x0000018ADF9D0CC0> country {'code': 'as', 'iso': '16'} American Samoa
+    <Element 'country' at 0x0000018ADF9D0C70> country {'code': 'ad', 'iso': '20'} Andorra
 ```
 ### Upgrade README.md
 

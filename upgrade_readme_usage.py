@@ -12,6 +12,7 @@ import pymince.logging
 import pymince.retry
 import pymince.std
 import pymince.text
+import pymince.xml
 
 modules = (
     pymince.dictionary,
@@ -22,6 +23,7 @@ modules = (
     pymince.retry,
     pymince.std,
     pymince.text,
+    pymince.xml,
 )
 
 
