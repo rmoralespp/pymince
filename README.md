@@ -26,7 +26,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | PyModules  | Tools  |
 | :--------  | :----- |
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*key_or_leaf_value*](#key_or_leaf_value)|
-| **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip)|
+| **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip), [*replace_extension*](#replace_extension)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_into*](#dump_into), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
@@ -192,6 +192,29 @@ with zipfile.ZipFile(zip_filename) as zf:
     with open_on_zip(zf, "foo2.txt") as fd2:
         foo2_string = fd2.read()
 -------------------------------------------------
+```
+##### replace_extension
+```
+replace_extension(filename, old_ext=None, new_ext=None)
+
+Replace filename "old_ext" with "new_ext"
+
+:param str filename:
+:param Optional[str] old_ext:
+:param Optional[str] new_ext:
+
+Examples:
+    from pymince.file import replace_extension
+
+    # remove extensions
+    replace_extension("/home/user/file.old") # --> "/home/user/file"
+    replace_extension("/home/user/file.old", old_ext=".old") # --> "/home/user/file"
+    replace_extension("/home/user/file.old", old_ext=".new") # --> "/home/user/file.old"
+
+    # replace extensions
+    replace_extension("/home/user/file.old", new_ext=".new") # --> "/home/user/file.new"
+    replace_extension("/home/user/file.old", old_ext=".old", new_ext=".new") # --> "/home/user/file.new"
+    replace_extension("/home/user/file.old", old_ext=".new", new_ext=".new") # --> "/home/user/file.old"
 ```
 #### iterator.py
 Functions that use iterators for efficient loops

@@ -84,3 +84,32 @@ def is_empty_directory(path):
     """
 
     return os.path.exists(path) and not os.path.isfile(path) and not os.listdir(path)
+
+
+def replace_extension(filename, old_ext=None, new_ext=None):
+    """
+    Replace filename "old_ext" with "new_ext"
+
+    :param str filename:
+    :param Optional[str] old_ext:
+    :param Optional[str] new_ext:
+
+    Examples:
+        from pymince.file import replace_extension
+
+        # remove extensions
+        replace_extension("/home/user/file.old") # --> "/home/user/file"
+        replace_extension("/home/user/file.old", old_ext=".old") # --> "/home/user/file"
+        replace_extension("/home/user/file.old", old_ext=".new") # --> "/home/user/file.old"
+
+        # replace extensions
+        replace_extension("/home/user/file.old", new_ext=".new") # --> "/home/user/file.new"
+        replace_extension("/home/user/file.old", old_ext=".old", new_ext=".new") # --> "/home/user/file.new"
+        replace_extension("/home/user/file.old", old_ext=".new", new_ext=".new") # --> "/home/user/file.old"
+    """
+
+    root, ext = os.path.splitext(filename)  # Split the path in root and ext pair
+    if old_ext is None or old_ext == ext:
+        return root + (new_ext or "")
+    else:
+        return filename
