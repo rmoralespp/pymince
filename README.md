@@ -33,7 +33,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **retry.py** |[*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*string2bool*](#string2bool), [*string2year*](#string2year)|
-| **xml.py** |[*iterparse*](#iterparse)|
+| **xml.py** |[*iterparse*](#iterparse), [*splitter*](#splitter)|
 
 #### dictionary.py
 Useful functions that use dictionaries
@@ -667,13 +667,26 @@ This allows to process 7GB XML with with a memory usage up to 10MB (in case of g
  Examples:
     from pymince.xml import iterparse
 
-    for event, obj in iterparse("countries.xml")
+    for raw_line, event, obj in iterparse("countries.xml")
         if event == 'start'
             print(obj, obj.tag, obj.attrib, obj.text)
 
     >>Output<<
     <Element 'country' at 0x0000018ADF9D0CC0> country {'code': 'as', 'iso': '16'} American Samoa
     <Element 'country' at 0x0000018ADF9D0C70> country {'code': 'ad', 'iso': '20'} Andorra
+```
+##### splitter
+```
+splitter(filename, sep, outdir=None)
+
+Split content of given xml filename into chunk files
+according to tag delimiter.
+
+:param filename:
+:param sep: tag name delimiter
+:param outdir:
+    Directory to write the output fragments.
+    If not specified, the generated fragments are saved in the directory of given "filename"
 ```
 ### Upgrade README.md
 

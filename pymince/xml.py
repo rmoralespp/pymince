@@ -1,3 +1,4 @@
+import os
 import xml.etree.ElementTree as etree
 
 
@@ -20,7 +21,7 @@ def iterparse(filename):
      Examples:
         from pymince.xml import iterparse
 
-        for event, obj in iterparse("countries.xml")
+        for raw_line, event, obj in iterparse("countries.xml")
             if event == 'start'
                 print(obj, obj.tag, obj.attrib, obj.text)
 
@@ -44,6 +45,46 @@ def iterparse(filename):
                         del root[0]
                         # process obj
 
-                yield event, obj
+                yield line, event, obj
 
     parser.close()
+
+
+class splitter:
+    """
+    Split content of given xml filename into chunk files
+    according to tag delimiter.
+
+    :param filename:
+    :param sep: tag name delimiter
+    :param outdir:
+        Directory to write the output fragments.
+        If not specified, the generated fragments are saved in the directory of given "filename"
+    """
+
+    def __init__(self, filename, sep, outdir=None):
+        self._filename = filename
+        self._sep = sep
+        self._outdir = outdir or os.path.dirname(self._filename)
+        self._filetext = os.path.splitext(self._filename)[0]
+
+    def __iter__(self):
+        counter = 0
+        writing = False
+        for raw_line, event, obj in iterparse(self._filename):
+            if event == "start" and obj.tag == self._sep:
+                onlyone = True
+                writing = True
+                outname = os.path.join(self._outdir, f"{self._filetext}{counter}.xml")
+                outfile = open(outname, mode="wt", encoding="utf-8")
+                print(raw_line, file=outfile)
+            elif event == "end" and obj.tag == self._sep:
+                if not onlyone:
+                    print(raw_line, file=outfile)
+                outfile.close()
+                writing = False
+                counter += 1
+                yield outname  # yield split filename
+            elif event == "start" and writing:
+                print(raw_line, file=outfile)
+                onlyone = False
