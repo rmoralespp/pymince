@@ -19,22 +19,22 @@ def xml_string():
     return "\n".join(lines)
 
 
-def test_splitter_files(xml_string):
+def test_chunker_files(xml_string):
     with tempfile.TemporaryDirectory() as tmpdir:
         filename = os.path.join(tmpdir, "countries.xml")
         tests.make_file(filename, content=xml_string)
-        result = pymince.xml.splitter(filename, "country")
+        result = pymince.xml.chunker(filename, "country")
         assert list(result) == [
             os.path.join(tmpdir, "countries0.xml"),
             os.path.join(tmpdir, "countries1.xml")
         ]
 
 
-def test_splitter_content_file(xml_string):
+def test_chunker_content_file(xml_string):
     with tempfile.TemporaryDirectory() as tmpdir:
         filename = os.path.join(tmpdir, "countries.xml")
         tests.make_file(filename, content=xml_string)
-        result = pymince.xml.splitter(filename, "country")
+        result = pymince.xml.chunker(filename, "country")
 
         next(iter(result))
         expected = "  <country code='af' handle='afghanistan' continent='asia' iso='4'>Afghanistan</country>"

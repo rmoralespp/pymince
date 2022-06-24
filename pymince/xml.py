@@ -50,10 +50,10 @@ def iterparse(filename):
     parser.close()
 
 
-class splitter:
+class chunker:
     """
-    Split content of given xml filename into chunk files
-    according to tag delimiter.
+    Separate content of given xml file into chunk files
+    according to bounded tag.
 
     :param filename:
     :param sep: tag name delimiter
