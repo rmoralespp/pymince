@@ -288,6 +288,24 @@ def pad_end(iterable, length, fill_value=None):
         yield from itertools.repeat(fill_value, fill)
 
 
+def contains(iterable, obj):
+    """
+    Check if the object is contained in given iterable.
+
+    :param any obj:
+    :param iterable:
+    :rtype: bool
+    """
+
+    if hasattr(iterable, "__contains__"):
+        # Use method "__contains__" if given iterable is a container.
+        return obj in iterable
+    else:
+        # If it is not a container, it has to iterate until the obj is found.
+        eq = functools.partial(operator.eq, obj)
+        return any(map(eq, iterable))
+
+
 def in_all(obj, iterables):
     """
     Check if the object is contained in all the given iterables.
@@ -305,8 +323,7 @@ def in_all(obj, iterables):
         in_all("a", ()) # --> True
     """
 
-    eq = functools.partial(operator.eq, obj)
-    return all(any(map(eq, it)) for it in iter(iterables))
+    return all(contains(it, obj) for it in iter(iterables))
 
 
 def in_any(obj, iterables):
@@ -324,5 +341,4 @@ def in_any(obj, iterables):
         in_any("a", (("b", "b"), "def")) # --> False
         in_any("a", ()) # --> False
     """
-    eq = functools.partial(operator.eq, obj)
-    return any(any(map(eq, it)) for it in iter(iterables))
+    return any(contains(it, obj) for it in iter(iterables))
