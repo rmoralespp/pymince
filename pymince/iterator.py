@@ -2,7 +2,9 @@
 Functions that use iterators for efficient loops
 """
 import collections
+import functools
 import itertools
+import operator
 
 
 def replacer(iterable, matcher, new_value, count=-1):
@@ -284,3 +286,43 @@ def pad_end(iterable, length, fill_value=None):
         yield obj
     if fill > 0:
         yield from itertools.repeat(fill_value, fill)
+
+
+def in_all(obj, iterables):
+    """
+    Check if the object is contained in all the given iterables.
+    If the "iterables" are empty, return True.
+
+    :param any obj:
+    :param iterables: iterable of iterables
+    :rtype: bool
+
+    Examples:
+        from pymince.iterator import in_all
+
+        in_all("a", (("a", "b"), "bcd")) # --> False
+        in_all("a", (("a", "b"), "abc")) # --> True
+        in_all("a", ()) # --> True
+    """
+
+    eq = functools.partial(operator.eq, obj)
+    return all(any(map(eq, it)) for it in iter(iterables))
+
+
+def in_any(obj, iterables):
+    """
+    Check if the object is contained in any of the given iterables.
+
+    :param any obj:
+    :param iterables: iterable of iterables
+    :rtype: bool
+
+    Examples:
+        from pymince.iterator import in_any
+
+        in_any("a", (("a", "b"), "bcd")) # --> True
+        in_any("a", (("b", "b"), "def")) # --> False
+        in_any("a", ()) # --> False
+    """
+    eq = functools.partial(operator.eq, obj)
+    return any(any(map(eq, it)) for it in iter(iterables))

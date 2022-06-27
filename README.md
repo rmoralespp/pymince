@@ -27,7 +27,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | :--------  | :----- |
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*key_or_leaf_value*](#key_or_leaf_value)|
 | **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip), [*replace_extension*](#replace_extension)|
-| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
+| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*in_all*](#in_all), [*in_any*](#in_any), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_into*](#dump_into), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_none*](#retry_if_none)|
@@ -295,6 +295,41 @@ Examples:
     has_only_one([1]) # --> True
     has_only_one([1, 2]) # --> False
     has_only_one([]) # --> False
+```
+##### in_all
+```
+in_all(obj, iterables)
+
+Check if the object is contained in all the given iterables.
+If the "iterables" are empty, return True.
+
+:param any obj:
+:param iterables: iterable of iterables
+:rtype: bool
+
+Examples:
+    from pymince.iterator import in_all
+
+    in_all("a", (("a", "b"), "bcd")) # --> False
+    in_all("a", (("a", "b"), "abc")) # --> True
+    in_all("a", ()) # --> True
+```
+##### in_any
+```
+in_any(obj, iterables)
+
+Check if the object is contained in any of the given iterables.
+
+:param any obj:
+:param iterables: iterable of iterables
+:rtype: bool
+
+Examples:
+    from pymince.iterator import in_any
+
+    in_any("a", (("a", "b"), "bcd")) # --> True
+    in_any("a", (("b", "b"), "def")) # --> False
+    in_any("a", ()) # --> False
 ```
 ##### non_empty_or_none
 ```
