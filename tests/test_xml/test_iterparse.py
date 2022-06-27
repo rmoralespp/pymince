@@ -93,5 +93,5 @@ def test_items(xml_string):
         filename = os.path.join(tmpdir, "countries.xml")
         tests.make_file(filename, content=xml_string)
         result = pymince.xml.iterparse(filename)
-        result = [[obj.tag, obj.attrib, obj.text] for line, event, obj in result if event == "start"]
+        result = [[obj.tag, obj.attrib, obj.text] for event, obj in result if event == "start"]
         assert result == expected

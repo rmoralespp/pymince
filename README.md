@@ -33,7 +33,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **retry.py** |[*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*string2bool*](#string2bool), [*string2year*](#string2year)|
-| **xml.py** |[*chunker*](#chunker), [*iterparse*](#iterparse)|
+| **xml.py** |[*iterparse*](#iterparse)|
 
 #### dictionary.py
 Useful functions that use dictionaries
@@ -646,19 +646,6 @@ Examples:
 ```
 #### xml.py
 
-##### chunker
-```
-chunker(filename, sep, outdir=None)
-
-Separate content of given xml file into chunk files
-according to bounded tag.
-
-:param filename:
-:param sep: tag name delimiter
-:param outdir:
-    Directory to write the output fragments.
-    If not specified, the generated fragments are saved in the directory of given "filename"
-```
 ##### iterparse
 ```
 iterparse(filename)
@@ -680,7 +667,7 @@ This allows to process 7GB XML with with a memory usage up to 10MB (in case of g
  Examples:
     from pymince.xml import iterparse
 
-    for raw_line, event, obj in iterparse("countries.xml")
+    for event, obj in iterparse("countries.xml")
         if event == 'start'
             print(obj, obj.tag, obj.attrib, obj.text)
 
