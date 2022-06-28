@@ -27,7 +27,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | :--------  | :----- |
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*key_or_leaf_value*](#key_or_leaf_value)|
 | **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip), [*replace_extension*](#replace_extension)|
-| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*in_all*](#in_all), [*in_any*](#in_any), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
+| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*in_all*](#in_all), [*in_any*](#in_any), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_into*](#dump_into), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_none*](#retry_if_none)|
@@ -250,6 +250,24 @@ Examples:
 
     all_equal([1, 1]) # --> True
     all_equal([1, 2]) # --> False
+```
+##### all_equals
+```
+all_equals(*iterables, key=None) -> bool
+
+Check if the iterables are equal.
+If the "iterables" are empty, it returns True.
+
+:param iterables:
+:param key: None or "Callable" to compare if iterable items.
+:rtype: bool
+
+Examples:
+    from pymince.iterator import all_equals
+
+    all_equals() # --> True
+    all_equals(range(1, 4), (1, 2, 3), {1, 2, 3}) # --> True
+    all_equals((1, 2), (1, 2, 3)) # --> False
 ```
 ##### consume
 ```

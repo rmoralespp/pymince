@@ -112,6 +112,28 @@ def consume(iterator, n=None):
         next(itertools.islice(iterator, n, n), None)
 
 
+def all_equals(*iterables, key=None) -> bool:
+    """
+    Check if the iterables are equal.
+    If the "iterables" are empty, it returns True.
+
+    :param iterables:
+    :param key: None or "Callable" to compare if iterable items.
+    :rtype: bool
+
+    Examples:
+        from pymince.iterator import all_equals
+
+        all_equals() # --> True
+        all_equals(range(1, 4), (1, 2, 3), {1, 2, 3}) # --> True
+        all_equals((1, 2), (1, 2, 3)) # --> False
+    """
+
+    empty = object()
+    zipped = itertools.zip_longest(*iterables, fillvalue=empty)
+    return all(all_equal(elem, key=key) for elem in zipped)
+
+
 def all_equal(iterable, key=None):
     """
     Check if all the elements of a key-based iterable are equals.
