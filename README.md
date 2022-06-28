@@ -27,7 +27,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | :--------  | :----- |
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*key_or_leaf_value*](#key_or_leaf_value)|
 | **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip), [*replace_extension*](#replace_extension)|
-| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*in_all*](#in_all), [*in_any*](#in_any), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
+| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*in_all*](#in_all), [*in_any*](#in_any), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_into*](#dump_into), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_none*](#retry_if_none)|
@@ -253,7 +253,7 @@ Examples:
 ```
 ##### all_equals
 ```
-all_equals(*iterables, key=None) -> bool
+all_equals(*iterables, key=None)
 
 Check if the iterables are equal.
 If the "iterables" are empty, it returns True.
@@ -268,6 +268,24 @@ Examples:
     all_equals() # --> True
     all_equals(range(1, 4), (1, 2, 3), {1, 2, 3}) # --> True
     all_equals((1, 2), (1, 2, 3)) # --> False
+```
+##### all_identical
+```
+all_identical(left, right)
+
+Check that the items of `left` are the same objects
+as those in `right`.
+
+:param Iterable[Any] left:
+:param Iterable[Any] right:
+:rtype: bool
+
+Examples:
+    from pymince.iterator import all_identical
+
+    a, b = object(), object()
+    all_identical([a, b, a], [a, b, a]) # --> True
+    all_identical([a, b, [a]], [a, b, [a]])  # --> False *new list object, while "equal" is not "identical"*
 ```
 ##### consume
 ```
@@ -288,7 +306,7 @@ contains(iterable, obj)
 
 Check if the object is contained in given iterable.
 
-:param any obj:
+:param Any obj:
 :param iterable:
 :rtype: bool
 ```
@@ -331,7 +349,7 @@ in_all(obj, iterables)
 Check if the object is contained in all the given iterables.
 If the "iterables" are empty, return True.
 
-:param any obj:
+:param Any obj:
 :param iterables: iterable of iterables
 :rtype: bool
 
@@ -348,7 +366,7 @@ in_any(obj, iterables)
 
 Check if the object is contained in any of the given iterables.
 
-:param any obj:
+:param Any obj:
 :param iterables: iterable of iterables
 :rtype: bool
 
@@ -385,7 +403,7 @@ the given "iterable", no filling is done.
 
 :param iterable:
 :param int length: A number specifying the desired length of the resulting iterable.
-:param any fill_value: Any value to fill the given iterable.
+:param Any fill_value: Any value to fill the given iterable.
 :rtype: Generator
 
  Examples:
@@ -406,7 +424,7 @@ the given "iterable", no filling is done.
 
 :param iterable:
 :param int length: A number specifying the desired length of the resulting iterable.
-:param any fill_value: Any value to fill the given iterable.
+:param Any fill_value: Any value to fill the given iterable.
 :rtype: Generator
 
  Examples:

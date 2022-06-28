@@ -112,7 +112,7 @@ def consume(iterator, n=None):
         next(itertools.islice(iterator, n, n), None)
 
 
-def all_equals(*iterables, key=None) -> bool:
+def all_equals(*iterables, key=None):
     """
     Check if the iterables are equal.
     If the "iterables" are empty, it returns True.
@@ -132,6 +132,30 @@ def all_equals(*iterables, key=None) -> bool:
     empty = object()
     zipped = itertools.zip_longest(*iterables, fillvalue=empty)
     return all(all_equal(elem, key=key) for elem in zipped)
+
+
+def all_identical(left, right):
+    """
+    Check that the items of `left` are the same objects
+    as those in `right`.
+
+    :param Iterable[Any] left:
+    :param Iterable[Any] right:
+    :rtype: bool
+
+    Examples:
+        from pymince.iterator import all_identical
+
+        a, b = object(), object()
+        all_identical([a, b, a], [a, b, a]) # --> True
+        all_identical([a, b, [a]], [a, b, [a]])  # --> False *new list object, while "equal" is not "identical"*
+    """
+
+    empty = object()
+    for left_item, right_item in itertools.zip_longest(left, right, fillvalue=empty):
+        if left_item is not right_item:
+            return False
+    return True
 
 
 def all_equal(iterable, key=None):
@@ -265,7 +289,7 @@ def pad_start(iterable, length, fill_value=None):
 
     :param iterable:
     :param int length: A number specifying the desired length of the resulting iterable.
-    :param any fill_value: Any value to fill the given iterable.
+    :param Any fill_value: Any value to fill the given iterable.
     :rtype: Generator
 
      Examples:
@@ -291,7 +315,7 @@ def pad_end(iterable, length, fill_value=None):
 
     :param iterable:
     :param int length: A number specifying the desired length of the resulting iterable.
-    :param any fill_value: Any value to fill the given iterable.
+    :param Any fill_value: Any value to fill the given iterable.
     :rtype: Generator
 
      Examples:
@@ -314,7 +338,7 @@ def contains(iterable, obj):
     """
     Check if the object is contained in given iterable.
 
-    :param any obj:
+    :param Any obj:
     :param iterable:
     :rtype: bool
     """
@@ -333,7 +357,7 @@ def in_all(obj, iterables):
     Check if the object is contained in all the given iterables.
     If the "iterables" are empty, return True.
 
-    :param any obj:
+    :param Any obj:
     :param iterables: iterable of iterables
     :rtype: bool
 
@@ -352,7 +376,7 @@ def in_any(obj, iterables):
     """
     Check if the object is contained in any of the given iterables.
 
-    :param any obj:
+    :param Any obj:
     :param iterables: iterable of iterables
     :rtype: bool
 
