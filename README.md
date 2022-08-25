@@ -30,7 +30,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*in_all*](#in_all), [*in_any*](#in_any), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_into*](#dump_into), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
-| **retry.py** |[*retry_if_none*](#retry_if_none)|
+| **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*string2bool*](#string2bool), [*string2year*](#string2year)|
 | **xml.py** |[*iterparse*](#iterparse)|
@@ -586,12 +586,28 @@ Examples:
 ```
 #### retry.py
 
+##### retry_if_errors
+```
+retry_if_errors(*exceptions, delay=0, tries=1)
+
+Decorator that retries to call the wrapped function
+if any of given exceptions are thrown.
+
+:param exceptions: Lists of exceptions that trigger a retry attempt.
+:param int delay: seconds delay between attempts. default: 0.
+:param int tries: number of attempts. default: 1
+
+Examples:
+@retry_if_errors(ValueError, TypeError, delay=0, tries=1)
+def foo():
+    return 1
+```
 ##### retry_if_none
 ```
 retry_if_none(delay=0, tries=1)
 
-Returns a retry decorator if the callback
-returns None.
+Decorator that retries to call the wrapped function
+if it returns None.
 
 :param int delay: seconds delay between attempts. default: 0.
 :param int tries: number of attempts. default: 1
