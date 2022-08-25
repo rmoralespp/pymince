@@ -47,3 +47,12 @@ def test_catch_other_error():
     with pytest.raises(TypeError):
         decorated_func()
     assert func.call_count == 1
+
+
+def test_not_catch_error():
+    func = unittest.mock.Mock(side_effect=ValueError)
+    decorated_func = pymince.retry.retry_if_errors(tries=3)(func)
+
+    with pytest.raises(ValueError):
+        decorated_func()
+    assert func.call_count == 1
