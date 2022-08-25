@@ -104,7 +104,7 @@ class DigestGetter:
                     return obj.isoformat()
                 elif isinstance(obj, enum.Enum):
                     return obj.value
-                elif isinstance(obj, set):
+                elif isinstance(obj, (frozenset, set)):
                     return sorted(obj)
                 else:
                     return super().default(obj)
