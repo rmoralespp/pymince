@@ -25,10 +25,10 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ### Usage
 | PyModules  | Tools  |
 | :--------  | :----- |
-| **datetime.py** |[*drange*](#drange)|
+| **datetime.py** |[*irange*](#irange)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*key_or_leaf_value*](#key_or_leaf_value)|
 | **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip), [*replace_extension*](#replace_extension)|
-| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*in_all*](#in_all), [*in_any*](#in_any), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
+| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_into*](#dump_into), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
@@ -38,27 +38,32 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 
 #### datetime.py
 
-##### drange
+##### irange
 ```
-drange(start_date, stop_date=None, time_step=None)
+irange(start_date, stop_date=None, time_step=None)
 
-Return an object that produces a sequence of datetime's from "start_date" (inclusive)
+Iterator class that produces a sequence of datetime's from "start_date" (inclusive)
 to "stop_date" (exclusive) by "time_step".
+Supporting __bool__.
+
+:param datetime.datetime start_date: Inclusive.
+:param datetime.datetime stop_date: Exclusive. `utcnow` is used by default.
+:param datetime.delta time_step: one-day `timedelta` is used by default.
 
  Examples:
     import datetime
 
-    import pymince.datetime
+    from pymince.datetime import irange
 
     ini = datetime.datetime.fromisoformat("2022-10-30")
     end = datetime.datetime.fromisoformat("2022-11-02")
     day = datetime.timedelta(days=1)
 
-    obj = pymince.datetime.drange(ini, stop_date=end, time_step=day)
-    next(obj) # --> datetime.datetime(2022, 10, 30, 0, 0)
-    next(obj) # --> datetime.datetime(2022, 10, 31, 0, 0)
-    next(obj) # --> datetime.datetime(2022, 11, 1, 0, 0)
-    next(obj) # --> StopIteration
+    it = irange(ini, stop_date=end, time_step=day)
+    next(it) # --> datetime.datetime(2022, 10, 30, 0, 0)
+    next(it) # --> datetime.datetime(2022, 10, 31, 0, 0)
+    next(it) # --> datetime.datetime(2022, 11, 1, 0, 0)
+    next(it) # --> StopIteration
 ```
 #### dictionary.py
 Useful functions that use dictionaries
@@ -367,6 +372,19 @@ Examples:
     has_only_one([1, 2]) # --> False
     has_only_one([]) # --> False
 ```
+##### ibool
+```
+ibool(iterable)
+
+Iterator class supporting __bool__.
+
+Examples:
+    from pymince.iterator import ibool
+
+    it = ibool((1, 2, 3))
+    bool(it) # --> True
+    list(it) # --> [1, 2, 3]
+```
 ##### in_all
 ```
 in_all(obj, iterables)
@@ -401,21 +419,6 @@ Examples:
     in_any("a", (("a", "b"), "bcd")) # --> True
     in_any("a", (("b", "b"), "def")) # --> False
     in_any("a", ()) # --> False
-```
-##### non_empty_or_none
-```
-non_empty_or_none(iterator)
-
-Returns an non-empty iterator or None according to given "iterator".
-
-:param iterator:
-:return: Iterator or None
-
-Examples:
-    from pymince.iterator import non_empty_or_none
-
-    non_empty_or_none([]) # --> None
-    non_empty_or_none([1,2]) # --> 1 2
 ```
 ##### pad_end
 ```

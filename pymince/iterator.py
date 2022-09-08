@@ -88,8 +88,8 @@ def grouper(iterable, size):
     values = iter(iterable)
     while True:
         sliced = slicer(values, size)
-        if non_empty_sliced := non_empty_or_none(sliced):
-            yield non_empty_sliced
+        if it := ibool(sliced):
+            yield it
         else:
             break
 
@@ -194,25 +194,6 @@ def all_distinct(iterable, key=None):
     return all(has_only_one(group) for _, group in grouped)
 
 
-def non_empty_or_none(iterator):
-    """
-    Returns an non-empty iterator or None according to given "iterator".
-
-    :param iterator:
-    :return: Iterator or None
-
-    Examples:
-        from pymince.iterator import non_empty_or_none
-
-        non_empty_or_none([]) # --> None
-        non_empty_or_none([1,2]) # --> 1 2
-    """
-
-    empty = object()
-    first = next(iterator, empty)
-    return itertools.chain((first,), iterator) if first is not empty else None
-
-
 def has_only_one(iterable):
     """
     Check if given iterable has only one element.
@@ -267,7 +248,8 @@ def splitter(iterable, sep, key=None, maxsplit=-1):
                 yield obj
 
     def recursive(objects, counter):
-        if (iterator := non_empty_or_none(objects)) and (maxsplit == -1 or counter < maxsplit):
+        iterator = ibool(objects)
+        if iterator and (maxsplit == -1 or counter < maxsplit):
             counter += 1
             yield group(iterator)
             yield from recursive(iterator, counter)
@@ -388,3 +370,42 @@ def in_any(obj, iterables):
         in_any("a", ()) # --> False
     """
     return any(contains(it, obj) for it in iter(iterables))
+
+
+class ibool:
+    """
+    Iterator class supporting __bool__.
+
+    Examples:
+        from pymince.iterator import ibool
+
+        it = ibool((1, 2, 3))
+        bool(it) # --> True
+        list(it) # --> [1, 2, 3]
+    """
+
+    __slots__ = ('_it', '_queue')
+
+    def __init__(self, iterable):
+        self._it = iter(iterable)
+        self._queue = collections.deque(maxlen=1)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self._queue.popleft() if self._queue else next(self._it)
+
+    def __bool__(self):
+        """Returns True if the iterator is not consumed, False otherwise."""
+
+        if self._queue:
+            return True
+        else:
+            guard = object()
+            obj = next(self._it, guard)
+            if obj is guard:  # Consumed
+                return False
+            else:
+                self._queue.append(obj)
+                return True
