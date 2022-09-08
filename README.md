@@ -25,6 +25,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ### Usage
 | PyModules  | Tools  |
 | :--------  | :----- |
+| **datetime.py** |[*drange*](#drange)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*key_or_leaf_value*](#key_or_leaf_value)|
 | **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip), [*replace_extension*](#replace_extension)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*in_all*](#in_all), [*in_any*](#in_any), [*non_empty_or_none*](#non_empty_or_none), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
@@ -35,6 +36,30 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*string2bool*](#string2bool), [*string2year*](#string2year)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
+#### datetime.py
+
+##### drange
+```
+drange(start_date, stop_date=None, time_step=None)
+
+Return an object that produces a sequence of datetime's from "start_date" (inclusive)
+to "stop_date" (exclusive) by "time_step".
+
+ Examples:
+    import datetime
+
+    import pymince.datetime
+
+    ini = datetime.datetime.fromisoformat("2022-10-30")
+    end = datetime.datetime.fromisoformat("2022-11-02")
+    day = datetime.timedelta(days=1)
+
+    obj = pymince.datetime.drange(ini, stop_date=end, time_step=day)
+    next(obj) # --> datetime.datetime(2022, 10, 30, 0, 0)
+    next(obj) # --> datetime.datetime(2022, 10, 31, 0, 0)
+    next(obj) # --> datetime.datetime(2022, 11, 1, 0, 0)
+    next(obj) # --> StopIteration
+```
 #### dictionary.py
 Useful functions that use dictionaries
 ##### DigestGetter

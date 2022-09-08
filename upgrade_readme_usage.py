@@ -4,6 +4,7 @@ import logging
 import os
 import re
 
+import pymince.datetime
 import pymince.dictionary
 import pymince.file
 import pymince.iterator
@@ -15,6 +16,7 @@ import pymince.text
 import pymince.xml
 
 modules = (
+    pymince.datetime,
     pymince.dictionary,
     pymince.file,
     pymince.iterator,
