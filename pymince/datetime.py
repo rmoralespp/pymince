@@ -16,15 +16,17 @@ class irange:
 
         from pymince.datetime import irange
 
-        ini = datetime.datetime.fromisoformat("2022-10-30")
+        ini = datetime.datetime.fromisoformat("2022-10-31")
         end = datetime.datetime.fromisoformat("2022-11-02")
         day = datetime.timedelta(days=1)
 
         it = irange(ini, stop_date=end, time_step=day)
-        next(it) # --> datetime.datetime(2022, 10, 30, 0, 0)
+
+        bool(it) # --> True
         next(it) # --> datetime.datetime(2022, 10, 31, 0, 0)
         next(it) # --> datetime.datetime(2022, 11, 1, 0, 0)
-        next(it) # --> StopIteration
+        next(it) # --> raise StopIteration
+        bool(it) # --> False
     """
 
     __slots__ = ('_init', '_stop', '_step', '_this')
