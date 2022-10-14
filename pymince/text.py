@@ -1,8 +1,6 @@
 """
 Useful functions for working with strings.
 """
-import contextlib
-import datetime
 import functools
 import re
 
@@ -76,80 +74,3 @@ def remove_decimal_zeros(value, decimal_sep='.', min_decimals=None):
         dec_part = f'{dec_part}{dec_diff}'
 
     return f'{int_part}{decimal_sep}{dec_part}' if dec_part else int_part
-
-
-def string2bool(value, ignorecase=False):
-    """
-    Function to convert a string representation of
-    truth to True or False.
-
-    :param str value: value to convert.
-    :param bool ignorecase: Uppercase/lowercase letters of given "value" are ignored.
-
-    :raise: "ValueError" if "value" is anything else.
-    :rtype: bool
-
-    Examples:
-        from pymince.text import string2bool
-
-        string2bool("true") # --> True
-        string2bool("false") # --> False
-
-        string2bool("TRUE") # --> ValueError
-        string2bool("TRUE", ignorecase=True) # --> True
-
-        string2bool("FALSE") # --> ValueError
-        string2bool("FALSE", ignorecase=True) # --> False
-    """
-
-    checking = value.lower() if ignorecase else value
-    if checking == 'true':
-        return True
-    elif checking == 'false':
-        return False
-    else:
-        raise ValueError
-
-
-def string2year(value, gte=None, lte=None, shift=None):
-    """
-    Function to convert a string year representation to integer year.
-
-    :param str value: Value to convert.
-    :param Optional[int] gte: if it is specified is required that: year >= gte
-    :param Optional[int] lte: if it is specified is required that: year <= lte
-    :param Optional[int] shift: use a two-digit year on shift
-
-    :raise: "ValueError" if "value" cannot be converted.
-    :rtype: int
-
-    Examples:
-        from pymince.text import string2year
-
-        string2year("53", shift=None) # --> 2053
-        string2year("53", shift=1953) # --> 1953
-        string2year("52", shift=1953) # --> 2052
-        string2year("54", shift=1953) # --> 1954
-
-        string2year("1954") # --> 1954
-
-        string2year("123") # --> ValueError
-        string2year("1955", gte=1956) # --> ValueError
-        string2year("1955", lte=1954) # --> ValueError
-    """
-
-    year = None
-    for rep in ('%Y', '%y'):
-        with contextlib.suppress(ValueError, TypeError):
-            year = datetime.datetime.strptime(value, rep).year
-            if shift and rep == '%y':
-                # Use shift for year of two-digit format
-                year = (year - shift) % 100 + shift
-            if (gte and not year >= gte) or (lte and not year <= lte):
-                year = None
-            break
-
-    if year:
-        return year
-    else:
-        raise ValueError

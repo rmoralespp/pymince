@@ -37,19 +37,19 @@ def all_true_values(dictionary, keys):
         return all(values) if len(keys) > 1 else bool(values)
 
 
-def key_or_leaf_value(key, dictionary):
+def find_leaf_value(key, dictionary):
     """
-    Find leaf key in dictionary.
+    Find leaf value in mapping.
 
-    :param str key: Key to find.
+    :param str key:
     :param dict dictionary:
 
     Examples:
-        from pymince.dictionary import key_or_leaf_value
+        from pymince.dictionary import find_leaf_value
 
-        key_or_leaf_value('a', {}) # --> 'a'
-        key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) # --> 'c'
-        key_or_leaf_value('a', {'a': 'a'}) # --> 'a'
+        find_leaf_value('a', {}) # --> 'a'
+        find_leaf_value('a', {'a': 'b', 'b': 'c'}) # --> 'c'
+        find_leaf_value('a', {'a': 'a'}) # --> 'a'
     """
     while True:
         if key is not None and key in dictionary:

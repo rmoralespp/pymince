@@ -4,9 +4,11 @@ import logging
 import os
 import re
 
-import pymince.datetime
+import pymince.boolean
+import pymince.dates
 import pymince.dictionary
 import pymince.file
+import pymince.functional
 import pymince.iterator
 import pymince.json
 import pymince.logging
@@ -16,9 +18,11 @@ import pymince.text
 import pymince.xml
 
 modules = (
-    pymince.datetime,
+    pymince.boolean,
+    pymince.dates,
     pymince.dictionary,
     pymince.file,
+    pymince.functional,
     pymince.iterator,
     pymince.json,
     pymince.logging,

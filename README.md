@@ -25,26 +25,54 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ### Usage
 | PyModules  | Tools  |
 | :--------  | :----- |
-| **datetime.py** |[*irange*](#irange)|
-| **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*key_or_leaf_value*](#key_or_leaf_value)|
+| **boolean.py** |[*string2bool*](#string2bool)|
+| **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
+| **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
 | **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip), [*replace_extension*](#replace_extension)|
+| **functional.py** |[*classproperty*](#classproperty)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_into*](#dump_into), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*string2bool*](#string2bool), [*string2year*](#string2year)|
+| **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
-#### datetime.py
+#### boolean.py
+
+##### string2bool
+```
+string2bool(value, ignorecase=False)
+
+Function to convert a string representation of
+truth to True or False.
+
+:param str value: value to convert.
+:param bool ignorecase: Uppercase/lowercase letters of given "value" are ignored.
+
+:raise: "ValueError" if "value" is anything else.
+:rtype: bool
+
+Examples:
+    from pymince.boolean import string2bool
+
+    string2bool("true") # --> True
+    string2bool("false") # --> False
+
+    string2bool("TRUE") # --> ValueError
+    string2bool("TRUE", ignorecase=True) # --> True
+
+    string2bool("FALSE") # --> ValueError
+    string2bool("FALSE", ignorecase=True) # --> False
+```
+#### dates.py
 
 ##### irange
 ```
 irange(start_date, stop_date=None, time_step=None)
 
-Iterator class that produces a sequence of datetime's from "start_date" (inclusive)
+Returns a generator that produces a sequence of datetime's from "start_date" (inclusive)
 to "stop_date" (exclusive) by "time_step".
-Supporting __bool__.
 
 :param datetime.datetime start_date: Inclusive.
 :param datetime.datetime stop_date: Exclusive. `utcnow` is used by default.
@@ -53,7 +81,7 @@ Supporting __bool__.
  Examples:
     import datetime
 
-    from pymince.datetime import irange
+    from pymince.dates import irange
 
     ini = datetime.datetime.fromisoformat("2022-10-31")
     end = datetime.datetime.fromisoformat("2022-11-02")
@@ -61,11 +89,37 @@ Supporting __bool__.
 
     it = irange(ini, stop_date=end, time_step=day)
 
-    bool(it) # --> True
     next(it) # --> datetime.datetime(2022, 10, 31, 0, 0)
     next(it) # --> datetime.datetime(2022, 11, 1, 0, 0)
     next(it) # --> raise StopIteration
-    bool(it) # --> False
+```
+##### string2year
+```
+string2year(value, gte=None, lte=None, shift=None)
+
+Function to convert a string year representation to integer year.
+
+:param str value: Value to convert.
+:param Optional[int] gte: if it is specified is required that: year >= gte
+:param Optional[int] lte: if it is specified is required that: year <= lte
+:param Optional[int] shift: use a two-digit year on shift
+
+:raise: "ValueError" if "value" cannot be converted.
+:rtype: int
+
+Examples:
+    from pymince.dates import string2year
+
+    string2year("53", shift=None) # --> 2053
+    string2year("53", shift=1953) # --> 1953
+    string2year("52", shift=1953) # --> 2052
+    string2year("54", shift=1953) # --> 1954
+
+    string2year("1954") # --> 1954
+
+    string2year("123") # --> ValueError
+    string2year("1955", gte=1956) # --> ValueError
+    string2year("1955", lte=1954) # --> ValueError
 ```
 #### dictionary.py
 Useful functions that use dictionaries
@@ -103,6 +157,22 @@ from pymince.dictionary import all_true_values
 all_true_values({"a": 1, "b": 2}, ("a", "b")) # --> True
 all_true_values({"a": 1, "b": 0}, ("a", "b")) # --> False
 all_true_values({"a": 1, "b": 0}, ("a",)) # --> True
+```
+##### find_leaf_value
+```
+find_leaf_value(key, dictionary)
+
+Find leaf value in mapping.
+
+:param str key:
+:param dict dictionary:
+
+Examples:
+    from pymince.dictionary import find_leaf_value
+
+    find_leaf_value('a', {}) # --> 'a'
+    find_leaf_value('a', {'a': 'b', 'b': 'c'}) # --> 'c'
+    find_leaf_value('a', {'a': 'a'}) # --> 'a'
 ```
 ##### from_objects
 ```
@@ -144,22 +214,6 @@ Examples:
     my_dict = frozendict(a=1, b=2)
     my_dict["a"] # --> 1
     list(my_dict.items())  # --> [("a", 1), ("b", 2)]
-```
-##### key_or_leaf_value
-```
-key_or_leaf_value(key, dictionary)
-
-Find leaf key in dictionary.
-
-:param str key: Key to find.
-:param dict dictionary:
-
-Examples:
-    from pymince.dictionary import key_or_leaf_value
-
-    key_or_leaf_value('a', {}) # --> 'a'
-    key_or_leaf_value('a', {'a': 'b', 'b': 'c'}) # --> 'c'
-    key_or_leaf_value('a', {'a': 'a'}) # --> 'a'
 ```
 #### file.py
 
@@ -248,6 +302,25 @@ Examples:
     replace_extension("/home/user/file.old", new_ext=".new") # --> "/home/user/file.new"
     replace_extension("/home/user/file.old", old_ext=".old", new_ext=".new") # --> "/home/user/file.new"
     replace_extension("/home/user/file.old", old_ext=".new", new_ext=".new") # --> "/home/user/file.old"
+```
+#### functional.py
+
+##### classproperty
+```
+classproperty(method=None)
+
+Decorator that converts a method with a single cls argument into a property
+that can be accessed directly from the class.
+
+Examples:
+    from pymince.functional import classproperty
+
+    class MyClass:
+        __foo = "var"
+
+        @classproperty
+        def foo(cls):
+            return cls.__foo
 ```
 #### iterator.py
 Functions that use iterators for efficient loops
@@ -717,59 +790,6 @@ Examples:
 
     replace("No, woman, no cry", [","], ";") # --> "No; woman; no cry"
     replace("No, woman, no cry", [","], ";", count=1) # --> "No; woman, no cry"
-```
-##### string2bool
-```
-string2bool(value, ignorecase=False)
-
-Function to convert a string representation of
-truth to True or False.
-
-:param str value: value to convert.
-:param bool ignorecase: Uppercase/lowercase letters of given "value" are ignored.
-
-:raise: "ValueError" if "value" is anything else.
-:rtype: bool
-
-Examples:
-    from pymince.text import string2bool
-
-    string2bool("true") # --> True
-    string2bool("false") # --> False
-
-    string2bool("TRUE") # --> ValueError
-    string2bool("TRUE", ignorecase=True) # --> True
-
-    string2bool("FALSE") # --> ValueError
-    string2bool("FALSE", ignorecase=True) # --> False
-```
-##### string2year
-```
-string2year(value, gte=None, lte=None, shift=None)
-
-Function to convert a string year representation to integer year.
-
-:param str value: Value to convert.
-:param Optional[int] gte: if it is specified is required that: year >= gte
-:param Optional[int] lte: if it is specified is required that: year <= lte
-:param Optional[int] shift: use a two-digit year on shift
-
-:raise: "ValueError" if "value" cannot be converted.
-:rtype: int
-
-Examples:
-    from pymince.text import string2year
-
-    string2year("53", shift=None) # --> 2053
-    string2year("53", shift=1953) # --> 1953
-    string2year("52", shift=1953) # --> 2052
-    string2year("54", shift=1953) # --> 1954
-
-    string2year("1954") # --> 1954
-
-    string2year("123") # --> ValueError
-    string2year("1955", gte=1956) # --> ValueError
-    string2year("1955", lte=1954) # --> ValueError
 ```
 #### xml.py
 
