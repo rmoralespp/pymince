@@ -36,6 +36,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
 #### boolean.py
@@ -790,6 +791,37 @@ Examples:
 
     replace("No, woman, no cry", [","], ";") # --> "No; woman; no cry"
     replace("No, woman, no cry", [","], ";", count=1) # --> "No; woman, no cry"
+```
+#### warnings.py
+
+##### deprecated
+```
+deprecated(fn)
+
+This is a decorator which can be used to mark functions
+as deprecated. It will result in a warning being emitted
+when the function is used.
+http://code.activestate.com/recipes/391367-deprecated/?in=lang-python
+
+Examples:
+    from pymince.warnings import deprecated
+
+    @deprecated
+    def check_function():
+        pass
+
+    class SomeClass:
+        @deprecated
+        def check_method(self):
+            pass
+
+    @deprecated
+    class CheckClass:
+        pass
+
+    >> check_function() # DeprecationWarning  --> 'Deprecated "check_function".'
+    >> SomeClass().check_method() #  DeprecationWarning --> 'Deprecated "check_method".'
+    >> CheckClass() # DeprecationWarning  --> 'Deprecated "CheckClass".'
 ```
 #### xml.py
 
