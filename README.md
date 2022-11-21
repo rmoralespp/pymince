@@ -28,10 +28,10 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **boolean.py** |[*string2bool*](#string2bool)|
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
-| **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_on_zip*](#match_on_zip), [*open_on_zip*](#open_on_zip), [*replace_extension*](#replace_extension)|
+| **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*open_from_zip*](#open_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*classproperty*](#classproperty)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
-| **json.py** |[*dump_into*](#dump_into), [*load_from*](#load_from)|
+| **json.py** |[*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
@@ -242,42 +242,45 @@ Function to check if the given path is an empty directory.
 :param str path:
 :rtype: bool
 ```
-##### match_on_zip
+##### match_from_zip
 ```
-match_on_zip(zip_file, pattern)
+match_from_zip(zip_file, pattern)
 
 Make an iterator that returns file names in the zip file that
 match the given pattern.
 Uppercase/lowercase letters are ignored.
 
-:param zip_file: instance of ZipFile class
+:param zip_file: ZipFile object or zip path.
 :param pattern: "re.Pattern" to filter filename list
 :return: Iterator with the filenames found
 
 Examples:
     import pymince.file
-    pymince.file.match_on_zip(zip_file, "^file") # --> file1.log file2.txt
+    pymince.file.match_from_zip("archive.zip", "^file") # --> file1.log file2.txt
+    pymince.file.match_from_zip(zipfile.ZipFile("archive.zip"), "^file") # --> file1.log file2.txt
 ```
-##### open_on_zip
+##### open_from_zip
 ```
-open_on_zip(zip_file, filename)
+open_from_zip(zip_file, filename, mode='r')
 
-Open a file that is inside a zip file.
+Open a file that is inside a zip file
+using "utf-8" encoding.
 
 :param zip_file: instance of ZipFile class
 :param str filename:
+:param str mode: Required opening zip modes "r" or "w"'. Default reading mode
 
 Examples:
 -------------------------------------------------
 import zipfile
-from pymince.file import open_on_zip
+from pymince.file import open_from_zip
 
 with zipfile.ZipFile(zip_filename) as zf:
     # example1
-    with open_on_zip(zf, "foo1.txt") as fd1:
+    with open_from_zip(zf, "foo1.txt") as fd1:
         foo1_string = fd1.read()
     # example2
-    with open_on_zip(zf, "foo2.txt") as fd2:
+    with open_from_zip(zf, "foo2.txt") as fd2:
         foo2_string = fd2.read()
 -------------------------------------------------
 ```
@@ -619,25 +622,47 @@ Examples:
 
 ##### dump_into
 ```
-dump_into(filename, payload, indent=2)
+dump_into(filename, payload, indent=None)
 
-Dump JSON to a file.
+Dump JSON to a file using "utf-8" encoding.
 
 Examples:
     from pymince.json import dump_into
 
     dump_into("foo.json", {"key": "value"})
 ```
+##### dump_into_zip
+```
+dump_into_zip(zip_path, arcname, payload, indent=None)
+
+Dump JSON into the zip archive under the name arcname.
+
+Examples:
+    from pymince.json import dump_into_zip
+
+    dump_into_zip("archive.zip", "foo.json", {"key": "value"})
+```
 ##### load_from
 ```
 load_from(filename)
 
-Load JSON from a file.
+Load JSON from a file using "utf-8" encoding.
 
 Examples:
     from pymince.json import load_from
 
     dictionary = load_from("foo.json")
+```
+##### load_from_zip
+```
+load_from_zip(zip_path, arcname)
+
+Load JSON from a file named "arcname" inside a zip archive.
+
+Examples:
+    from pymince.json import load_from_zip
+
+    dictionary = load_from_zip("archive.zip", "foo.json")
 ```
 #### logging.py
 

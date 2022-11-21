@@ -3,51 +3,65 @@ import io
 import os
 import re
 import shutil
+import zipfile
 
 
 @contextlib.contextmanager
-def open_on_zip(zip_file, filename):
+def open_from_zip(zip_file, filename, mode="r"):
     """
-    Open a file that is inside a zip file.
+    Open a file that is inside a zip file
+    using "utf-8" encoding.
 
     :param zip_file: instance of ZipFile class
     :param str filename:
+    :param str mode: Required opening zip modes "r" or "w"'. Default reading mode
 
     Examples:
     -------------------------------------------------
     import zipfile
-    from pymince.file import open_on_zip
+    from pymince.file import open_from_zip
 
     with zipfile.ZipFile(zip_filename) as zf:
         # example1
-        with open_on_zip(zf, "foo1.txt") as fd1:
+        with open_from_zip(zf, "foo1.txt") as fd1:
             foo1_string = fd1.read()
         # example2
-        with open_on_zip(zf, "foo2.txt") as fd2:
+        with open_from_zip(zf, "foo2.txt") as fd2:
             foo2_string = fd2.read()
     -------------------------------------------------
     """
-    with zip_file.open(filename) as fd:
+    with zip_file.open(filename, mode=mode) as fd:
         yield io.TextIOWrapper(fd, encoding="utf-8")
 
 
-def match_on_zip(zip_file, pattern):
+def match_from_zip(zip_file, pattern):
     """
     Make an iterator that returns file names in the zip file that
     match the given pattern.
     Uppercase/lowercase letters are ignored.
 
-    :param zip_file: instance of ZipFile class
+    :param zip_file: ZipFile object or zip path.
     :param pattern: "re.Pattern" to filter filename list
     :return: Iterator with the filenames found
 
     Examples:
         import pymince.file
-        pymince.file.match_on_zip(zip_file, "^file") # --> file1.log file2.txt
-
+        pymince.file.match_from_zip("archive.zip", "^file") # --> file1.log file2.txt
+        pymince.file.match_from_zip(zipfile.ZipFile("archive.zip"), "^file") # --> file1.log file2.txt
     """
-    matcher = re.compile(pattern, re.IGNORECASE).match
-    return iter(filter(matcher, zip_file.namelist()))
+
+    def match(file):
+        apply = re.compile(pattern, re.IGNORECASE).match
+        return iter(filter(apply, file.namelist()))
+
+    if isinstance(zip_file, zipfile.ZipFile):
+        return match(zip_file)
+    else:
+        if isinstance(zip_file, str):
+            with zipfile.ZipFile(zip_file) as zf:
+                return match(zf)
+        else:
+            raise ValueError(zip_file)
 
 
 def ensure_directory(path, cleaning=False):

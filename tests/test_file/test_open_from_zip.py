@@ -7,7 +7,7 @@ import pymince.file
 import tests.test_file
 
 
-def test_open_on_zip():
+def test_open_from_zip_for_read():
     with tempfile.TemporaryDirectory() as tmpdir:
         basename1, content1 = "file1.log", "contentOfFile1"
         basename2, content2 = "file2.log", "contentOfFile2"
@@ -18,7 +18,7 @@ def test_open_on_zip():
 
         zip_path = shutil.make_archive(tmpdir, "zip", root_dir=tmpdir)
         with zipfile.ZipFile(zip_path) as zp:
-            with pymince.file.open_on_zip(zp, basename1) as file1:
+            with pymince.file.open_from_zip(zp, basename1) as file1:
                 assert file1.read() == content1
-            with pymince.file.open_on_zip(zp, basename2) as file2:
+            with pymince.file.open_from_zip(zp, basename2) as file2:
                 assert file2.read() == content2
