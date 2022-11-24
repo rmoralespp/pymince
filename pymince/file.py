@@ -1,37 +1,9 @@
-import contextlib
-import io
+import functools
+import gzip
 import os
 import re
 import shutil
 import zipfile
-
-
-@contextlib.contextmanager
-def open_from_zip(zip_file, filename, mode="r"):
-    """
-    Open a file that is inside a zip file
-    using "utf-8" encoding.
-
-    :param zip_file: instance of ZipFile class
-    :param str filename:
-    :param str mode: Required opening zip modes "r" or "w"'. Default reading mode
-
-    Examples:
-    -------------------------------------------------
-    import zipfile
-    from pymince.file import open_from_zip
-
-    with zipfile.ZipFile(zip_filename) as zf:
-        # example1
-        with open_from_zip(zf, "foo1.txt") as fd1:
-            foo1_string = fd1.read()
-        # example2
-        with open_from_zip(zf, "foo2.txt") as fd2:
-            foo2_string = fd2.read()
-    -------------------------------------------------
-    """
-    with zip_file.open(filename, mode=mode) as fd:
-        yield io.TextIOWrapper(fd, encoding="utf-8")
 
 
 def match_from_zip(zip_file, pattern):
@@ -56,12 +28,11 @@ def match_from_zip(zip_file, pattern):
 
     if isinstance(zip_file, zipfile.ZipFile):
         return match(zip_file)
+    elif isinstance(zip_file, str):
+        with zipfile.ZipFile(zip_file) as zf:
+            return match(zf)
     else:
-        if isinstance(zip_file, str):
-            with zipfile.ZipFile(zip_file) as zf:
-                return match(zf)
-        else:
-            raise ValueError(zip_file)
+        raise ValueError(zip_file)
 
 
 def ensure_directory(path, cleaning=False):
@@ -127,3 +98,24 @@ def replace_extension(filename, old_ext=None, new_ext=None):
         return root + (new_ext or "")
     else:
         return filename
+
+
+def decompress(src_path, dst_path):
+    """
+    Decompress given file in blocks using gzip.
+
+    :param str src_path: source file path
+    :param str dst_path: destination file(unzipped) path
+    :return: dst_path
+
+     Examples:
+        from pymince.file import decompress
+
+        decompress("/foo/src.txt.gz", "/baz/dst.txt") # --> "/baz/dst.txt"
+    """
+
+    with gzip.open(src_path) as src:
+        with open(dst_path, 'wb') as dst:
+            lines = iter(functools.partial(src.read, 64 * 1024), b'')
+            dst.writelines(lines)
+    return dst_path

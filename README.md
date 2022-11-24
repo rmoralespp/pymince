@@ -28,7 +28,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **boolean.py** |[*string2bool*](#string2bool)|
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
-| **file.py** |[*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*open_from_zip*](#open_from_zip), [*replace_extension*](#replace_extension)|
+| **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*classproperty*](#classproperty)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
@@ -218,6 +218,21 @@ Examples:
 ```
 #### file.py
 
+##### decompress
+```
+decompress(src_path, dst_path)
+
+Decompress given file in blocks using gzip.
+
+:param str src_path: source file path
+:param str dst_path: destination file(unzipped) path
+:return: dst_path
+
+ Examples:
+    from pymince.file import decompress
+
+    decompress("/foo/src.txt.gz", "/baz/dst.txt") # --> "/baz/dst.txt"
+```
 ##### ensure_directory
 ```
 ensure_directory(path, cleaning=False)
@@ -258,31 +273,6 @@ Examples:
     import pymince.file
     pymince.file.match_from_zip("archive.zip", "^file") # --> file1.log file2.txt
     pymince.file.match_from_zip(zipfile.ZipFile("archive.zip"), "^file") # --> file1.log file2.txt
-```
-##### open_from_zip
-```
-open_from_zip(zip_file, filename, mode='r')
-
-Open a file that is inside a zip file
-using "utf-8" encoding.
-
-:param zip_file: instance of ZipFile class
-:param str filename:
-:param str mode: Required opening zip modes "r" or "w"'. Default reading mode
-
-Examples:
--------------------------------------------------
-import zipfile
-from pymince.file import open_from_zip
-
-with zipfile.ZipFile(zip_filename) as zf:
-    # example1
-    with open_from_zip(zf, "foo1.txt") as fd1:
-        foo1_string = fd1.read()
-    # example2
-    with open_from_zip(zf, "foo2.txt") as fd2:
-        foo2_string = fd2.read()
--------------------------------------------------
 ```
 ##### replace_extension
 ```
