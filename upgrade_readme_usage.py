@@ -4,6 +4,7 @@ import logging
 import os
 import re
 
+import pymince.algorithm
 import pymince.boolean
 import pymince.dates
 import pymince.dictionary
@@ -18,8 +19,8 @@ import pymince.text
 import pymince.warnings
 import pymince.xml
 
-
 modules = (
+    pymince.algorithm,
     pymince.boolean,
     pymince.dates,
     pymince.dictionary,
@@ -46,10 +47,15 @@ def member2markdown(member):
     name = member.__name__
     docstring = cleandoc(member)
 
+    try:
+        signature = inspect.signature(member)
+    except ValueError:
+        signature = ()
+
     lines = (
         f"##### {member.__name__}",
         "```",
-        f"{name}{inspect.signature(member)}",
+        f"{name}{signature}",
         "",
         f"{docstring}",
         "```",

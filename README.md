@@ -25,6 +25,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ### Usage
 | PyModules  | Tools  |
 | :--------  | :----- |
+| **algorithm.py** |[*luhn*](#luhn)|
 | **boolean.py** |[*string2bool*](#string2bool)|
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
@@ -35,10 +36,23 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **text.py** |[*fullstr*](#fullstr), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
+#### algorithm.py
+
+##### luhn
+```
+luhn(value: str) -> bool
+
+The Luhn algorithm or Luhn formula, also known as the "modulus 10" or "mod 10" algorithm,
+named after its creator, IBM scientist Hans Peter Luhn,
+is a simple checksum formula used to validate a variety of
+identification numbers, such as credit card numbers, IMEI numbers, National Provider Identifier numbers
+
+Based on: https://en.wikipedia.org/wiki/Luhn_algorithm
+```
 #### boolean.py
 
 ##### string2bool
@@ -760,6 +774,26 @@ def foo(data=None):
 ```
 #### text.py
 Useful functions for working with strings.
+##### fullstr
+```
+fullstr()
+
+Custom string inheriting from "str" which adds
+the following methods:
+
+- is_url(self, schemes=None, hostnames=None)
+- is_int(self)
+- is_positive_int(self)
+- is_negative_int(self)
+- is_payment_card_num(self)
+- is_email_address(self) # TODO
+- is_percent(self)  # TODO
+
+Examples:
+    from pymince.text import fullstr
+
+    fullstr("6011 0000 0000 0012").is_payment_card_num() # True
+```
 ##### remove_decimal_zeros
 ```
 remove_decimal_zeros(value, decimal_sep='.', min_decimals=None)

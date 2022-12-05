@@ -3,8 +3,106 @@ Useful functions for working with strings.
 """
 import functools
 import re
+import urllib.parse
+
+import pymince.algorithm
 
 __remove_number_commas = functools.partial(re.compile("(?<=\\d),(?=\\d{3})").sub, "")
+
+
+class fullstr(str):
+    """
+    Custom string inheriting from "str" which adds
+    the following methods:
+
+    - is_url(self, schemes=None, hostnames=None)
+    - is_int(self)
+    - is_positive_int(self)
+    - is_negative_int(self)
+    - is_payment_card_num(self)
+    - is_email_address(self) # TODO
+    - is_percent(self)  # TODO
+
+    Examples:
+        from pymince.text import fullstr
+
+        fullstr("6011 0000 0000 0012").is_payment_card_num() # True
+    """
+
+    def is_url(self, schemes=None, hostnames=None):
+        """
+        Check if the string is a URL according to the
+        given schemes and host-names.
+
+        :param Optional[Container[str]] schemes: ("http", "https")
+        :param Optional[Container[str]] hostnames: ("www.python.org", "github.com", "localhost")
+        :rtype: bool
+
+        Examples:
+            from pymince.text import fullstr
+
+            # True
+            fullstr("https://github.com/").is_url()
+            fullstr("https://github.com/").is_url(hostnames=("github.com",))
+            fullstr("https://github.com/").is_url(schemes=("https",), hostnames=("github.com",))
+
+            # False
+            fullstr("https://github.com/").is_url(schemes=("http",))
+            fullstr("https://github.com/").is_url(hostnames=("www.python.org", "localhost"))
+        """
+
+        res = urllib.parse.urlparse(self)
+        if not res.scheme or (schemes and res.scheme not in schemes):
+            return False
+        if not res.netloc or (hostnames and res.hostname not in hostnames):
+            return False
+        try:
+            _ = res.port
+        except ValueError:
+            return False
+        else:
+            return True
+
+    def is_int(self):
+        """Check if the string is a integer number."""
+        return bool(re.fullmatch(r"^[-+]?[1-9]\d*\.?[0]*$", self))
+
+    def is_positive_int(self):
+        """Check if the string is a positive integer number."""
+        return bool(re.fullmatch(r"^[1-9]\d*\.?[0]*$", self))
+
+    def is_negative_int(self):
+        """Check if the string is a negative integer number."""
+        return bool(re.fullmatch(r"^-[1-9]\d*\.?[0]*$", self))
+
+    def is_payment_card_num(self):
+        """
+        Check if the string is a valid payment
+        card number.
+
+        https://en.wikipedia.org/wiki/Payment_card_number#Issuer_identification_number_(IIN)
+        """
+
+        numb = self.replace(" ", "")
+        size = len(numb)
+        if 12 <= size <= 19 and pymince.algorithm.luhn(numb):
+            if numb[0] == '4':  # Visa
+                isvalid = size in {13, 16, 19}
+            elif 51 <= int(numb[:2]) <= 55:  # Mastercard
+                isvalid = size == 16
+            elif numb[:2] in {'34', '37'}:  # American Express
+                isvalid = size == 15
+            else:
+                isvalid = True
+            return isvalid
+        else:
+            return False
+
+    def is_email_address(self):
+        raise NotImplementedError
+
+    def is_percent(self):
+        raise NotImplementedError
 
 
 def remove_number_commas(string):
