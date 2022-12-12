@@ -785,7 +785,8 @@ the following methods:
 - is_int(self)
 - is_positive_int(self)
 - is_negative_int(self)
-- is_payment_card_num(self)
+- is_payment_card(self)
+- is_binary(self)
 - is_email_address(self) # TODO
 - is_percent(self)  # TODO
 

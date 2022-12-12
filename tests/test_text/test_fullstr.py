@@ -2,36 +2,68 @@ import pytest
 
 import pymince.text
 
+int_positives = (
+    "10",
+    "10.",
+    "10.0",
+    "+10",
+    "+10.",
+    "+10.0",
+)
+
+int_negatives = (
+    "-10",
+    "-10.",
+    "-10.0",
+)
+
+not_int = (
+    ""
+    "0",
+    "+0",
+    "-0",
+    "0.0",
+    "+0.0",
+    "-0.0",
+    "01",
+    "foo",
+    "foo123",
+    "1.0001",
+    "1.0.00",
+    "10,",
+    "10,0",
+)
+
 
 class TestIsAnyInt:
 
-    @pytest.mark.parametrize('numb', ["10", "-10", "999", "10.", "10.0", "10.0000"])
+    @pytest.mark.parametrize('numb', int_positives + int_negatives)
     def test_true(self, numb):
         assert pymince.text.fullstr(numb).is_int()
 
-    @pytest.mark.parametrize('numb', ["0", "-10.50", "10.50", "0.0", "foo", "01", "-01", "10.0001"])
+    @pytest.mark.parametrize('numb', not_int)
     def test_false(self, numb):
         assert not pymince.text.fullstr(numb).is_int()
 
 
 class TestIsPositiveInt:
 
-    @pytest.mark.parametrize("param", ["1", "10", "2", "345678921", "1.000", "1."])
+    @pytest.mark.parametrize("param", int_positives)
     def test_true(self, param):
         assert pymince.text.fullstr(param).is_positive_int()
 
-    @pytest.mark.parametrize("param", ["0", "-1", "01", "asdf123", "1.0001"])
+    @pytest.mark.parametrize("param", not_int + int_negatives)
     def test_false(self, param):
         assert not pymince.text.fullstr(param).is_positive_int()
 
 
 class TestIsNegativeInt:
 
-    @pytest.mark.parametrize("param", ["-1", "-10", "-2", "-345678921", "-2.", "-1.0000"])
+    @pytest.mark.parametrize("param", int_negatives)
     def test_true(self, param):
         assert pymince.text.fullstr(param).is_negative_int()
 
-    @pytest.mark.parametrize("param", ["0", "1", "-01", "asdf123", "-0.1", "-1.0001"])
+    @pytest.mark.parametrize("param", not_int + int_positives)
     def test_false(self, param):
         assert not pymince.text.fullstr(param).is_negative_int()
 
@@ -41,6 +73,7 @@ class TestIsUrl:
     hostnames = ("example.org", "example.com", 'localhost', "www.example.com")
 
     @pytest.mark.parametrize("param", [
+        ""
         "foo",
         "example.com",
         'http:///example.com/',
@@ -82,7 +115,7 @@ class TestIsUrl:
         assert pymince.text.fullstr(param).is_url(schemes=self.schemes, hostnames=self.hostnames)
 
 
-class TestIsCardNumber:
+class TestIsPaymentCard:
 
     @pytest.mark.parametrize("card_numb", [
         "371449635398431",  # AMEX
@@ -97,9 +130,10 @@ class TestIsCardNumber:
         "4050000000001",  # VISA
     ])
     def test_true(self, card_numb):
-        assert pymince.text.fullstr(card_numb).is_payment_card_num()
+        assert pymince.text.fullstr(card_numb).is_payment_card()
 
     @pytest.mark.parametrize("card_numb", [
+        ""
         "3710293",
         "5190990281925290",
         "37168200192719989",
@@ -107,4 +141,30 @@ class TestIsCardNumber:
         "1234567890123456",
     ])
     def test_false(self, card_numb):
-        assert not pymince.text.fullstr(card_numb).is_payment_card_num()
+        assert not pymince.text.fullstr(card_numb).is_payment_card()
+
+
+class TestIsBinary:
+
+    @pytest.mark.parametrize("v", [
+        "00",
+        "0",
+        "1",
+        "01",
+        "10",
+        "101010000111",
+    ])
+    def test_true(self, v):
+        assert pymince.text.fullstr(v).is_binary()
+
+    @pytest.mark.parametrize("v", [
+        ""
+        "02",
+        "12",
+        "21",
+        "20",
+        "012",
+        "foo"
+    ])
+    def test_false(self, v):
+        assert not pymince.text.fullstr(v).is_binary()

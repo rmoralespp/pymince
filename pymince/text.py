@@ -9,6 +9,11 @@ import pymince.algorithm
 
 __remove_number_commas = functools.partial(re.compile("(?<=\\d),(?=\\d{3})").sub, "")
 
+_int_regexp_any = re.compile(r"^[-+]?[1-9]\d*\.?[0]*$")
+_int_regexp_pos = re.compile(r"^[+]?[1-9]\d*\.?[0]*$")
+_int_regexp_neg = re.compile(r"^-[1-9]\d*\.?[0]*$")
+_bin_regexp_not = re.compile('[^01]')
+
 
 class fullstr(str):
     """
@@ -19,7 +24,8 @@ class fullstr(str):
     - is_int(self)
     - is_positive_int(self)
     - is_negative_int(self)
-    - is_payment_card_num(self)
+    - is_payment_card(self)
+    - is_binary(self)
     - is_email_address(self) # TODO
     - is_percent(self)  # TODO
 
@@ -63,19 +69,45 @@ class fullstr(str):
         else:
             return True
 
+    def is_binary(self):
+        """Check if the string is binary or not."""
+        return not next(_bin_regexp_not.finditer(self), None)
+
     def is_int(self):
-        """Check if the string is a integer number."""
-        return bool(re.fullmatch(r"^[-+]?[1-9]\d*\.?[0]*$", self))
+        """
+        Check if the string is the representation of
+        a integer number.
+
+        True:
+         "10",   "10.",   "10.0",
+        "+10",  "+10.",  "+10.0",
+        "-10",  "-10.",  "-10.0"
+        """
+        return bool(_int_regexp_any.fullmatch(self))
 
     def is_positive_int(self):
-        """Check if the string is a positive integer number."""
-        return bool(re.fullmatch(r"^[1-9]\d*\.?[0]*$", self))
+        """
+        Check if the string is the representation of
+        positive integer number.
+
+        True:
+         "10",   "10.",   "10.0",
+        "+10",  "+10.",  "+10.0",
+        """
+        return bool(_int_regexp_pos.fullmatch(self))
 
     def is_negative_int(self):
-        """Check if the string is a negative integer number."""
-        return bool(re.fullmatch(r"^-[1-9]\d*\.?[0]*$", self))
+        """
+        Check if the string is the representation of
+        negative integer number.
 
-    def is_payment_card_num(self):
+        True:
+        "-10",  "-10.",  "-10.0"
+        """
+
+        return bool(_int_regexp_neg.fullmatch(self))
+
+    def is_payment_card(self):
         """
         Check if the string is a valid payment
         card number.
