@@ -36,7 +36,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*fullstr*](#fullstr), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **text.py** |[*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_url*](#is_url), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
@@ -799,11 +799,102 @@ the following methods:
 - is_percentage(self)
 - is_palindrome(self)
 - is_email_address(self)
+```
+##### is_binary
+```
+is_binary(text)
+
+Check if the string is binary or not.
+```
+##### is_email_address
+```
+is_email_address(text)
+
+Check if the string is an email address.
+
+This solution does a very simple check. It only validates that the string contains an at sign (@)
+that is preceded and followed by one or more non whitespace characters.
+```
+##### is_int
+```
+is_int(text)
+
+Check if the string is the representation of
+a integer number.
+
+True:
+ "10",   "10.",   "10.0",
+"+10",  "+10.",  "+10.0",
+"-10",  "-10.",  "-10.0"
+```
+##### is_negative_int
+```
+is_negative_int(text)
+
+Check if the string is the representation of
+negative integer number.
+
+True:
+"-10",  "-10.",  "-10.0"
+```
+##### is_palindrome
+```
+is_palindrome(text)
+
+Check if the string is palindrome or not.
+A string is said to be palindrome if the reverse of the string is the same as string
+```
+##### is_payment_card
+```
+is_payment_card(text)
+
+Check if the string is a valid payment
+card number.
+
+https://en.wikipedia.org/wiki/Payment_card_number#Issuer_identification_number_(IIN)
+```
+##### is_percentage
+```
+is_percentage(text)
+
+Check if the string is a valid percentage
+
+True: "100%", "100 %", "100&nbsp;%", 100.0 %",
+```
+##### is_positive_int
+```
+is_positive_int(text)
+
+Check if the string is the representation of
+positive integer number.
+
+True:
+ "10",   "10.",   "10.0",
+"+10",  "+10.",  "+10.0",
+```
+##### is_url
+```
+is_url(text, schemes=None, hostnames=None)
+
+Check if the string is a URL according to the
+given schemes and host-names.
+
+:param str text:
+:param Optional[Container[str]] schemes: ("http", "https")
+:param Optional[Container[str]] hostnames: ("www.python.org", "github.com", "localhost")
+:rtype: bool
 
 Examples:
-    from pymince.text import fullstr
+    from pymince.text import is_url
 
-    fullstr("6011 0000 0000 0012").is_payment_card() # True
+    # True
+    is_url("https://github.com/")
+    is_url("https://github.com/", hostnames=("github.com",))
+    is_url("https://github.com/", hostnames=("github.com",), schemes=("https",))
+
+    # False
+    is_url("https://github.com/", schemes=("http",))
+    is_url("https://github.com/", hostnames=("www.python.org", "localhost"))
 ```
 ##### remove_decimal_zeros
 ```
