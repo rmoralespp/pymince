@@ -168,3 +168,88 @@ class TestIsBinary:
     ])
     def test_false(self, v):
         assert not pymince.text.fullstr(v).is_binary()
+
+
+class TestIsPercentage:
+
+    @pytest.mark.parametrize("v", [
+        "0%",
+        "0 %",
+        "0.0%",
+        "0.0 %",
+        "0&nbsp;%",
+        "1234.000 %",
+        "1%",
+    ])
+    def test_true(self, v):
+        assert pymince.text.fullstr(v).is_percentage()
+
+    @pytest.mark.parametrize("v", [
+        "",
+        "foo",
+        "-1%",
+        "0.%",
+        "1  %",
+        "01.000 %",
+        "00 %",
+        "90"
+    ])
+    def test_false(self, v):
+        assert not pymince.text.fullstr(v).is_percentage()
+
+
+class TestIsPalindrome:
+
+    @pytest.mark.parametrize("v", [
+        "",
+        "a",
+        "aa",
+        "aba",
+        "abcba",
+        "abcdcba",
+        "111",
+        "123454321",
+    ])
+    def test_true(self, v):
+        assert pymince.text.fullstr(v).is_palindrome()
+
+    @pytest.mark.parametrize("v", [
+        "ab",
+        "aab",
+        "012",
+    ])
+    def test_false(self, v):
+        assert not pymince.text.fullstr(v).is_palindrome()
+
+
+class TestIsEmailAddress:
+
+    @pytest.mark.parametrize("v", [
+        "foo@example.org",
+        "foo.123@testing-example.com",
+        "!#$%&'*+-/=?^_`.{|}~@example.org",
+        'ñó@example.org',
+        'foo@..twodots.com',
+        "my@foo..com",
+        "my@baddash.-a.com",
+        ".leadingdot@domain.com",
+        '123456789@example.com',
+        '123456789@ñó',
+    ])
+    def test_true(self, v):
+        assert pymince.text.fullstr(v).is_email_address()
+
+    @pytest.mark.parametrize("v", [
+        "",
+        "@",
+        "foo",
+        "@foo",
+        "foo@",
+        "\nmy@example.com",
+        "m\ny@example.com",
+        "my\n@example.com",
+        "foo@ ab",
+        "foo @ab",
+    ])
+    def test_false(self, v):
+        assert not pymince.text.fullstr(v).is_email_address()

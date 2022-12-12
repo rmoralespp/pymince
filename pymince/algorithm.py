@@ -1,3 +1,6 @@
+import itertools
+
+
 def luhn(value: str) -> bool:
     """
     The Luhn algorithm or Luhn formula, also known as the "modulus 10" or "mod 10" algorithm,
@@ -23,3 +26,23 @@ def luhn(value: str) -> bool:
         sum_total += digit
 
     return sum_total % 10 == 0
+
+
+def fibonacci(n=None):
+    """
+    Returns a generator with fibonacci series.
+
+    :param Optional[int] n: number iterations. must be None or an integer: 0 <= x <= sys.maxsize
+    :rtype: Generator[int]
+    """
+
+    def worker():
+        a, b = 0, 1
+        while True:
+            yield a
+            b = a + b
+            yield b
+            a = a + b
+
+    it = worker()
+    return itertools.islice(it, 0, n) if n is not None else it

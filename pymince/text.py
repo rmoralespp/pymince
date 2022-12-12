@@ -2,6 +2,7 @@
 Useful functions for working with strings.
 """
 import functools
+import html
 import re
 import urllib.parse
 
@@ -12,7 +13,9 @@ __remove_number_commas = functools.partial(re.compile("(?<=\\d),(?=\\d{3})").sub
 _int_regexp_any = re.compile(r"^[-+]?[1-9]\d*\.?[0]*$")
 _int_regexp_pos = re.compile(r"^[+]?[1-9]\d*\.?[0]*$")
 _int_regexp_neg = re.compile(r"^-[1-9]\d*\.?[0]*$")
-_bin_regexp_not = re.compile('[^01]')
+_bin_regexp_not = re.compile(r"[^01]")
+_percentage_regexp = re.compile(r"^(?:0|[1-9]\d*)(?:\.\d+)?(?:\s)?%$")
+_email_address_regexp = re.compile(r"^\S+@\S+$")
 
 
 class fullstr(str):
@@ -26,8 +29,9 @@ class fullstr(str):
     - is_negative_int(self)
     - is_payment_card(self)
     - is_binary(self)
-    - is_email_address(self) # TODO
-    - is_percent(self)  # TODO
+    - is_percentage(self)
+    - is_palindrome(self)
+    - is_email_address(self)
 
     Examples:
         from pymince.text import fullstr
@@ -131,10 +135,29 @@ class fullstr(str):
             return False
 
     def is_email_address(self):
-        raise NotImplementedError
+        """
+        Check if the string is an email address.
 
-    def is_percent(self):
-        raise NotImplementedError
+        This solution does a very simple check. It only validates that the string contains an at sign (@)
+        that is preceded and followed by one or more non whitespace characters.
+        """
+        return bool(_email_address_regexp.fullmatch(self))
+
+    def is_percentage(self):
+        """
+        Check if the string is a valid percentage
+
+        True: "100%", "100 %", "100&nbsp;%", 100.0 %",
+        """
+        unescaped = html.unescape(self)  # 100&nbsp;% => 100 %
+        return bool(_percentage_regexp.fullmatch(unescaped))
+
+    def is_palindrome(self):
+        """
+        Check if the string is palindrome or not.
+        A string is said to be palindrome if the reverse of the string is the same as string
+        """
+        return self == self[::-1]
 
 
 def remove_number_commas(string):

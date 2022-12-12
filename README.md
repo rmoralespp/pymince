@@ -25,7 +25,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ### Usage
 | PyModules  | Tools  |
 | :--------  | :----- |
-| **algorithm.py** |[*luhn*](#luhn)|
+| **algorithm.py** |[*fibonacci*](#fibonacci), [*luhn*](#luhn)|
 | **boolean.py** |[*string2bool*](#string2bool)|
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
@@ -42,6 +42,15 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 
 #### algorithm.py
 
+##### fibonacci
+```
+fibonacci(n=None)
+
+Returns a generator with fibonacci series.
+
+:param Optional[int] n: number iterations. must be None or an integer: 0 <= x <= sys.maxsize
+:rtype: Generator[int]
+```
 ##### luhn
 ```
 luhn(value: str) -> bool
@@ -787,8 +796,9 @@ the following methods:
 - is_negative_int(self)
 - is_payment_card(self)
 - is_binary(self)
-- is_email_address(self) # TODO
-- is_percent(self)  # TODO
+- is_percentage(self)
+- is_palindrome(self)
+- is_email_address(self)
 
 Examples:
     from pymince.text import fullstr
