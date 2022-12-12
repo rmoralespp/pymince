@@ -793,7 +793,7 @@ the following methods:
 Examples:
     from pymince.text import fullstr
 
-    fullstr("6011 0000 0000 0012").is_payment_card_num() # True
+    fullstr("6011 0000 0000 0012").is_payment_card() # True
 ```
 ##### remove_decimal_zeros
 ```
