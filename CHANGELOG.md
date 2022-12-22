@@ -1,6 +1,7 @@
 ## In Progress ##
 
 - **Added:** Apply the *black* code formatter.
+- **Added:** Apply ruff badge to README.
 
 ## v2.0.0 (2022-12-22) ##
 
