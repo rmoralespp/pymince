@@ -1,0 +1,69 @@
+[tool.ruff]
+line-length = 120
+
+# https://github.com/charliermarsh/ruff#reference
+select = [
+    # pyflakes
+    "F",
+
+    # pycodestyle
+    "E",
+    "W",
+
+    # pydocstyle
+    "D200", # One-line docstring should fit on one line
+    "D206", # Docstring should be indented with spaces, not tabs
+    "D207", # Docstring is under-indented
+    "D208", # Docstring is over-indented
+    "D209", # Multi-line docstring closing quotes should be on a separate line
+    "D210", # No whitespaces allowed surrounding docstring text
+    "D403", # First word of the first line should be properly capitalized
+    "D419", # Docstring is empty
+    "D300",
+
+    # pyupgrade
+    "UP008", # Use super() instead of super(__class__, self)
+    "UP015", # Unnecessary open mode parameters
+
+    # flake8-2020
+    "YTT",
+
+    # flake8-bugbear
+    "B",
+
+    # flake8-builtins
+    "A",
+
+    # flake8-comprehensions
+    "C4",
+
+    # flake8-debugger
+    "T10",
+
+    # flake8-import-conventions
+    "ICN",
+
+    # flake8-simplify
+    "SIM",
+
+    # Pylint
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+
+    # Ruff-specific rules
+    "RUF100",  # Unused noqa directive
+]
+
+extend-ignore = [
+    # Disabled by default. :)
+    # https://github.com/gforcada/flake8-builtins/pull/76
+    "A003", # Class attribute `...` is shadowing a python builtin
+    "B905", # `zip()` without an explicit `strict=` parameter
+    "C400", # Unnecessary `tuple` call (rewrite as a literal)
+    "C401", # Unnecessary generator (rewrite as a set comprehension)
+    "C408", # Unnecessary `dict` call (rewrite as a literal)
+    "PLR0402", # Use `from ... import ...` in lieu of alias
+    "PLW0120", # Else clause on loop without a break statement.
+]

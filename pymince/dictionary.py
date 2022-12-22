@@ -136,6 +136,7 @@ def frozendict(*args, **kwargs):
         my_dict = frozendict(a=1, b=2)
         my_dict["a"] # --> 1
         list(my_dict.items())  # --> [("a", 1), ("b", 2)]
+        my_dict["c"] = 3  # --> TypeError
     """
     return types.MappingProxyType(dict(*args, **kwargs))
 

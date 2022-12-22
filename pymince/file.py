@@ -61,19 +61,14 @@ def ensure_directory(path, cleaning=False):
 
 
 def is_empty_directory(path):
-    """
-    Function to check if the given path is an empty directory.
-
-    :param str path:
-    :rtype: bool
-    """
+    """Check if the given path is an empty directory."""
 
     return os.path.exists(path) and not os.path.isfile(path) and not os.listdir(path)
 
 
 def replace_extension(filename, old_ext=None, new_ext=None):
     """
-    Replace filename "old_ext" with "new_ext"
+    Replace filename "old_ext" with "new_ext".
 
     :param str filename:
     :param Optional[str] old_ext:
@@ -115,7 +110,7 @@ def decompress(src_path, dst_path):
     """
 
     with gzip.open(src_path) as src:
-        with open(dst_path, 'wb') as dst:
+        with open(dst_path, mode='wb') as dst:
             lines = iter(functools.partial(src.read, 64 * 1024), b'')
             dst.writelines(lines)
     return dst_path

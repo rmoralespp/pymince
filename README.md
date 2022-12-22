@@ -5,6 +5,7 @@
 [![versions](https://img.shields.io/pypi/pyversions/pymince.svg)](https://github.com/rmoralespp/pymince)
 [![codecov](https://codecov.io/gh/rmoralespp/pymince/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rmoralespp/pymince)
 [![license](https://img.shields.io/github/license/rmoralespp/pymince.svg)](https://github.com/rmoralespp/pymince/blob/main/LICENSE)
+[![Downloads](https://pepy.tech/badge/pymince)](https://pepy.tech/project/pymince)
 
 ### About
 pymince is a collection of useful tools that are "missing" from the Python standard library.
@@ -48,7 +49,8 @@ fibonacci(n=None)
 
 Returns a generator with fibonacci series.
 
-:param Optional[int] n: number iterations. must be None or an integer: 0 <= x <= sys.maxsize
+:param Optional[int] n: number iterations.
+    Must be None or an integer: 0 <= x <= sys.maxsize
 :rtype: Generator[int]
 ```
 ##### luhn
@@ -238,6 +240,7 @@ Examples:
     my_dict = frozendict(a=1, b=2)
     my_dict["a"] # --> 1
     list(my_dict.items())  # --> [("a", 1), ("b", 2)]
+    my_dict["c"] = 3  # --> TypeError
 ```
 #### file.py
 
@@ -275,10 +278,7 @@ If it does not exist, a new directory will be created.
 ```
 is_empty_directory(path)
 
-Function to check if the given path is an empty directory.
-
-:param str path:
-:rtype: bool
+Check if the given path is an empty directory.
 ```
 ##### match_from_zip
 ```
@@ -301,7 +301,7 @@ Examples:
 ```
 replace_extension(filename, old_ext=None, new_ext=None)
 
-Replace filename "old_ext" with "new_ext"
+Replace filename "old_ext" with "new_ext".
 
 :param str filename:
 :param Optional[str] old_ext:
@@ -641,8 +641,8 @@ Dump CSV file to a JSON file using "utf-8" encoding.
 
 :param str csv_path:
 :param str json_path:
-:param Iterable[str] fieldnames: list of keys for the JSON
-:param Optional[int] indent: JSON indent
+:param fieldnames: list of keys for the JSON
+:param str indent: JSON indent
 :param int start:
     If start is specified, will skip all preceding elements;
     otherwise, start defaults to zero.

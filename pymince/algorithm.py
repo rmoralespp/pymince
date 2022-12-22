@@ -32,7 +32,8 @@ def fibonacci(n=None):
     """
     Returns a generator with fibonacci series.
 
-    :param Optional[int] n: number iterations. must be None or an integer: 0 <= x <= sys.maxsize
+    :param Optional[int] n: number iterations.
+        Must be None or an integer: 0 <= x <= sys.maxsize
     :rtype: Generator[int]
     """
 

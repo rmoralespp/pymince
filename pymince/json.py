@@ -81,8 +81,8 @@ def dump_from_csv(
 
     :param str csv_path:
     :param str json_path:
-    :param Iterable[str] fieldnames: list of keys for the JSON
-    :param Optional[int] indent: JSON indent
+    :param fieldnames: list of keys for the JSON
+    :param str indent: JSON indent
     :param int start:
         If start is specified, will skip all preceding elements;
         otherwise, start defaults to zero.

@@ -1,0 +1,9 @@
+## In Progress ##
+
+
+## v2.0.0 (2022-12-22) ##
+
+- **Added:** Changelog
+- **Added:** json.dump_from_csv
+- **Added:** text.is_roman, text.fullstr('').is_roman
+- **Fixed:** ruff warnings

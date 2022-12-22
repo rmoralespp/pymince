@@ -66,6 +66,7 @@ def member2markdown(member):
 def getmembers(module):
     def filtering(n):
         return (inspect.isclass(n) or inspect.isfunction(n))
+
     yield from inspect.getmembers(module, filtering)
 
 
