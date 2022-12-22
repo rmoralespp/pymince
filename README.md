@@ -32,11 +32,11 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*classproperty*](#classproperty)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
-| **json.py** |[*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
+| **json.py** |[*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_url*](#is_url), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **text.py** |[*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
@@ -633,9 +633,28 @@ Examples:
 ```
 #### json.py
 
+##### dump_from_csv
+```
+dump_from_csv(csv_path, json_path, /, *, fieldnames=None, indent=None, start=0, stop=None, strip=True, encoding='utf-8')
+
+Dump CSV file to a JSON file using "utf-8" encoding.
+
+:param str csv_path:
+:param str json_path:
+:param Iterable[str] fieldnames: list of keys for the JSON
+:param Optional[int] indent: JSON indent
+:param int start:
+    If start is specified, will skip all preceding elements;
+    otherwise, start defaults to zero.
+:param int stop:
+:param bool strip:
+    Whether or not white space should be removed from the
+    beginning and end of field values.
+:param str encoding: utf-8 is used by default.
+```
 ##### dump_into
 ```
-dump_into(filename, payload, indent=None)
+dump_into(filename, payload, indent=None, encoding='utf-8')
 
 Dump JSON to a file using "utf-8" encoding.
 
@@ -657,7 +676,7 @@ Examples:
 ```
 ##### load_from
 ```
-load_from(filename)
+load_from(filename, encoding='utf-8')
 
 Load JSON from a file using "utf-8" encoding.
 
@@ -799,6 +818,7 @@ the following methods:
 - is_percentage(self)
 - is_palindrome(self)
 - is_email_address(self)
+- is_roman(self)
 ```
 ##### is_binary
 ```
@@ -871,6 +891,12 @@ positive integer number.
 True:
  "10",   "10.",   "10.0",
 "+10",  "+10.",  "+10.0",
+```
+##### is_roman
+```
+is_roman(text)
+
+Check if the string is a valid roman numeral.
 ```
 ##### is_url
 ```

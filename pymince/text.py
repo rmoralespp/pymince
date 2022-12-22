@@ -16,6 +16,7 @@ _int_regexp_neg = re.compile(r"^-[1-9]\d*\.?[0]*$")
 _bin_regexp_not = re.compile(r"[^01]")
 _percentage_regexp = re.compile(r"^(?:0|[1-9]\d*)(?:\.\d+)?(?:\s)?%$")
 _email_address_regexp = re.compile(r"^\S+@\S+$")
+_roman_regex = re.compile("^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")
 
 
 def remove_number_commas(string):
@@ -138,7 +139,7 @@ def is_int(text):
     "+10",  "+10.",  "+10.0",
     "-10",  "-10.",  "-10.0"
     """
-    return bool(_int_regexp_any.fullmatch(text))
+    return bool(_int_regexp_any.search(text))
 
 
 def is_positive_int(text):
@@ -150,7 +151,7 @@ def is_positive_int(text):
      "10",   "10.",   "10.0",
     "+10",  "+10.",  "+10.0",
     """
-    return bool(_int_regexp_pos.fullmatch(text))
+    return bool(_int_regexp_pos.search(text))
 
 
 def is_negative_int(text):
@@ -162,7 +163,7 @@ def is_negative_int(text):
     "-10",  "-10.",  "-10.0"
     """
 
-    return bool(_int_regexp_neg.fullmatch(text))
+    return bool(_int_regexp_neg.search(text))
 
 
 def is_payment_card(text):
@@ -196,7 +197,7 @@ def is_email_address(text):
     This solution does a very simple check. It only validates that the string contains an at sign (@)
     that is preceded and followed by one or more non whitespace characters.
     """
-    return bool(_email_address_regexp.fullmatch(text))
+    return bool(_email_address_regexp.search(text))
 
 
 def is_percentage(text):
@@ -206,7 +207,7 @@ def is_percentage(text):
     True: "100%", "100 %", "100&nbsp;%", 100.0 %",
     """
     unescaped = html.unescape(text)  # 100&nbsp;% => 100 %
-    return bool(_percentage_regexp.fullmatch(unescaped))
+    return bool(_percentage_regexp.search(unescaped))
 
 
 def is_palindrome(text):
@@ -215,6 +216,11 @@ def is_palindrome(text):
     A string is said to be palindrome if the reverse of the string is the same as string
     """
     return text == text[::-1]
+
+
+def is_roman(text):
+    """Check if the string is a valid roman numeral."""
+    return bool(_roman_regex.search(text))
 
 
 class fullstr(str):
@@ -231,6 +237,7 @@ class fullstr(str):
     - is_percentage(self)
     - is_palindrome(self)
     - is_email_address(self)
+    - is_roman(self)
     """
 
     def is_url(self, schemes=None, hostnames=None):
@@ -259,3 +266,6 @@ class fullstr(str):
 
     def is_palindrome(self):
         return is_palindrome(self)
+
+    def is_roman(self):
+        return is_roman(self)

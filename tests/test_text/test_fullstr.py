@@ -253,3 +253,52 @@ class TestIsEmailAddress:
     ])
     def test_false(self, v):
         assert not pymince.text.fullstr(v).is_email_address()
+
+
+class TestIsRoman:
+
+    @pytest.mark.parametrize("v", [
+        "I",
+        "IV",
+        "V",
+        "IX",
+        "X",
+        "XL",
+        "L",
+        "XC",
+        "C",
+        "CD",
+        "D",
+        "CM",
+        "M",
+        "MMMDCCXXIV",
+        "XLIX",
+    ])
+    def test_true(self, v):
+        assert pymince.text.fullstr(v).is_roman()
+
+    @pytest.mark.parametrize("v", [
+        "XIIIIII",
+        "VVVI",
+        "IIIIIIIIIIIIIIII",
+        "XIIIIIIIII",
+        "MCCCCCCVI",
+        "CCCCC",
+        "IL",
+        "XLVIIII",
+        "XXXXVIIII",
+        "XLIIIIIIIII",
+        "XXXXX",
+        "XXXXVIIII",
+        "VX",
+        "VL",
+        "VC",
+        "VD",
+        "VM",
+        "LC",
+        "LD",
+        "LM",
+        "DM",
+    ])
+    def test_false(self, v):
+        assert not pymince.text.fullstr(v).is_roman()

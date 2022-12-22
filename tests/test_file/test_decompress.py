@@ -37,7 +37,7 @@ def test_decompress_json():
         src_path = os.path.join(tmpdir, "src.json.gz")
         dst_path = os.path.join(tmpdir, "dst.json")
 
-        dumped = json.dumps(data).encode(pymince.json.encoding)
+        dumped = json.dumps(data).encode(pymince.json.ENCODING)
         compressed = gzip.compress(dumped)
         with open(src_path, 'wb') as f:
             f.write(compressed)
