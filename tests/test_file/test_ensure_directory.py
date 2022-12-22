@@ -23,7 +23,7 @@ def test_ignore_if_file_already_exists():
     with tempfile.TemporaryDirectory() as tmpdir:
         # prepare
         expected = os.path.join(tmpdir, "myFile")
-        with open(expected, mode="wt") as f:
+        with open(expected, mode="w") as f:
             f.write("foo")
         # execute test function
         pymince.file.ensure_directory(expected)
@@ -31,7 +31,7 @@ def test_ignore_if_file_already_exists():
         assert os.path.exists(expected)
         assert os.path.isfile(expected)
 
-        with open(expected, mode="r") as f:
+        with open(expected) as f:
             assert f.read() == "foo"
 
 
@@ -39,7 +39,7 @@ def test_cleaning_if_file_already_exists():
     with tempfile.TemporaryDirectory() as tmpdir:
         # prepare
         expected = os.path.join(tmpdir, "myFile")
-        with open(expected, mode="wt") as f:
+        with open(expected, mode="w") as f:
             f.write("foo")
         # execute test function
         pymince.file.ensure_directory(expected, cleaning=True)
@@ -53,7 +53,7 @@ def test_cleaning_if_directory_already_exists():
         # prepare
         expected = os.path.join(tmpdir, "myDirectory")
         os.makedirs(expected)
-        with open(os.path.join(expected, "nestedFile"), mode="wt") as nf:
+        with open(os.path.join(expected, "nestedFile"), mode="w") as nf:
             nf.write("foo")
         # execute test function
         pymince.file.ensure_directory(expected, cleaning=True)

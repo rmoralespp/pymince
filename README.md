@@ -146,7 +146,7 @@ Examples:
     string2year("1955", lte=1954) # --> ValueError
 ```
 #### dictionary.py
-Useful functions that use dictionaries
+Useful functions that use dictionaries.
 ##### DigestGetter
 ```
 DigestGetter(include_keys=None, exclude_keys=None)
@@ -340,7 +340,7 @@ Examples:
             return cls.__foo
 ```
 #### iterator.py
-Functions that use iterators for efficient loops
+Functions that use iterators for efficient loops.
 ##### all_distinct
 ```
 all_distinct(iterable, key=None)

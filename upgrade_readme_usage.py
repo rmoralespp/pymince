@@ -64,13 +64,14 @@ def member2markdown(member):
 
 
 def getmembers(module):
-    filtering = lambda n: inspect.isclass(n) or inspect.isfunction(n)
+    def filtering(n):
+        return (inspect.isclass(n) or inspect.isfunction(n))
     yield from inspect.getmembers(module, filtering)
 
 
 def module2markdown(module):
     def members2markdown():
-        for name, member in getmembers(module):
+        for _name, member in getmembers(module):
             yield member2markdown(member)
 
     module_name = os.path.basename(module.__file__)
@@ -120,12 +121,12 @@ if __name__ == "__main__":
     )
     content = "\n".join(content_lines)
 
-    with open(readme_path, mode="r", encoding="utf-8") as f:
+    with open(readme_path, encoding="utf-8") as f:
         old_string = f.read()
         new_string = pattern.sub(content, old_string)
 
     if new_string != old_string:
         logging.basicConfig(level=logging.DEBUG)
         with pymince.logging.timed_block("upgrade_readme_usage"):
-            with open(readme_path, mode="wt", encoding="utf-8") as f:
+            with open(readme_path, mode="w", encoding="utf-8") as f:
                 f.write(new_string)

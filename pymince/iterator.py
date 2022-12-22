@@ -1,6 +1,4 @@
-"""
-Functions that use iterators for efficient loops
-"""
+"""Functions that use iterators for efficient loops."""
 import collections
 import functools
 import itertools

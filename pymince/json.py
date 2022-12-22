@@ -32,7 +32,7 @@ def dump_into(filename, payload, indent=None, encoding=ENCODING):
 
         dump_into("foo.json", {"key": "value"})
     """
-    with open(filename, "wt", encoding=encoding) as file:
+    with open(filename, "w", encoding=encoding) as file:
         dump(payload, file, indent=indent)
 
 

@@ -1,6 +1,4 @@
-"""
-Useful functions that use dictionaries
-"""
+"""Useful functions that use dictionaries."""
 
 import datetime
 import enum

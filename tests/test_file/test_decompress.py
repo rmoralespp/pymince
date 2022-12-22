@@ -13,14 +13,14 @@ def test_decompress_txt():
     with tempfile.TemporaryDirectory() as tmpdir:
         src_path = os.path.join(tmpdir, "src.txt.gz")
         dst_path = os.path.join(tmpdir, "dst.txt")
-        with open(src_path, 'wb') as f:
+        with open(src_path, mode='wb') as f:
             compressed = gzip.compress(text.encode(encoding))
             f.write(compressed)
 
         res_path = pymince.file.decompress(src_path, dst_path)
         assert res_path == dst_path
 
-        with open(dst_path, mode='r', encoding=encoding) as dst:
+        with open(dst_path, encoding=encoding) as dst:
             assert dst.read() == text
 
 

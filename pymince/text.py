@@ -1,6 +1,4 @@
-"""
-Useful functions for working with strings.
-"""
+"""Useful functions for working with strings."""
 import functools
 import html
 import re
