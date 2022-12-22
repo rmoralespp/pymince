@@ -30,16 +30,18 @@ def iterparse(filename):
 
     """
 
-    parser = etree.XMLPullParser(['start', 'end'])  # can be replaced with iterparse as well
+    parser = etree.XMLPullParser(
+        ["start", "end"]
+    )  # can be replaced with iterparse as well
     root = None
     with open(filename, encoding="utf-8") as f:
         for line in f:
             parser.feed(line)
             for event, obj in parser.read_events():
-                if event == 'start':
+                if event == "start":
                     if root is None:
                         root = obj
-                elif event == 'end':
+                elif event == "end":
                     if len(root) > 0 and obj == root[0]:
                         del root[0]
                         # process obj

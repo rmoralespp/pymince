@@ -14,11 +14,11 @@ def test_bool_false_if_exhausted():
 
 
 def test_bool_true():
-    assert pymince.iterator.ibool('a')
+    assert pymince.iterator.ibool("a")
 
 
 def test_bool_false():
-    assert not pymince.iterator.ibool('')
+    assert not pymince.iterator.ibool("")
 
 
 def test_iter_itself():

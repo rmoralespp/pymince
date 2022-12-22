@@ -63,10 +63,10 @@ def string2year(value, gte=None, lte=None, shift=None):
     """
 
     year = None
-    for rep in ('%Y', '%y'):
+    for rep in ("%Y", "%y"):
         with contextlib.suppress(ValueError, TypeError):
             year = datetime.datetime.strptime(value, rep).year
-            if shift and rep == '%y':
+            if shift and rep == "%y":
                 # Use shift for year of two-digit format
                 year = (year - shift) % 100 + shift
             if (gte and not year >= gte) or (lte and not year <= lte):

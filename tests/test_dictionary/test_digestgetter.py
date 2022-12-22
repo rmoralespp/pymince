@@ -16,7 +16,7 @@ def payload():
         "date": datetime.datetime(2021, 1, 1),
         "text": "ñó",
         "enum": MyEnum.foo,
-        "set": {"a", "b"}
+        "set": {"a", "b"},
     }
 
 
@@ -39,19 +39,19 @@ def test_to_string_exclude(payload):
 
 
 def test_digest(payload):
-    expected = '735bf119e94b46591918c1b0115efa04'
+    expected = "735bf119e94b46591918c1b0115efa04"
     res = pymince.dictionary.DigestGetter()(payload)
     assert res == expected
 
 
 def test_digest_include(payload):
-    expected = '7a439974e23327ec0c28c990e49f6d51'
+    expected = "7a439974e23327ec0c28c990e49f6d51"
     res = pymince.dictionary.DigestGetter(include_keys=("text",))(payload)
     assert res == expected
 
 
 def test_digest_exclude(payload):
-    expected = '55b0acefacd6b0614cb5e4ec8506db0a'
+    expected = "55b0acefacd6b0614cb5e4ec8506db0a"
     res = pymince.dictionary.DigestGetter(exclude_keys=("text",))(payload)
     assert res == expected
 

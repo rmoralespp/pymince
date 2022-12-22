@@ -23,9 +23,9 @@ def string2bool(value, ignorecase=False):
     """
 
     checking = value.lower() if ignorecase else value
-    if checking == 'true':
+    if checking == "true":
         return True
-    elif checking == 'false':
+    elif checking == "false":
         return False
     else:
         raise ValueError

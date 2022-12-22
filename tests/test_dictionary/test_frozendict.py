@@ -28,4 +28,4 @@ def test_del_item():
 def test_not_immutable():
     my_dict = pymince.dictionary.frozendict(a=1, b={"c": 1})
     my_dict["b"]["c"] = 2
-    assert dict(my_dict) == {'a': 1, 'b': {'c': 2}}
+    assert dict(my_dict) == {"a": 1, "b": {"c": 2}}

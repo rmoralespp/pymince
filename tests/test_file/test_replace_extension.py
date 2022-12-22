@@ -26,7 +26,10 @@ def test_ignore_if_mismatching_extensions():
 def test_replace_extension_if_equals_extensions():
     filename = "/home/User/Desktop/file.txt"
     expected = "/home/User/Desktop/file.xls"
-    assert pymince.file.replace_extension(filename, old_ext=".txt", new_ext=".xls") == expected
+    assert (
+        pymince.file.replace_extension(filename, old_ext=".txt", new_ext=".xls")
+        == expected
+    )
 
 
 def test_replace_if_not_given_old_extension():
@@ -38,4 +41,7 @@ def test_replace_if_not_given_old_extension():
 def test_replace_extension_with_many_dot():
     filename = "/home/User/Desktop/file.file.txt"
     expected = "/home/User/Desktop/file.file.doc"
-    assert pymince.file.replace_extension(filename, old_ext=".txt", new_ext=".doc") == expected
+    assert (
+        pymince.file.replace_extension(filename, old_ext=".txt", new_ext=".doc")
+        == expected
+    )

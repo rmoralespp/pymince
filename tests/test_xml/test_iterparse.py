@@ -8,7 +8,7 @@ import pymince.xml
 import tests
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def xml_string():
     lines = (
         "<?xml version='1.0' encoding='UTF-8'?>",
@@ -34,40 +34,26 @@ def test_type(xml_string):
 def test_items(xml_string):
     with tempfile.TemporaryDirectory() as tmpdir:
         expected = [
-            [
-                "countries",
-                {},
-                None
-            ],
+            ["countries", {}, None],
             [
                 "country",
                 {
                     "code": "af",
                     "handle": "afghanistan",
                     "continent": "asia",
-                    "iso": "4"
+                    "iso": "4",
                 },
-                "Afghanistan"
+                "Afghanistan",
             ],
             [
                 "country",
-                {
-                    "code": "al",
-                    "handle": "albania",
-                    "continent": "europe",
-                    "iso": "8"
-                },
-                "Albania"
+                {"code": "al", "handle": "albania", "continent": "europe", "iso": "8"},
+                "Albania",
             ],
             [
                 "country",
-                {
-                    "code": "dz",
-                    "handle": "algeria",
-                    "continent": "africa",
-                    "iso": "12"
-                },
-                "Algeria"
+                {"code": "dz", "handle": "algeria", "continent": "africa", "iso": "12"},
+                "Algeria",
             ],
             [
                 "country",
@@ -75,23 +61,20 @@ def test_items(xml_string):
                     "code": "as",
                     "handle": "american-samoa",
                     "continent": "polynesia",
-                    "iso": "16"
+                    "iso": "16",
                 },
-                "American Samoa"
+                "American Samoa",
             ],
             [
                 "country",
-                {
-                    "code": "ad",
-                    "handle": "andorra",
-                    "continent": "europe",
-                    "iso": "20"
-                },
-                "Andorra"
-            ]
+                {"code": "ad", "handle": "andorra", "continent": "europe", "iso": "20"},
+                "Andorra",
+            ],
         ]
         filename = os.path.join(tmpdir, "countries.xml")
         tests.make_file(filename, content=xml_string)
         result = pymince.xml.iterparse(filename)
-        result = [[obj.tag, obj.attrib, obj.text] for event, obj in result if event == "start"]
+        result = [
+            [obj.tag, obj.attrib, obj.text] for event, obj in result if event == "start"
+        ]
         assert result == expected

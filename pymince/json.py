@@ -65,16 +65,16 @@ def load_from_zip(zip_path, arcname):
 
 
 def dump_from_csv(
-        csv_path,
-        json_path,
-        /,
-        *,
-        fieldnames=None,
-        indent=None,
-        start=0,
-        stop=None,
-        strip=True,
-        encoding=ENCODING,
+    csv_path,
+    json_path,
+    /,
+    *,
+    fieldnames=None,
+    indent=None,
+    start=0,
+    stop=None,
+    strip=True,
+    encoding=ENCODING,
 ):
     """
     Dump CSV file to a JSON file using "utf-8" encoding.
@@ -96,13 +96,16 @@ def dump_from_csv(
     def read():
         reader = csv.DictReader(csv_f, fieldnames=fieldnames)
         if strip:
-            apply = operator.methodcaller('strip')
+            apply = operator.methodcaller("strip")
             for row in reader:
-                yield {k and apply(k): (apply(v) if isinstance(v, str) else v) for k, v in row.items()}
+                yield {
+                    k and apply(k): (apply(v) if isinstance(v, str) else v)
+                    for k, v in row.items()
+                }
         else:
             yield from reader
 
-    with open(csv_path, encoding=encoding, newline='') as csv_f:
+    with open(csv_path, encoding=encoding, newline="") as csv_f:
         # The official csv doc recommends opening the file with newline='' on all platforms to disable
         # universal newlines translation.
 

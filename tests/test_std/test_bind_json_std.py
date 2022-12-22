@@ -11,7 +11,7 @@ import pymince.std
 @pytest.fixture()
 def stub_stdin_payload():
     sys_stdin = sys.stdin
-    initial = {'in': 'value'}
+    initial = {"in": "value"}
     sys.stdin = io.TextIOWrapper(buffer=io.BytesIO(json.dumps(initial).encode()))
     try:
         yield initial

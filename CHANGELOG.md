@@ -1,5 +1,6 @@
 ## In Progress ##
 
+- **Added:** Apply the *black* code formatter.
 
 ## v2.0.0 (2022-12-22) ##
 

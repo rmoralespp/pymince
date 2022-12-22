@@ -2,19 +2,19 @@ import pymince.iterator
 
 
 def test_pad_start_lower_than():
-    expected = (None, None, 'a', 'b', 'c')
+    expected = (None, None, "a", "b", "c")
     result = pymince.iterator.pad_start(("a", "b", "c"), 5)
     assert tuple(result) == expected
 
 
 def test_pad_start_equal():
-    expected = ('a', 'b', 'c')
+    expected = ("a", "b", "c")
     result = pymince.iterator.pad_start(expected, 3)
     assert tuple(result) == expected
 
 
 def test_pad_start_great_than():
-    expected = ('a', 'b', 'c', 'd')
+    expected = ("a", "b", "c", "d")
     result = pymince.iterator.pad_start(expected, 3)
     assert tuple(result) == expected
 

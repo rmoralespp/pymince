@@ -5,7 +5,6 @@ import pymince.functional
 
 def test_with_method():
     class MyClass:
-
         def __init__(self):
             self._foo = "var"
 
@@ -42,7 +41,6 @@ def test_from_obj():
 
 def test_with_params():
     class MyClass:
-
         @pymince.functional.classproperty
         def foo(cls, *args, **kwargs):
             return args, kwargs

@@ -65,7 +65,11 @@ def uniquer(iterable, key=None):
     """
     getter = key or (lambda x: x)
     bag = set()
-    return (bag.add(check) or val for val in iter(iterable) if (check := getter(val)) not in bag)
+    return (
+        bag.add(check) or val
+        for val in iter(iterable)
+        if (check := getter(val)) not in bag
+    )
 
 
 def grouper(iterable, size):
@@ -382,7 +386,7 @@ class ibool:
         list(it) # --> [1, 2, 3]
     """
 
-    __slots__ = ('_it', '_queue')
+    __slots__ = ("_it", "_queue")
 
     def __init__(self, iterable):
         self._it = iter(iterable)

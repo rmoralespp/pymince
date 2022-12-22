@@ -6,6 +6,7 @@
 [![codecov](https://codecov.io/gh/rmoralespp/pymince/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rmoralespp/pymince)
 [![license](https://img.shields.io/github/license/rmoralespp/pymince.svg)](https://github.com/rmoralespp/pymince/blob/main/LICENSE)
 [![Downloads](https://pepy.tech/badge/pymince)](https://pepy.tech/project/pymince)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ### About
 pymince is a collection of useful tools that are "missing" from the Python standard library.

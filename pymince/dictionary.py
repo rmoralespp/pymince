@@ -84,7 +84,7 @@ class DigestGetter:
 
     def __call__(self, dictionary):
         string = self.to_string(dictionary)
-        return hashlib.md5(string.encode('utf-8')).hexdigest()
+        return hashlib.md5(string.encode("utf-8")).hexdigest()
 
     @functools.cached_property
     def stringify(self):
@@ -108,10 +108,10 @@ class DigestGetter:
                     return super().default(obj)
 
         return Encoder(
-            separators=(',', ':'),
+            separators=(",", ":"),
             check_circular=False,
             sort_keys=True,
-            ensure_ascii=False
+            ensure_ascii=False,
         ).encode
 
     def to_string(self, dictionary):

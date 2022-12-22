@@ -23,12 +23,12 @@ def timed_block(name, logger=None):
     """
 
     on_logger = logger or logging.getLogger()
-    on_logger.info('Generating [%s]', name)
+    on_logger.info("Generating [%s]", name)
     t0 = time.time()
     try:
         yield None
     finally:
-        on_logger.debug('Finished [%s in %.3f ms.]', name, time.time() - t0)
+        on_logger.debug("Finished [%s in %.3f ms.]", name, time.time() - t0)
 
 
 class StructuredFormatter(logging.Formatter):
@@ -59,7 +59,7 @@ class StructuredFormatter(logging.Formatter):
         {"timestamp":"2022-06-17 18:37:48,789","level":"DEBUG","payload":{"string":"value2","number":2}}
     """
 
-    json_dumper = json.JSONEncoder(separators=(',', ':')).encode  # Most compact form
+    json_dumper = json.JSONEncoder(separators=(",", ":")).encode  # Most compact form
 
     def format(self, record: logging.LogRecord) -> str:
         """
@@ -81,10 +81,10 @@ class StructuredFormatter(logging.Formatter):
         """
 
         if not isinstance(record.args, dict):
-            raise TypeError('Invalid logger arguments.')
+            raise TypeError("Invalid logger arguments.")
 
         return {
-            'timestamp': self.formatTime(record, self.datefmt),
-            'level': record.levelname,
-            'payload': record.args
+            "timestamp": self.formatTime(record, self.datefmt),
+            "level": record.levelname,
+            "payload": record.args,
         }

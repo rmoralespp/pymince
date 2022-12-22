@@ -35,7 +35,7 @@ def test_splitter_start_with_sep_given_itemgetter():
     sep = 1
     key = operator.itemgetter(0)
     val = ((1, "foo"), (2, "foo"), (3, "foo"))
-    exc = ((), ((2, 'foo'), (3, 'foo')))
+    exc = ((), ((2, "foo"), (3, "foo")))
     res = pymince.iterator.splitter(val, sep, key=key)
     assert tuple(tuple(group) for group in res) == exc
 
@@ -58,14 +58,17 @@ def test_splitter_contains_sep_given_itemgetter():
     assert tuple(tuple(group) for group in res) == exc
 
 
-@pytest.mark.parametrize("maxsplit,expected", [
-    (0, (1, 2, 3, 1, 2, 3, 1, 2, 1)),
-    (1, ((), (2, 3, 1, 2, 3, 1, 2, 1))),
-    (2, ((), (2, 3), (2, 3, 1, 2, 1))),
-    (3, ((), (2, 3), (2, 3), (2, 1))),
-    (4, ((), (2, 3), (2, 3), (2,))),
-    (-1, ((), (2, 3), (2, 3), (2,))),
-])
+@pytest.mark.parametrize(
+    "maxsplit,expected",
+    [
+        (0, (1, 2, 3, 1, 2, 3, 1, 2, 1)),
+        (1, ((), (2, 3, 1, 2, 3, 1, 2, 1))),
+        (2, ((), (2, 3), (2, 3, 1, 2, 1))),
+        (3, ((), (2, 3), (2, 3), (2, 1))),
+        (4, ((), (2, 3), (2, 3), (2,))),
+        (-1, ((), (2, 3), (2, 3), (2,))),
+    ],
+)
 def test_splitter_multi_sep(maxsplit, expected):
     data = (1, 2, 3, 1, 2, 3, 1, 2, 1)
     sep = 1

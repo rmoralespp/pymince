@@ -110,7 +110,7 @@ def decompress(src_path, dst_path):
     """
 
     with gzip.open(src_path) as src:
-        with open(dst_path, mode='wb') as dst:
-            lines = iter(functools.partial(src.read, 64 * 1024), b'')
+        with open(dst_path, mode="wb") as dst:
+            lines = iter(functools.partial(src.read, 64 * 1024), b"")
             dst.writelines(lines)
     return dst_path

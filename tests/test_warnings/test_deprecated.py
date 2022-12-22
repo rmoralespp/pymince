@@ -24,7 +24,6 @@ def test_function():
 
 def test_method():
     class SomeClass:
-
         @pymince.warnings.deprecated
         def some_method(self, x, y):
             return x + y

@@ -57,7 +57,7 @@ def replace(value, old_values, new_value, count=-1):
     return value
 
 
-def remove_decimal_zeros(value, decimal_sep='.', min_decimals=None):
+def remove_decimal_zeros(value, decimal_sep=".", min_decimals=None):
     """
     Removes non-significant decimal zeros from a formatted text number.
 
@@ -70,20 +70,20 @@ def remove_decimal_zeros(value, decimal_sep='.', min_decimals=None):
     """
 
     if not value:
-        return ''
+        return ""
 
     int_part, _, dec_part = value.partition(decimal_sep)
-    int_part = int_part or '0'  # ensure ('.1' => '0.1')
+    int_part = int_part or "0"  # ensure ('.1' => '0.1')
     # remove decimal zeros to the right.
-    dec_part = dec_part.rstrip('0')
+    dec_part = dec_part.rstrip("0")
     dec_part_size = len(dec_part)
     # If the integer part is not 0, it is checked if it is necessary
     # to add decimals to decimal part based on "min_decimals" param
-    if int_part != '0' and min_decimals and dec_part_size < min_decimals:
-        dec_diff = '0' * (min_decimals - dec_part_size)
-        dec_part = f'{dec_part}{dec_diff}'
+    if int_part != "0" and min_decimals and dec_part_size < min_decimals:
+        dec_diff = "0" * (min_decimals - dec_part_size)
+        dec_part = f"{dec_part}{dec_diff}"
 
-    return f'{int_part}{decimal_sep}{dec_part}' if dec_part else int_part
+    return f"{int_part}{decimal_sep}{dec_part}" if dec_part else int_part
 
 
 def is_url(text, schemes=None, hostnames=None):
@@ -175,11 +175,11 @@ def is_payment_card(text):
     numb = text.replace(" ", "")
     size = len(numb)
     if 12 <= size <= 19 and pymince.algorithm.luhn(numb):
-        if numb[0] == '4':  # Visa
+        if numb[0] == "4":  # Visa
             isvalid = size in {13, 16, 19}
         elif 51 <= int(numb[:2]) <= 55:  # Mastercard
             isvalid = size == 16
-        elif numb[:2] in {'34', '37'}:  # American Express
+        elif numb[:2] in {"34", "37"}:  # American Express
             isvalid = size == 15
         else:
             isvalid = True

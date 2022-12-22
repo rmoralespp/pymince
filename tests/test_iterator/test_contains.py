@@ -5,7 +5,7 @@ import pytest
 import pymince.iterator
 
 
-@pytest.mark.parametrize('contained', (True, False))
+@pytest.mark.parametrize("contained", (True, False))
 def test_container(contained):
     obj = object()
     container = unittest.mock.Mock()
@@ -15,7 +15,7 @@ def test_container(contained):
     assert result is contained
 
 
-@pytest.mark.parametrize('contained', (True, False))
+@pytest.mark.parametrize("contained", (True, False))
 def test_iterator(contained):
     search = "a"
     values = ("a", "b") if contained else ("b", "c")

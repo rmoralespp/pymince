@@ -25,7 +25,7 @@ def test_iter_by_min():
 
     expected = (
         datetime.datetime(2022, 11, 29, 14, 59, 58),
-        datetime.datetime(2022, 11, 29, 15, 0, 58)
+        datetime.datetime(2022, 11, 29, 15, 0, 58),
     )
     obj = pymince.dates.irange(ini, stop_date=end, time_step=day)
     assert tuple(obj) == expected
