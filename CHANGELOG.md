@@ -3,6 +3,7 @@
 - **Added:** Apply the *black* code formatter.
 - **Added:** Apply ruff badge to README.
 - **Added:** Install pre-commit. Run black, ruff, flake8 on pre-commit.
+- **Added:** Apply pre-commit badge to README.
 
 ## v2.0.0 (2022-12-22) ##
 
