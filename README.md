@@ -40,7 +40,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **text.py** |[*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
@@ -924,6 +924,23 @@ Examples:
     # False
     is_url("https://github.com/", schemes=("http",))
     is_url("https://github.com/", hostnames=("www.python.org", "localhost"))
+```
+##### multireplace
+```
+multireplace(text, replacements)
+
+Given a string and a replacement map, it returns the replaced string.
+
+:param str text: string to execute replacements on
+:param Union[dict[str, any], Tuple(str, any)] replacements:
+    2-dict or 2-tuple with value to find and value to replace
+:rtype: str
+
+ Examples:
+    from pymince.text import multireplace
+
+    mapping = {",": "", "cry": "smile"}
+    multireplace("No, woman, no cry", mapping) # --> "No woman no smile"
 ```
 ##### remove_decimal_zeros
 ```

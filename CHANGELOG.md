@@ -4,6 +4,7 @@
 - **Added:** Apply ruff badge to README.
 - **Added:** Install pre-commit. Run black, ruff, flake8 on pre-commit.
 - **Added:** Apply pre-commit badge to README.
+- **Added:** text.multireplace
 
 ## v2.0.0 (2022-12-22) ##
 

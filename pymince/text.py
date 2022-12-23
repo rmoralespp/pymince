@@ -3,6 +3,7 @@
 import functools
 import html
 import re
+import string
 import urllib.parse
 
 import pymince.algorithm
@@ -56,6 +57,33 @@ def replace(value, old_values, new_value, count=-1):
     for old_value in old_values:
         value = value.replace(old_value, new_value, count)
     return value
+
+
+def multireplace(text, replacements):
+    """
+    Given a string and a replacement map, it returns the replaced string.
+
+    :param str text: string to execute replacements on
+    :param Union[dict[str, any], Tuple(str, any)] replacements:
+        2-dict or 2-tuple with value to find and value to replace
+    :rtype: str
+
+     Examples:
+        from pymince.text import multireplace
+
+        mapping = {",": "", "cry": "smile"}
+        multireplace("No, woman, no cry", mapping) # --> "No woman no smile"
+
+    """
+
+    mapping = dict()
+    template = text
+    for i, (word, new_value) in enumerate(dict(replacements).items()):
+        # set valid identifiers to template
+        uid = f"id{i}"
+        template = template.replace(word, f"${uid}")
+        mapping[uid] = new_value
+    return string.Template(template).substitute(**mapping)
 
 
 def remove_decimal_zeros(value, decimal_sep=".", min_decimals=None):
