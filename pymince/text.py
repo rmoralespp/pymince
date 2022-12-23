@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Useful functions for working with strings."""
 import functools
 import html
@@ -14,7 +15,7 @@ _int_regexp_neg = re.compile(r"^-[1-9]\d*\.?[0]*$")
 _bin_regexp_not = re.compile(r"[^01]")
 _percentage_regexp = re.compile(r"^(?:0|[1-9]\d*)(?:\.\d+)?(?:\s)?%$")
 _email_address_regexp = re.compile(r"^\S+@\S+$")
-_roman_regex = re.compile("^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")
+_roman_regex = re.compile(r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")
 
 
 def remove_number_commas(string):
@@ -137,7 +138,7 @@ def is_int(text):
     "+10",  "+10.",  "+10.0",
     "-10",  "-10.",  "-10.0"
     """
-    return bool(_int_regexp_any.search(text))
+    return _int_regexp_any.fullmatch(text) is not None
 
 
 def is_positive_int(text):
@@ -149,7 +150,7 @@ def is_positive_int(text):
      "10",   "10.",   "10.0",
     "+10",  "+10.",  "+10.0",
     """
-    return bool(_int_regexp_pos.search(text))
+    return _int_regexp_pos.fullmatch(text) is not None
 
 
 def is_negative_int(text):
@@ -161,7 +162,7 @@ def is_negative_int(text):
     "-10",  "-10.",  "-10.0"
     """
 
-    return bool(_int_regexp_neg.search(text))
+    return _int_regexp_neg.fullmatch(text) is not None
 
 
 def is_payment_card(text):
@@ -195,7 +196,7 @@ def is_email_address(text):
     This solution does a very simple check. It only validates that the string contains an at sign (@)
     that is preceded and followed by one or more non whitespace characters.
     """
-    return bool(_email_address_regexp.search(text))
+    return _email_address_regexp.fullmatch(text) is not None
 
 
 def is_percentage(text):
@@ -205,7 +206,7 @@ def is_percentage(text):
     True: "100%", "100 %", "100&nbsp;%", 100.0 %",
     """
     unescaped = html.unescape(text)  # 100&nbsp;% => 100 %
-    return bool(_percentage_regexp.search(unescaped))
+    return _percentage_regexp.fullmatch(unescaped) is not None
 
 
 def is_palindrome(text):
@@ -218,7 +219,7 @@ def is_palindrome(text):
 
 def is_roman(text):
     """Check if the string is a valid roman numeral."""
-    return bool(_roman_regex.search(text))
+    return _roman_regex.fullmatch(text) is not None
 
 
 class fullstr(str):

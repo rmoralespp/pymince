@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import csv
 import functools
 import itertools
@@ -98,10 +99,7 @@ def dump_from_csv(
         if strip:
             apply = operator.methodcaller("strip")
             for row in reader:
-                yield {
-                    k and apply(k): (apply(v) if isinstance(v, str) else v)
-                    for k, v in row.items()
-                }
+                yield {k and apply(k): (apply(v) if isinstance(v, str) else v) for k, v in row.items()}
         else:
             yield from reader
 

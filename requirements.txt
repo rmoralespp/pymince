@@ -3,3 +3,4 @@ coverage
 pytest-cov
 ruff
 black
+pre-commit

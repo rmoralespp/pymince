@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import contextlib
 import csv
 import os
@@ -53,9 +54,7 @@ def test_dumped_data_excluding_header_and_footer():
         {"co l3": "!!!", "col1": "ñoo", "col2": "var", "col4": "123"},
     ]
     with temp_paths() as (csv_path, json_path):
-        pymince.json.dump_from_csv(
-            csv_path, json_path, fieldnames=csv_head, start=1, stop=2
-        )
+        pymince.json.dump_from_csv(csv_path, json_path, fieldnames=csv_head, start=1, stop=2)
         dumped = pymince.json.load_from(json_path)
         assert dumped == expected
 
@@ -63,9 +62,7 @@ def test_dumped_data_excluding_header_and_footer():
 def test_dumped_data_start_and_stop_equals():
     expected = []
     with temp_paths() as (csv_path, json_path):
-        pymince.json.dump_from_csv(
-            csv_path, json_path, fieldnames=csv_head, start=1, stop=1
-        )
+        pymince.json.dump_from_csv(csv_path, json_path, fieldnames=csv_head, start=1, stop=1)
         dumped = pymince.json.load_from(json_path)
         assert dumped == expected
 
@@ -77,9 +74,7 @@ def test_dumped_data_strip_false():
         {" col1": " baz", " col4 ": "567", "co l3": " %6$ ", "col2 ": "foo "},
     ]
     with temp_paths() as (csv_path, json_path):
-        pymince.json.dump_from_csv(
-            csv_path, json_path, fieldnames=csv_head, strip=False
-        )
+        pymince.json.dump_from_csv(csv_path, json_path, fieldnames=csv_head, strip=False)
         dumped = pymince.json.load_from(json_path)
         assert dumped == expected
 

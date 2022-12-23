@@ -12,14 +12,16 @@ select = [
 
     # pydocstyle
     "D200", # One-line docstring should fit on one line
+    "D204", # 1 blank line required after class docstring
     "D206", # Docstring should be indented with spaces, not tabs
     "D207", # Docstring is under-indented
     "D208", # Docstring is over-indented
     "D209", # Multi-line docstring closing quotes should be on a separate line
     "D210", # No whitespaces allowed surrounding docstring text
+    "D211", # No blank lines allowed before class docstring
     "D403", # First word of the first line should be properly capitalized
     "D419", # Docstring is empty
-    "D300",
+    "D300", # Use """triple double quotes"""
 
     # pyupgrade
     "UP008", # Use super() instead of super(__class__, self)
@@ -67,3 +69,24 @@ extend-ignore = [
     "PLR0402", # Use `from ... import ...` in lieu of alias
     "PLW0120", # Else clause on loop without a break statement.
 ]
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.flake8]
+max-line-length = 120

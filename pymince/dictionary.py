@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Useful functions that use dictionaries."""
 
 import datetime

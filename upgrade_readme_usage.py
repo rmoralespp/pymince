@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import inspect
 import itertools
 import logging
@@ -78,9 +79,7 @@ def module2markdown(module):
     module_name = os.path.basename(module.__file__)
     module_desc = cleandoc(module)
 
-    lines = itertools.chain(
-        (f"\n#### {module_name}\n{module_desc}",), members2markdown()
-    )
+    lines = itertools.chain((f"\n#### {module_name}\n{module_desc}",), members2markdown())
     return "\n".join(lines)
 
 
@@ -99,9 +98,7 @@ def make_table():
         row = ""
         module_name = os.path.basename(module.__file__)
         row += f"| **{module_name}** |"
-        row += ", ".join(
-            (f"[*{m.__name__}*](#{m.__name__})" for _, m in getmembers(module))
-        )
+        row += ", ".join((f"[*{m.__name__}*](#{m.__name__})" for _, m in getmembers(module)))
         row += "|"
         table.append(row)
     table = "\n".join(table)

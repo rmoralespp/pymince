@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from setuptools import setup
 
 from pymince import __version__, __title__

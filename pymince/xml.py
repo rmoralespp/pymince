@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import xml.etree.ElementTree as etree
 
 
@@ -30,9 +31,7 @@ def iterparse(filename):
 
     """
 
-    parser = etree.XMLPullParser(
-        ["start", "end"]
-    )  # can be replaced with iterparse as well
+    parser = etree.XMLPullParser(["start", "end"])  # can be replaced with iterparse as well
     root = None
     with open(filename, encoding="utf-8") as f:
         for line in f:

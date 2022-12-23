@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Functions that use iterators for efficient loops."""
 import collections
 import functools
@@ -65,11 +66,7 @@ def uniquer(iterable, key=None):
     """
     getter = key or (lambda x: x)
     bag = set()
-    return (
-        bag.add(check) or val
-        for val in iter(iterable)
-        if (check := getter(val)) not in bag
-    )
+    return (bag.add(check) or val for val in iter(iterable) if (check := getter(val)) not in bag)
 
 
 def grouper(iterable, size):

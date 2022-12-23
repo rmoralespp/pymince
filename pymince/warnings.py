@@ -34,9 +34,7 @@ def deprecated(fn):
 
     @functools.wraps(fn)
     def wrapper(*args, **kwargs):
-        warnings.warn(
-            'Deprecated "%s".' % fn.__name__, category=DeprecationWarning, stacklevel=2
-        )
+        warnings.warn('Deprecated "%s".' % fn.__name__, category=DeprecationWarning, stacklevel=2)
 
         # stacklevel=2. The printed warning will indicate and show the call site to the deprecated
         # function rather than to the location of the warnings.warn() call.

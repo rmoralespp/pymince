@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 
 import pymince.text
@@ -92,9 +93,7 @@ class TestIsUrl:
         ],
     )
     def test_false(self, param):
-        assert not pymince.text.fullstr(param).is_url(
-            schemes=self.schemes, hostnames=self.hostnames
-        )
+        assert not pymince.text.fullstr(param).is_url(schemes=self.schemes, hostnames=self.hostnames)
 
     @pytest.mark.parametrize(
         "param",
@@ -103,8 +102,7 @@ class TestIsUrl:
             "http://localhost",
             "https://example.org/foo/next/",
             "postgres://username:password@localhost:5432/app",
-            "mongodb://username:password@localhost:5432/foo?replicaSet=myrs"
-            "ftp://example.org",
+            "mongodb://username:password@localhost:5432/foo?replicaSet=myrs" "ftp://example.org",
             "http://андрей@example.com",
             "https://www.example.com/",
             "https://example.com/",
@@ -115,9 +113,7 @@ class TestIsUrl:
         ],
     )
     def test_true(self, param):
-        assert pymince.text.fullstr(param).is_url(
-            schemes=self.schemes, hostnames=self.hostnames
-        )
+        assert pymince.text.fullstr(param).is_url(schemes=self.schemes, hostnames=self.hostnames)
 
 
 class TestIsPaymentCard:
@@ -189,9 +185,7 @@ class TestIsPercentage:
     def test_true(self, v):
         assert pymince.text.fullstr(v).is_percentage()
 
-    @pytest.mark.parametrize(
-        "v", ["", "foo", "-1%", "0.%", "1  %", "01.000 %", "00 %", "90"]
-    )
+    @pytest.mark.parametrize("v", ["", "foo", "-1%", "0.%", "1  %", "01.000 %", "00 %", "90"])
     def test_false(self, v):
         assert not pymince.text.fullstr(v).is_percentage()
 

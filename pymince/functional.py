@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class classproperty:
     """
     Decorator that converts a method with a single cls argument into a property

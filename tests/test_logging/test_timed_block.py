@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest.mock
 
 import pymince.logging
