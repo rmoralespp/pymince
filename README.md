@@ -34,7 +34,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
-| **functional.py** |[*classproperty*](#classproperty)|
+| **functional.py** |[*classproperty*](#classproperty), [*pipe*](#pipe)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
@@ -351,6 +351,25 @@ Examples:
         @classproperty
         def foo(cls):
             return cls.__foo
+```
+##### pipe
+```
+pipe(*fns)
+
+Simple pipe function implementation using function composition.
+
+:param fns: Functions to pipe.
+:rtype: Callable[[Any], Any]
+
+Examples:
+    from pymince.functional import pipe
+
+    addtwo = lambda n: n + 2
+    double = lambda n: n * 2
+    square = lambda n: n * n
+
+    fn = pipe(addtwo, double, square)
+    fn(1) # 36
 ```
 #### iterator.py
 Functions that use iterators for efficient loops.
