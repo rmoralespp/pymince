@@ -561,7 +561,7 @@ the given "iterable", no filling is done.
 ```
 replacer(iterable, matcher, new_value, count=-1)
 
-Make an iterator that returns all occurrences of the old "iterable"
+Make an iterator that yields all occurrences of the old "iterable"
 replaced by "new_value".
 
 :param iterable:
@@ -579,32 +579,29 @@ Examples:
 ```
 ##### splitter
 ```
-splitter(iterable, sep, key=None, maxsplit=-1)
+splitter(iterable, sep, key=None, maxsplit=-1, container=None)
 
-Split iterable into groups of iterators according
-to given delimiter.
+Splits an iterable based on a separator.
+A separator will never appear in the output.
 
 :param iterable:
 :param sep: The delimiter to split the iterable.
 :param key
     A function to compare the equality of each element with the given delimiter.
     If the key function is not specified or is None, the element itself is used for compare.
-
 :param maxsplit:
     Maximum number of splits to do.
     -1 (the default value) means no limit.
+:param container: Callable to save the splits. By default tuple is used.
 
-:return: Generator with consecutive groups from "iterable" without the delimiter element.
+:return: Generator with consecutive splits of "iterable" without the delimiter item.
 
 Examples:
     from pymince.iterator import splitter
 
-    data = ["a", "b", "c", "d", "b", "e"]
-
-    undefined_split = splitter(data, "b")
-    one_split = splitter(data, "b", maxsplit=1)
-    list(list(s) for s in undefined_split) # --> [["a"], ["c", "d"], ["e"]]
-    list(list(s) for s in one_split) # --> [["a"], ["c", "d", "b", "e"]]
+    data = ("a", "b", "c", "d", "b", "e")
+    split_n = splitter(data, "b")  # --> ("a",) ("c", "d") ("e",)
+    split_1 = splitter(data, "b", maxsplit=1)  # --> ("a",) ("c", "d", "b", "e")
 ```
 ##### uniquer
 ```

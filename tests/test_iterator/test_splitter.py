@@ -7,29 +7,36 @@ import pymince.iterator
 
 
 def test_splitter_on_string():
+    expected = (('e', 'a', 't'), ('s', 'l', 'e', 'e', 'p'), ('r', 'e', 'p', 'e', 'a', 't'))
     result = pymince.iterator.splitter("eat sleep repeat", " ")
-    assert ",".join("".join(group) for group in result) == "eat,sleep,repeat"
+    assert tuple(result) == expected
+
+
+def test_splitter_on_string_with_join_container():
+    expected = ('eat', 'sleep', 'repeat')
+    result = pymince.iterator.splitter("eat sleep repeat", " ", container="".join)
+    assert tuple(result) == expected
 
 
 def test_splitter_start_with_sep():
     data = (1, 2, 3)
     expected = ((), (2, 3))
     result = pymince.iterator.splitter(data, 1)
-    assert tuple(tuple(group) for group in result) == expected
+    assert tuple(result) == expected
 
 
 def test_splitter_end_with_sep():
     data = (1, 2, 3)
     expected = ((1, 2),)
     result = pymince.iterator.splitter(data, 3)
-    assert tuple(tuple(group) for group in result) == expected
+    assert tuple(result) == expected
 
 
 def test_splitter_contains_sep():
     data = (1, 2, 3)
     expected = ((1,), (3,))
     result = pymince.iterator.splitter(data, 2)
-    assert tuple(tuple(group) for group in result) == expected
+    assert tuple(result) == expected
 
 
 def test_splitter_start_with_sep_given_itemgetter():
@@ -38,7 +45,7 @@ def test_splitter_start_with_sep_given_itemgetter():
     val = ((1, "foo"), (2, "foo"), (3, "foo"))
     exc = ((), ((2, "foo"), (3, "foo")))
     res = pymince.iterator.splitter(val, sep, key=key)
-    assert tuple(tuple(group) for group in res) == exc
+    assert tuple(res) == exc
 
 
 def test_splitter_end_with_sep_given_itemgetter():
@@ -47,7 +54,7 @@ def test_splitter_end_with_sep_given_itemgetter():
     val = ((1, "abc"), (2, "bcd"), (3, "def"))
     exc = (((1, "abc"), (2, "bcd")),)
     res = pymince.iterator.splitter(val, sep, key=key)
-    assert tuple(tuple(group) for group in res) == exc
+    assert tuple(res) == exc
 
 
 def test_splitter_contains_sep_given_itemgetter():
@@ -56,13 +63,13 @@ def test_splitter_contains_sep_given_itemgetter():
     val = ((1, "abc"), (2, "bcd"), (3, "def"))
     exc = (((1, "abc"),), ((3, "def"),))
     res = pymince.iterator.splitter(val, sep, key=key)
-    assert tuple(tuple(group) for group in res) == exc
+    assert tuple(res) == exc
 
 
 @pytest.mark.parametrize(
     "maxsplit,expected",
     [
-        (0, (1, 2, 3, 1, 2, 3, 1, 2, 1)),
+        (0, ((1, 2, 3, 1, 2, 3, 1, 2, 1),)),
         (1, ((), (2, 3, 1, 2, 3, 1, 2, 1))),
         (2, ((), (2, 3), (2, 3, 1, 2, 1))),
         (3, ((), (2, 3), (2, 3), (2, 1))),
@@ -74,24 +81,21 @@ def test_splitter_multi_sep(maxsplit, expected):
     data = (1, 2, 3, 1, 2, 3, 1, 2, 1)
     sep = 1
     result = pymince.iterator.splitter(data, sep, maxsplit=maxsplit)
-    if maxsplit:
-        assert tuple(tuple(group) for group in result) == expected
-    else:
-        assert tuple(result) == expected
+    assert tuple(result) == expected
 
 
 def test_splitter_no_contains_sep():
     data = (1, 2, 3)
     expected = ((1, 2, 3),)
     result = pymince.iterator.splitter(data, 0)
-    assert tuple(tuple(group) for group in result) == expected
+    assert tuple(result) == expected
 
 
 def test_splitter_no_contains_sep_give_itemgetter():
     data = ((1, "foo"), (2, "foo"), (3, "foo"))
     expected = (data,)
     result = pymince.iterator.splitter(data, 0)
-    assert tuple(tuple(group) for group in result) == expected
+    assert tuple(result) == expected
 
 
 def test_next_group_on_long_iterable():

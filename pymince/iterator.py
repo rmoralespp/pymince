@@ -5,10 +5,13 @@ import functools
 import itertools
 import operator
 
+empty = object()
+consume_all = collections.deque(maxlen=0).extend  # Consume given iterator entirely.
+
 
 def replacer(iterable, matcher, new_value, count=-1):
     """
-    Make an iterator that returns all occurrences of the old "iterable"
+    Make an iterator that yields all occurrences of the old "iterable"
     replaced by "new_value".
 
     :param iterable:
@@ -51,7 +54,7 @@ def uniques(iterable, key=None):
     bag = set()
     values = (getter(obj) for obj in iterable) if getter else iter(iterable)
     result = (val for val in values if val in bag or bag.add(val))
-    return next(result, None) is None
+    return next(result, empty) is empty
 
 
 def uniquer(iterable, key=None):
@@ -66,7 +69,8 @@ def uniquer(iterable, key=None):
     """
     getter = key or (lambda x: x)
     bag = set()
-    return (bag.add(check) or val for val in iter(iterable) if (check := getter(val)) not in bag)
+    add = bag.add
+    return (add(check) or val for val in iter(iterable) if (check := getter(val)) not in bag)
 
 
 def grouper(iterable, size):
@@ -106,7 +110,7 @@ def consume(iterator, n=None):
     """
 
     if n is None:
-        collections.deque(iterator, maxlen=0)
+        consume_all(iterator)
     else:
         next(itertools.islice(iterator, n, n), None)
 
@@ -128,7 +132,6 @@ def all_equals(*iterables, key=None):
         all_equals((1, 2), (1, 2, 3)) # --> False
     """
 
-    empty = object()
     zipped = itertools.zip_longest(*iterables, fillvalue=empty)
     return all(all_equal(elem, key=key) for elem in zipped)
 
@@ -150,7 +153,6 @@ def all_identical(left, right):
         all_identical([a, b, [a]], [a, b, [a]])  # --> False *new list object, while "equal" is not "identical"*
     """
 
-    empty = object()
     for left_item, right_item in itertools.zip_longest(left, right, fillvalue=empty):
         if left_item is not right_item:
             return False
@@ -171,8 +173,9 @@ def all_equal(iterable, key=None):
         all_equal([1, 1]) # --> True
         all_equal([1, 2]) # --> False
     """
+
     grouped = itertools.groupby(iterable, key=key)
-    return next(grouped, True) and not next(grouped, False)
+    return has_only_one(grouped)
 
 
 def all_distinct(iterable, key=None):
@@ -207,58 +210,48 @@ def has_only_one(iterable):
         has_only_one([1, 2]) # --> False
         has_only_one([]) # --> False
     """
-    flag = object()
-    return next(iterable, flag) is not flag and next(iterable, flag) is flag
+
+    it = iter(iterable)
+    return next(it, empty) is not empty and next(it, empty) is empty
 
 
-def splitter(iterable, sep, key=None, maxsplit=-1):
+def splitter(iterable, sep, key=None, maxsplit=-1, container=None):
     """
-    Split iterable into groups of iterators according
-    to given delimiter.
+    Splits an iterable based on a separator.
+    A separator will never appear in the output.
 
     :param iterable:
     :param sep: The delimiter to split the iterable.
     :param key
         A function to compare the equality of each element with the given delimiter.
         If the key function is not specified or is None, the element itself is used for compare.
-
     :param maxsplit:
         Maximum number of splits to do.
         -1 (the default value) means no limit.
+    :param container: Callable to save the splits. By default tuple is used.
 
-    :return: Generator with consecutive groups from "iterable" without the delimiter element.
+    :return: Generator with consecutive splits of "iterable" without the delimiter item.
 
     Examples:
         from pymince.iterator import splitter
 
-        data = ["a", "b", "c", "d", "b", "e"]
-
-        undefined_split = splitter(data, "b")
-        one_split = splitter(data, "b", maxsplit=1)
-        list(list(s) for s in undefined_split) # --> [["a"], ["c", "d"], ["e"]]
-        list(list(s) for s in one_split) # --> [["a"], ["c", "d", "b", "e"]]
+        data = ("a", "b", "c", "d", "b", "e")
+        split_n = splitter(data, "b")  # --> ("a",) ("c", "d") ("e",)
+        split_1 = splitter(data, "b", maxsplit=1)  # --> ("a",) ("c", "d", "b", "e")
     """
 
-    def group(objects):
-        for obj in objects:
-            if getter(obj) == sep:
-                break
-            else:
-                yield obj
+    def is_not_sep(obj):
+        return key(obj) != sep if key else obj != sep
 
-    def recursive(objects, counter):
-        iterator = ibool(objects)
-        if iterator and (maxsplit == -1 or counter < maxsplit):
-            counter += 1
-            yield group(iterator)
-            yield from recursive(iterator, counter)
-        elif iterator:
-            yield iterator
-        else:
-            return
-
-    getter = key or (lambda x: x)
-    return recursive(iter(iterable), 0) if maxsplit else iterable
+    data = ibool(iterable)
+    numb = 0
+    wrap = container or tuple
+    while data and (maxsplit == -1 or numb < maxsplit):
+        taken = itertools.takewhile(is_not_sep, data)
+        yield wrap(taken)
+        numb += 1
+    if data:
+        yield wrap(data)
 
 
 def pad_start(iterable, length, fill_value=None):
