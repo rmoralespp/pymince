@@ -29,7 +29,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ### Usage
 | PyModules  | Tools  |
 | :--------  | :----- |
-| **algorithm.py** |[*fibonacci*](#fibonacci), [*luhn*](#luhn)|
+| **algorithm.py** |[*fibonacci*](#fibonacci), [*luhn*](#luhn), [*sieve_of_eratosthenes*](#sieve_of_eratosthenes)|
 | **boolean.py** |[*string2bool*](#string2bool)|
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
@@ -66,6 +66,16 @@ is a simple checksum formula used to validate a variety of
 identification numbers, such as credit card numbers, IMEI numbers, National Provider Identifier numbers
 
 Based on: https://en.wikipedia.org/wiki/Luhn_algorithm
+```
+##### sieve_of_eratosthenes
+```
+sieve_of_eratosthenes(n)
+
+Primes less than n.
+Based on: https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+
+:param int n: n an integer n > 1
+:rtype: Generator[int]. All prime numbers from 2 through n.
 ```
 #### boolean.py
 
