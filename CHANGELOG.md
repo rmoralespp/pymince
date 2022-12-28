@@ -1,5 +1,7 @@
 ## In Progress ##
 
+## v2.1.0 (2022-12-28) ##
+
 - **Added:** Apply the *black* code formatter.
 - **Added:** Apply ruff badge to README.
 - **Added:** Install pre-commit. Run black, ruff, flake8 on pre-commit.
