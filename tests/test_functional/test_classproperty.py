@@ -6,15 +6,12 @@ import pymince.functional
 
 def test_with_method():
     class MyClass:
-        def __init__(self):
-            self._foo = "var"
-
         @pymince.functional.classproperty
-        def foo(self):
-            return self._foo
+        def name(self):
+            return self._name
 
     with pytest.raises(AttributeError):
-        assert MyClass.foo
+        assert MyClass.name
 
 
 def test_from_cls():

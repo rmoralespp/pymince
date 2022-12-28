@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import enum
+import uuid
 
 import pytest
 
@@ -60,3 +61,9 @@ def test_digest_exclude(payload):
 def test_digest_with_value_error():
     with pytest.raises(ValueError):
         pymince.dictionary.DigestGetter(include_keys=("a",), exclude_keys=("a",))
+
+
+def test_digest_type_error():
+    with pytest.raises(TypeError):
+        getter = pymince.dictionary.DigestGetter()
+        getter({"uuid": uuid.uuid4()})

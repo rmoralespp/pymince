@@ -63,9 +63,9 @@ def multireplace(text, replacements):
     """
     Given a string and a replacement map, it returns the replaced string.
 
-    :param str text: string to execute replacements on
-    :param Union[dict[str, any], Tuple(str, any)] replacements:
-        2-dict or 2-tuple with value to find and value to replace
+    :param str text: string to execute replacements on.
+    :param Union[dict[str, any], tuple[tuple[str, any], ...] replacements:
+        2-dict or 2-tuples with value to find and value to replace
     :rtype: str
 
      Examples:

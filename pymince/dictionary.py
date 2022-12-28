@@ -12,8 +12,8 @@ import types
 
 def all_true_values(dictionary, keys):
     """
-    Check if an dictionary has all specified keys and
-    key-related values as True.
+    Check if a dictionary has all the specified keys and if all its
+    evaluated key-related values are True.
 
     :param dict dictionary:
     :param keys: keys sequence
@@ -40,7 +40,7 @@ def find_leaf_value(key, dictionary):
     """
     Find leaf value in mapping.
 
-    :param str key:
+    :param Any key: key to find
     :param dict dictionary:
 
     Examples:
@@ -50,12 +50,15 @@ def find_leaf_value(key, dictionary):
         find_leaf_value('a', {'a': 'b', 'b': 'c'}) # --> 'c'
         find_leaf_value('a', {'a': 'a'}) # --> 'a'
     """
+
+    bag = set()
     while True:
-        if key is not None and key in dictionary:
+        if key in dictionary:
             new_key = dictionary[key]
-            if new_key == key:
+            if new_key == key or new_key in bag:
                 break
             key = new_key
+            bag.add(new_key)
         else:
             break
     return key

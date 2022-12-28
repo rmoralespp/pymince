@@ -38,3 +38,7 @@ import pymince.algorithm
 def test_luhn(param: str, valid: bool):
     # https://github.com/pydantic/pydantic/blob/a57346ac492273099389c564a482cbae7895a2ac/tests/test_types_payment_card_number.py#L40
     assert pymince.algorithm.luhn(param) == valid
+
+
+def test_luhn_is_not_digit():
+    assert not pymince.algorithm.luhn("foo123")

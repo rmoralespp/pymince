@@ -40,7 +40,7 @@ def pipe(*fns):
         square = lambda n: n * n
 
         fn = pipe(addtwo, double, square)
-        fn(1) # 36
+        fn(1) # --> 36
     """
 
     def wrap(arg):

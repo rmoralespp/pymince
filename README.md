@@ -76,6 +76,10 @@ Based on: https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 
 :param int n: n an integer n > 1
 :rtype: Generator[int]. All prime numbers from 2 through n.
+
+Examples:
+    from pymince.algorithm import sieve_of_eratosthenes as primes
+    primes(30) # --> 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
 ```
 #### boolean.py
 
@@ -183,8 +187,8 @@ Examples:
 ```
 all_true_values(dictionary, keys)
 
-Check if an dictionary has all specified keys and
-key-related values as True.
+Check if a dictionary has all the specified keys and if all its
+evaluated key-related values are True.
 
 :param dict dictionary:
 :param keys: keys sequence
@@ -203,7 +207,7 @@ find_leaf_value(key, dictionary)
 
 Find leaf value in mapping.
 
-:param str key:
+:param Any key: key to find
 :param dict dictionary:
 
 Examples:
@@ -369,7 +373,7 @@ Examples:
     square = lambda n: n * n
 
     fn = pipe(addtwo, double, square)
-    fn(1) # 36
+    fn(1) # --> 36
 ```
 #### iterator.py
 Functions that use iterators for efficient loops.
@@ -957,9 +961,9 @@ multireplace(text, replacements)
 
 Given a string and a replacement map, it returns the replaced string.
 
-:param str text: string to execute replacements on
-:param Union[dict[str, any], Tuple(str, any)] replacements:
-    2-dict or 2-tuple with value to find and value to replace
+:param str text: string to execute replacements on.
+:param Union[dict[str, any], tuple[tuple[str, any], ...] replacements:
+    2-dict or 2-tuples with value to find and value to replace
 :rtype: str
 
  Examples:

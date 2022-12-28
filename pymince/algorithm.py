@@ -58,6 +58,10 @@ def sieve_of_eratosthenes(n):
 
     :param int n: n an integer n > 1
     :rtype: Generator[int]. All prime numbers from 2 through n.
+
+    Examples:
+        from pymince.algorithm import sieve_of_eratosthenes as primes
+        primes(30) # --> 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
     """
 
     sieve = bytearray((0, 0)) + bytearray((1,)) * (n - 2)

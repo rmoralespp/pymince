@@ -25,18 +25,12 @@ def test_empty():
 
 
 def test_missing_arguments():
-    def square(n, m):
-        return n * m
-
     with pytest.raises(TypeError):
-        fn = pymince.functional.pipe(square)
+        fn = pymince.functional.pipe(divmod)
         fn(1)
 
 
 def test_unexpected_arguments():
-    def square(n):
-        return n * n
-
     with pytest.raises(TypeError):
-        fn = pymince.functional.pipe(square)
+        fn = pymince.functional.pipe(bool)
         fn(1, 2)
