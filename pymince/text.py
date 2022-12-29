@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Useful functions for working with strings."""
+import collections
 import functools
 import html
 import re
@@ -250,6 +251,20 @@ def is_roman(text):
     return _roman_regex.fullmatch(text) is not None
 
 
+def are_anagram(text1, text2):
+    """
+    Check if two strings are anagram.
+
+    Examples:
+        from pymince.text import are_anagram
+
+        are_anagram("listen", "silent")      # --> True
+        are_anagram("they see", "the eyes")  # --> True
+
+    """
+    return collections.Counter(text1) == collections.Counter(text2)
+
+
 class fullstr(str):
     """
     Custom string inheriting from "str" which adds
@@ -265,6 +280,7 @@ class fullstr(str):
     - is_palindrome(self)
     - is_email_address(self)
     - is_roman(self)
+    - are_anagram(self, other)
     """
 
     def is_url(self, schemes=None, hostnames=None):
@@ -296,3 +312,6 @@ class fullstr(str):
 
     def is_roman(self):
         return is_roman(self)
+
+    def are_anagram(self, other):
+        return are_anagram(self, other)

@@ -4,6 +4,7 @@ import collections
 import functools
 import itertools
 import operator
+import statistics
 
 empty = object()
 consume_all = collections.deque(maxlen=0).extend  # Consume given iterator entirely.
@@ -401,3 +402,22 @@ class ibool:
             else:
                 self._queue.append(obj)
                 return True
+
+
+def centroid(coordinates):
+    """
+    Calculate the centroid of a set of n-dimensional coordinates.
+    In Cartesian coordinates, the centroid is
+    just the mean of the components.
+
+    :param Iterable[Iterable[int]] coordinates: Iterable of n-dimensional coordinates.
+    :rtype: Iterator[int]
+
+     Examples:
+        from pymince.iterator import centroid
+
+        coord = (((2, 2), (4, 4)))
+        tuple(centroid(coord))  # --> (3, 3)
+    """
+
+    return map(statistics.mean, itertools.zip_longest(*coordinates))

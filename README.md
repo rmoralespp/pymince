@@ -34,13 +34,13 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
-| **functional.py** |[*classproperty*](#classproperty), [*pipe*](#pipe)|
-| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
+| **functional.py** |[*classproperty*](#classproperty), [*once*](#once), [*pipe*](#pipe)|
+| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*contains*](#contains), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
@@ -356,13 +356,34 @@ Examples:
         def foo(cls):
             return cls.__foo
 ```
+##### once
+```
+once(fn)
+
+Decorator to execute a function only once.
+
+Examples:
+    from pymince.functional import once
+
+    @once
+    def inc_once():
+        global n
+        n += 1
+        return 'anything'
+
+    n = 0
+    inc_once()  #  --> 'anything'
+    inc_once()  #  --> 'anything'
+    inc_once()  #  --> 'anything'
+    print(n)    #  --> 1
+```
 ##### pipe
 ```
 pipe(*fns)
 
-Simple pipe function implementation using function composition.
+Compose functions from left to right.
 
-:param fns: Functions to pipe.
+:param fns: Functions to compose.
 :rtype: Callable[[Any], Any]
 
 Examples:
@@ -444,6 +465,23 @@ Examples:
     a, b = object(), object()
     all_identical([a, b, a], [a, b, a]) # --> True
     all_identical([a, b, [a]], [a, b, [a]])  # --> False *new list object, while "equal" is not "identical"*
+```
+##### centroid
+```
+centroid(coordinates)
+
+Calculate the centroid of a set of n-dimensional coordinates.
+In Cartesian coordinates, the centroid is
+just the mean of the components.
+
+:param Iterable[Iterable[int]] coordinates: Iterable of n-dimensional coordinates.
+:rtype: Iterator[int]
+
+ Examples:
+    from pymince.iterator import centroid
+
+    coord = (((2, 2), (4, 4)))
+    tuple(centroid(coord))  # --> (3, 3)
 ```
 ##### consume
 ```
@@ -835,6 +873,18 @@ def foo(data=None):
 ```
 #### text.py
 Useful functions for working with strings.
+##### are_anagram
+```
+are_anagram(text1, text2)
+
+Check if two strings are anagram.
+
+Examples:
+    from pymince.text import are_anagram
+
+    are_anagram("listen", "silent")      # --> True
+    are_anagram("they see", "the eyes")  # --> True
+```
 ##### fullstr
 ```
 fullstr()
@@ -852,6 +902,7 @@ the following methods:
 - is_palindrome(self)
 - is_email_address(self)
 - is_roman(self)
+- are_anagram(self, other)
 ```
 ##### is_binary
 ```

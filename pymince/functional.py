@@ -27,9 +27,9 @@ class classproperty:
 
 def pipe(*fns):
     """
-    Simple pipe function implementation using function composition.
+    Compose functions from left to right.
 
-    :param fns: Functions to pipe.
+    :param fns: Functions to compose.
     :rtype: Callable[[Any], Any]
 
     Examples:
@@ -47,3 +47,32 @@ def pipe(*fns):
         return functools.reduce(lambda v, fn: fn(v), fns, arg)
 
     return wrap
+
+
+def once(fn):
+    """
+    Decorator to execute a function only once.
+
+    Examples:
+        from pymince.functional import once
+
+        @once
+        def inc_once():
+            global n
+            n += 1
+            return 'anything'
+
+        n = 0
+        inc_once()  #  --> 'anything'
+        inc_once()  #  --> 'anything'
+        inc_once()  #  --> 'anything'
+        print(n)    #  --> 1
+    """
+
+    @functools.wraps(fn)
+    def decorator(*args, **kwargs):
+        if not hasattr(decorator, 'ran'):
+            decorator.ran = fn(*args, **kwargs)
+        return decorator.ran
+
+    return decorator

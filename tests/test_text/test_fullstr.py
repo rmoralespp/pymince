@@ -309,3 +309,19 @@ class TestIsRoman:
     )
     def test_false(self, v):
         assert not pymince.text.fullstr(v).is_roman()
+
+
+class TestAreAnagram:
+    @pytest.mark.parametrize(
+        "s1,s2",
+        [("", ""), (" ", " "), ("listen", 'silent'), ("they see", 'the eyes'), ("node", 'deno')],
+    )
+    def test_true(self, s1, s2):
+        assert pymince.text.fullstr(s1).are_anagram(s2)
+
+    @pytest.mark.parametrize(
+        "s1,s2",
+        [("", " "), ("listen", 'silent '), ("theysee", 'the eyes'), ("node", 'de no')],
+    )
+    def test_false(self, s1, s2):
+        assert not pymince.text.fullstr(s1).are_anagram(s2)

@@ -2,6 +2,9 @@
 
 - **Fixed:** dictionary.find_leaf_value. Infinite recursion for args: *key="a", dictionary={"a": "b", "b": "a"}*
 - **Added:** New tests. Better coverage
+- **Added:** text.are_anagram, text.fullstr.are_anagram
+- **Added:** functional.once
+- **Added:** iterator.centroid
 
 ## v2.1.0 (2022-12-28) ##
 

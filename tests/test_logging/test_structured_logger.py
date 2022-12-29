@@ -9,7 +9,8 @@ import pymince.json
 import pymince.logging
 
 
-def get_logger():
+def test_structured_formatter(capsys):
+    # prepare logging
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     formatter = pymince.logging.StructuredFormatter("%(message)s")
@@ -17,12 +18,7 @@ def get_logger():
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
-    return logger
 
-
-def test_structured_formatter(capsys):
-    # prepare logging
-    logger = get_logger()
     payload = {"key": "a", "numb": 1, "bool": True, "nested": [1, 2, 3]}
     # execute log.debug
     logger.debug("", payload)
@@ -31,9 +27,6 @@ def test_structured_formatter(capsys):
     assert captured["payload"] == payload
     assert captured["level"] == "DEBUG"
 
-
-def test_invalid_payload():
-    # prepare logging
-    logger = get_logger()
+    # check TypeError
     with pytest.raises(TypeError):
-        logger.debug("", object())
+        logger.debug("", "")
