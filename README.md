@@ -34,7 +34,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
-| **functional.py** |[*classproperty*](#classproperty), [*once*](#once), [*pipe*](#pipe)|
+| **functional.py** |[*classproperty*](#classproperty), [*once*](#once), [*pipe*](#pipe), [*set_attributes*](#set_attributes)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
@@ -395,6 +395,23 @@ Examples:
 
     fn = pipe(addtwo, double, square)
     fn(1) # --> 36
+```
+##### set_attributes
+```
+set_attributes(**kwargs)
+
+Decorator to set attributes on functions and classes.
+
+Examples:
+    from pymince.functional import set_attributes
+
+    @set_attributes(short_description="dummy function")
+    def foo():
+        pass
+
+    print(foo.short_description)  # "dummy function"
+
+Based on: https://github.com/wolph/python-utils/ (set_attributes)
 ```
 #### iterator.py
 Functions that use iterators for efficient loops.
