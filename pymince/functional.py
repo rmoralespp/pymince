@@ -76,3 +76,27 @@ def once(fn):
         return decorator.ran
 
     return decorator
+
+
+def set_attributes(**kwargs):
+    """
+    Decorator to set attributes on functions and classes.
+
+    Examples:
+        from pymince.functional import set_attributes
+
+        @set_attributes(short_description="dummy function")
+        def foo():
+            pass
+
+        print(foo.short_description)  # "dummy function"
+
+    Based on: https://github.com/wolph/python-utils/ (set_attributes)
+    """
+
+    def wrap(fn):
+        for key, value in kwargs.items():
+            setattr(fn, key, value)
+        return fn
+
+    return wrap
