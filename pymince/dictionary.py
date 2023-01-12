@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """Useful functions that use dictionaries."""
 
-import datetime
-import enum
 import functools
 import hashlib
-import json
 import operator
 import types
+
+import pymince.json
 
 
 def all_true_values(dictionary, keys):
@@ -95,23 +94,9 @@ class DigestGetter:
         """
         Return a function to encode a dict into json using the most compact form.
         Dictionary keys are sorted.
-        Encodes datetime objects into isoformat strings.
-        Encodes enum objects according to "value" attribute.
-        Encode sets by ordering their values.
         """
 
-        class Encoder(json.JSONEncoder):
-            def default(self, obj):
-                if isinstance(obj, datetime.datetime):
-                    return obj.isoformat()
-                elif isinstance(obj, enum.Enum):
-                    return obj.value
-                elif isinstance(obj, (frozenset, set)):
-                    return sorted(obj)
-                else:
-                    return super().default(obj)
-
-        return Encoder(
+        return pymince.json.JSONEncoder(
             separators=(",", ":"),
             check_circular=False,
             sort_keys=True,

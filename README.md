@@ -36,7 +36,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*classproperty*](#classproperty), [*once*](#once), [*pipe*](#pipe)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
-| **json.py** |[*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
+| **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
@@ -696,7 +696,20 @@ Examples:
     uniques([1,1]) # --> False
 ```
 #### json.py
+Useful functions for working with JSONs.
+##### JSONEncoder
+```
+JSONEncoder(*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)
 
+JSON encoder that handles additional types compared
+to `json.JSONEncoder`
+
+- `datetime` and `date` are serialized to strings according to the isoformat.
+- `decimal.Decimal` is serialized to a string.
+- `uuid.UUID` is serialized to a string.
+- `dataclasses.dataclass` is passed to `dataclasses.asdict`.
+- `frozenset` and `set` are serialized by ordering their values.
+```
 ##### dump_from_csv
 ```
 dump_from_csv(csv_path, json_path, /, *, fieldnames=None, indent=None, start=0, stop=None, strip=True, encoding='utf-8')

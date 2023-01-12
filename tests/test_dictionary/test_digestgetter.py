@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
 import enum
-import uuid
 
 import pytest
 
@@ -10,20 +9,16 @@ import pymince.dictionary
 
 @pytest.fixture()
 def payload():
-    class MyEnum(enum.Enum):
-        foo = "foo"
-
     return {
         "numb": 1.0,
         "date": datetime.datetime(2021, 1, 1),
         "text": "ñó",
-        "enum": MyEnum.foo,
         "set": {"a", "b"},
     }
 
 
 def test_to_string(payload):
-    expected = '{"date":"2021-01-01T00:00:00","enum":"foo","numb":1.0,"set":["a","b"],"text":"ñó"}'
+    expected = '{"date":"2021-01-01T00:00:00","numb":1.0,"set":["a","b"],"text":"ñó"}'
     res = pymince.dictionary.DigestGetter().to_string(payload)
     assert res == expected
 
@@ -35,13 +30,13 @@ def test_to_string_include(payload):
 
 
 def test_to_string_exclude(payload):
-    expected = '{"date":"2021-01-01T00:00:00","enum":"foo","numb":1.0,"set":["a","b"]}'
+    expected = '{"date":"2021-01-01T00:00:00","numb":1.0,"set":["a","b"]}'
     res = pymince.dictionary.DigestGetter(exclude_keys=("text",)).to_string(payload)
     assert res == expected
 
 
 def test_digest(payload):
-    expected = "735bf119e94b46591918c1b0115efa04"
+    expected = "8b7fe7aa463c04a89ee213c817ce391d"
     res = pymince.dictionary.DigestGetter()(payload)
     assert res == expected
 
@@ -53,7 +48,7 @@ def test_digest_include(payload):
 
 
 def test_digest_exclude(payload):
-    expected = "55b0acefacd6b0614cb5e4ec8506db0a"
+    expected = "063bfbd29c19e47cae017ef1ad214982"
     res = pymince.dictionary.DigestGetter(exclude_keys=("text",))(payload)
     assert res == expected
 
@@ -64,6 +59,9 @@ def test_digest_with_value_error():
 
 
 def test_digest_type_error():
+    class MyEnum(enum.Enum):
+        a = "abc"
+
     with pytest.raises(TypeError):
         getter = pymince.dictionary.DigestGetter()
-        getter({"uuid": uuid.uuid4()})
+        getter({"uuid": MyEnum.a})

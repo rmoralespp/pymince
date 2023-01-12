@@ -1,5 +1,8 @@
 ## In Progress ##
 
+- **Added:** json.JSONEncoder. Handles additional types compared to `json.JSONEncoder`
+- **Changed:** dictionary.DigestGetter. Now does not support enums and uses the new `pymince.json.JSONEncoder`.
+
 ## v2.2.1 (2023-01-12) ##
 
 - **Fixed:** README

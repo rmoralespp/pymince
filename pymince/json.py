@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+"""Useful functions for working with JSONs."""
 import csv
+import dataclasses
+import datetime
+import decimal
 import functools
 import itertools
 import json
 import operator
+import uuid
 import zipfile
 
 dumps = functools.partial(json.dumps, ensure_ascii=False)
@@ -110,3 +115,29 @@ def dump_from_csv(
         pool = tuple(data)
 
     dump_into(json_path, pool, indent=indent, encoding=encoding)
+
+
+class JSONEncoder(json.JSONEncoder):
+    """
+    JSON encoder that handles additional types compared
+    to `json.JSONEncoder`
+
+    - `datetime` and `date` are serialized to strings according to the isoformat.
+    - `decimal.Decimal` is serialized to a string.
+    - `uuid.UUID` is serialized to a string.
+    - `dataclasses.dataclass` is passed to `dataclasses.asdict`.
+    - `frozenset` and `set` are serialized by ordering their values.
+    """
+
+    def default(self, obj):
+        if isinstance(obj, datetime.date):
+            return obj.isoformat()
+        elif isinstance(obj, (frozenset, set)):
+            return sorted(obj)
+        elif isinstance(obj, (decimal.Decimal, uuid.UUID)):
+            return str(obj)
+        elif dataclasses.is_dataclass(obj):
+            return dataclasses.asdict(obj)
+        else:
+            # Let the base class default method raise the TypeError
+            return super().default(obj)
