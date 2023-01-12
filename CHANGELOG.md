@@ -6,6 +6,7 @@
 - **Added:** functional.once
 - **Added:** iterator.centroid
 - **Added:** Upgrade ruff and fix new warnings
+- **Changed:** Remove fn useless iterator.contains, Improve performance of other "iterator.py" functions.
 
 ## v2.1.0 (2022-12-28) ##
 

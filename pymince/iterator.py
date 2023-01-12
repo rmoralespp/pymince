@@ -3,7 +3,6 @@
 import collections
 import functools
 import itertools
-import operator
 import statistics
 
 empty = object()
@@ -12,7 +11,7 @@ consume_all = collections.deque(maxlen=0).extend  # Consume given iterator entir
 
 def replacer(iterable, matcher, new_value, count=-1):
     """
-    Make an iterator that yields all occurrences of the old "iterable"
+    Make a generator that yields all occurrences of the old "iterable"
     replaced by "new_value".
 
     :param iterable:
@@ -21,12 +20,14 @@ def replacer(iterable, matcher, new_value, count=-1):
     :param int count:
         Maximum number of occurrences to replace.
         -1 (the default value) means replace all occurrences.
+    :rtype: Generator
 
     Examples:
         from pymince.iterator import replacer
 
-        replacer([1,2,3,1,2,3], lambda n: n == 1, None) # --> None 2 3 None 2 3
-        replacer([1,2,3,1,2,3], lambda n: n == 1, None, count=1) # --> None 2 3 1 2 3
+        is_one = lambda n: n == 1
+        replacer([1,2,3,1,2,3], is_one, None) # --> None 2 3 None 2 3
+        replacer([1,2,3,1,2,3], is_one, None, count=1) # --> None 2 3 1 2 3
     """
     changed = 0
     for obj in iterable:
@@ -51,16 +52,18 @@ def uniques(iterable, key=None):
         uniques([1,2]) # --> True
         uniques([1,1]) # --> False
     """
-    getter = key or (lambda x: x)
+
     bag = set()
-    values = (getter(obj) for obj in iterable) if getter else iter(iterable)
-    result = (val for val in values if val in bag or bag.add(val))
+    add = bag.add
+
+    values = map(key, iter(iterable)) if key else iter(iterable)
+    result = (val for val in values if val in bag or add(val))
     return next(result, empty) is empty
 
 
 def uniquer(iterable, key=None):
     """
-    Make an iterator that returns each element from iterable only once
+    Make a generator that returns each element from iterable only once
     respecting the input order.
 
     Examples:
@@ -68,19 +71,22 @@ def uniquer(iterable, key=None):
 
         uniquer([1, 2, 3, 2]) # --> 1 2 3
     """
-    getter = key or (lambda x: x)
+
+    get = key or (lambda x: x)
     bag = set()
     add = bag.add
-    return (add(check) or val for val in iter(iterable) if (check := getter(val)) not in bag)
+
+    yield from (add(check) or v for v in iter(iterable) if (check := get(v)) not in bag)
 
 
 def grouper(iterable, size):
     """
-    Make an iterator that returns each element being iterable
+    Make a generator that returns each element being iterable
     with "size" as the maximum number of elements.
 
     :param iterable:
     :param int size: maximum size of element groups.
+    :rtype: Generator
 
     Examples:
         from pymince.iterator import grouper
@@ -88,6 +94,7 @@ def grouper(iterable, size):
         groups = grouper([1, 2, 3, 4, 5], 2)
         list(list(g) for g in groups) # --> [[1, 2], [3, 4], [5]]
     """
+
     slicer = itertools.islice
     values = iter(iterable)
     while True:
@@ -134,7 +141,8 @@ def all_equals(*iterables, key=None):
     """
 
     zipped = itertools.zip_longest(*iterables, fillvalue=empty)
-    return all(all_equal(elem, key=key) for elem in zipped)
+    equals = functools.partial(all_equal, key=key)
+    return all(map(equals, zipped))
 
 
 def all_identical(left, right):
@@ -154,7 +162,8 @@ def all_identical(left, right):
         all_identical([a, b, [a]], [a, b, [a]])  # --> False *new list object, while "equal" is not "identical"*
     """
 
-    return all(not (a is not b) for a, b in itertools.zip_longest(left, right, fillvalue=empty))
+    zipped = itertools.zip_longest(left, right, fillvalue=empty)
+    return all(not (a is not b) for a, b in zipped)
 
 
 def all_equal(iterable, key=None):
@@ -190,6 +199,7 @@ def all_distinct(iterable, key=None):
         all_distinct([1, 1]) # --> False
         all_distinct([1, 2]) # --> True
     """
+
     grouped = itertools.groupby(iterable, key=key)
     return all(has_only_one(group) for _, group in grouped)
 
@@ -271,6 +281,7 @@ def pad_start(iterable, length, fill_value=None):
         pad_start(("a", "b"), 3) # --> None "a" "b"
         pad_start(("a", "b", "c"), 3) # --> "a" "b" "c"
     """
+
     pool = tuple(iter(iterable))
     diff = length - len(pool)
     if diff:
@@ -306,24 +317,6 @@ def pad_end(iterable, length, fill_value=None):
         yield from itertools.repeat(fill_value, fill)
 
 
-def contains(iterable, obj):
-    """
-    Check if the object is contained in given iterable.
-
-    :param Any obj:
-    :param iterable:
-    :rtype: bool
-    """
-
-    if hasattr(iterable, "__contains__"):
-        # Use method "__contains__" if given iterable is a container.
-        return obj in iterable
-    else:
-        # If it is not a container, it has to iterate until the obj is found.
-        eq = functools.partial(operator.eq, obj)
-        return any(map(eq, iterable))
-
-
 def in_all(obj, iterables):
     """
     Check if the object is contained in all the given iterables.
@@ -341,7 +334,7 @@ def in_all(obj, iterables):
         in_all("a", ()) # --> True
     """
 
-    return all(contains(it, obj) for it in iter(iterables))
+    return all(obj in it for it in iter(iterables))
 
 
 def in_any(obj, iterables):
@@ -359,7 +352,8 @@ def in_any(obj, iterables):
         in_any("a", (("b", "b"), "def")) # --> False
         in_any("a", ()) # --> False
     """
-    return any(contains(it, obj) for it in iter(iterables))
+
+    return any(obj in it for it in iter(iterables))
 
 
 class ibool:
