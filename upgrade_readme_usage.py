@@ -129,6 +129,6 @@ if __name__ == "__main__":
 
     if new_string != old_string:
         logging.basicConfig(level=logging.DEBUG)
-        timed_block = pymince.logging.timed_block("upgrade_readme_usage")
-        with (timed_block, open(readme_path, mode="w", encoding="utf-8")):
+
+        with pymince.logging.timed_block("upgrade_readme_usage"), open(readme_path, mode="w", encoding="utf-8") as f:
             f.write(new_string)

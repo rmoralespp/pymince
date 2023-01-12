@@ -1,5 +1,9 @@
 ## In Progress ##
 
+## v2.2.1 (2023-01-12) ##
+
+- **Fixed:** README
+
 ## v2.2.0 (2023-01-12) ##
 
 - **Fixed:** dictionary.find_leaf_value. Infinite recursion for args: *key="a", dictionary={"a": "b", "b": "a"}*
