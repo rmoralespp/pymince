@@ -37,13 +37,11 @@ def iterparse(filename):
         for line in f:
             parser.feed(line)
             for event, obj in parser.read_events():
-                if event == "start":
-                    if root is None:
-                        root = obj
-                elif event == "end":
-                    if len(root) > 0 and obj == root[0]:
-                        del root[0]
-                        # process obj
+                if event == "start" and root is None:
+                    root = obj
+                elif event == "end" and len(root) > 0 and obj == root[0]:
+                    del root[0]
+                    # process obj
 
                 yield event, obj
 

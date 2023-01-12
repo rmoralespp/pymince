@@ -5,6 +5,7 @@
 - **Added:** text.are_anagram, text.fullstr.are_anagram
 - **Added:** functional.once
 - **Added:** iterator.centroid
+- **Added:** Upgrade ruff and fix new warnings.
 
 ## v2.1.0 (2022-12-28) ##
 

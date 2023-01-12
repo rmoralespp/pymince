@@ -110,8 +110,7 @@ def decompress(src_path, dst_path):
         decompress("/foo/src.txt.gz", "/baz/dst.txt") # --> "/baz/dst.txt"
     """
 
-    with gzip.open(src_path) as src:
-        with open(dst_path, mode="wb") as dst:
-            lines = iter(functools.partial(src.read, 64 * 1024), b"")
-            dst.writelines(lines)
+    with gzip.open(src_path) as src, open(dst_path, mode="wb") as dst:
+        lines = iter(functools.partial(src.read, 64 * 1024), b"")
+        dst.writelines(lines)
     return dst_path

@@ -154,10 +154,7 @@ def all_identical(left, right):
         all_identical([a, b, [a]], [a, b, [a]])  # --> False *new list object, while "equal" is not "identical"*
     """
 
-    for left_item, right_item in itertools.zip_longest(left, right, fillvalue=empty):
-        if left_item is not right_item:
-            return False
-    return True
+    return all(not (a is not b) for a, b in itertools.zip_longest(left, right, fillvalue=empty))
 
 
 def all_equal(iterable, key=None):

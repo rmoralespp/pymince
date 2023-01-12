@@ -60,9 +60,8 @@ def load_from_zip(zip_path, arcname):
 
         dictionary = load_from_zip("archive.zip", "foo.json")
     """
-    with zipfile.ZipFile(zip_path, mode="r") as zf:
-        with zf.open(arcname) as file:
-            return json.load(file)
+    with zipfile.ZipFile(zip_path, mode="r") as zf, zf.open(arcname) as file:
+        return json.load(file)
 
 
 def dump_from_csv(
