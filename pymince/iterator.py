@@ -163,7 +163,7 @@ def all_identical(left, right):
     """
 
     zipped = itertools.zip_longest(left, right, fillvalue=empty)
-    return all(not (a is not b) for a, b in zipped)
+    return all(a is b for a, b in zipped)
 
 
 def all_equal(iterable, key=None):
