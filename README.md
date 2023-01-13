@@ -750,7 +750,7 @@ to `json.JSONEncoder`
 ```
 ##### dump_from_csv
 ```
-dump_from_csv(csv_path, json_path, /, *, fieldnames=None, indent=None, start=0, stop=None, strip=True, encoding='utf-8')
+dump_from_csv(csv_path, json_path, /, *, fieldnames=None, start=0, stop=None, strip=True, encoding='utf-8', **kwargs)
 
 Dump CSV file to a JSON file using "utf-8" encoding.
 
@@ -769,7 +769,7 @@ Dump CSV file to a JSON file using "utf-8" encoding.
 ```
 ##### dump_into
 ```
-dump_into(filename, payload, indent=None, encoding='utf-8')
+dump_into(filename, payload, encoding='utf-8', **kwargs)
 
 Dump JSON to a file using "utf-8" encoding.
 
@@ -780,7 +780,7 @@ Examples:
 ```
 ##### dump_into_zip
 ```
-dump_into_zip(zip_path, arcname, payload, indent=None)
+dump_into_zip(zip_path, arcname, payload, **kwargs)
 
 Dump JSON into the zip archive under the name arcname.
 

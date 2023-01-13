@@ -1,5 +1,7 @@
 ## In Progress ##
 
+- **Changed:** json.dump_into, json.dump_into_zip, json.dump_from_csv. Pass **kwargs to `json.dump/s`
+
 ## v2.3.0 (2023-01-13) ##
 
 - **Added:** iterator.mul, iterator.truediv, iterator.sub

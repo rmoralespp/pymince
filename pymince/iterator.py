@@ -387,9 +387,8 @@ class ibool:
         if self._queue:
             return True
         else:
-            guard = object()
-            obj = next(self._it, guard)
-            if obj is guard:  # Consumed
+            obj = next(self._it, empty)
+            if obj is empty:  # Consumed
                 return False
             else:
                 self._queue.append(obj)

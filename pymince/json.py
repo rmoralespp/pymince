@@ -29,7 +29,7 @@ def load_from(filename, encoding=ENCODING):
         return json.load(file)
 
 
-def dump_into(filename, payload, indent=None, encoding=ENCODING):
+def dump_into(filename, payload, encoding=ENCODING, **kwargs):
     """
     Dump JSON to a file using "utf-8" encoding.
 
@@ -39,10 +39,10 @@ def dump_into(filename, payload, indent=None, encoding=ENCODING):
         dump_into("foo.json", {"key": "value"})
     """
     with open(filename, "w", encoding=encoding) as file:
-        dump(payload, file, indent=indent)
+        dump(payload, file, **kwargs)
 
 
-def dump_into_zip(zip_path, arcname, payload, indent=None):
+def dump_into_zip(zip_path, arcname, payload, **kwargs):
     """
     Dump JSON into the zip archive under the name arcname.
 
@@ -52,7 +52,7 @@ def dump_into_zip(zip_path, arcname, payload, indent=None):
         dump_into_zip("archive.zip", "foo.json", {"key": "value"})
     """
     with zipfile.ZipFile(zip_path, mode="w") as zf:
-        json_string = dumps(payload, indent=indent)
+        json_string = dumps(payload, **kwargs)
         zf.writestr(arcname, json_string)
 
 
@@ -70,16 +70,7 @@ def load_from_zip(zip_path, arcname):
 
 
 def dump_from_csv(
-    csv_path,
-    json_path,
-    /,
-    *,
-    fieldnames=None,
-    indent=None,
-    start=0,
-    stop=None,
-    strip=True,
-    encoding=ENCODING,
+    csv_path, json_path, /, *, fieldnames=None, start=0, stop=None, strip=True, encoding=ENCODING, **kwargs
 ):
     """
     Dump CSV file to a JSON file using "utf-8" encoding.
@@ -114,7 +105,7 @@ def dump_from_csv(
         data = itertools.islice(read(), start, stop)
         pool = tuple(data)
 
-    dump_into(json_path, pool, indent=indent, encoding=encoding)
+    dump_into(json_path, pool, encoding=encoding, **kwargs)
 
 
 class JSONEncoder(json.JSONEncoder):
