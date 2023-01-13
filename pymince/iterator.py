@@ -3,6 +3,7 @@
 import collections
 import functools
 import itertools
+import operator
 import statistics
 
 empty = object()
@@ -412,3 +413,23 @@ def centroid(coordinates):
     """
 
     return map(statistics.mean, itertools.zip_longest(*coordinates))
+
+
+def sub(iterable):
+    """Return the subtraction of a non-empty iterable of numbers and sets."""
+    return functools.reduce(operator.sub, iter(iterable))
+
+
+def truediv(iterable):
+    """Return the division of an non-empty iterable of numbers."""
+    return functools.reduce(operator.truediv, iter(iterable))
+
+
+def mul(iterable, start=1):
+    """
+    Return the multiplication of a 'start' value (default: 1)
+    plus an iterable of numbers.
+
+    When the iterable is empty, return the start value.
+    """
+    return functools.reduce(operator.mul, iter(iterable), start)

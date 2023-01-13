@@ -35,7 +35,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*classproperty*](#classproperty), [*once*](#once), [*pipe*](#pipe), [*set_attributes*](#set_attributes)|
-| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*uniquer*](#uniquer), [*uniques*](#uniques)|
+| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*mul*](#mul), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
@@ -594,6 +594,15 @@ Examples:
     in_any("a", (("b", "b"), "def")) # --> False
     in_any("a", ()) # --> False
 ```
+##### mul
+```
+mul(iterable, start=1)
+
+Return the multiplication of a 'start' value (default: 1)
+plus an iterable of numbers.
+
+When the iterable is empty, return the start value.
+```
 ##### pad_end
 ```
 pad_end(iterable, length, fill_value=None)
@@ -683,6 +692,18 @@ Examples:
     data = ("a", "b", "c", "d", "b", "e")
     split_n = splitter(data, "b")  # --> ("a",) ("c", "d") ("e",)
     split_1 = splitter(data, "b", maxsplit=1)  # --> ("a",) ("c", "d", "b", "e")
+```
+##### sub
+```
+sub(iterable)
+
+Return the subtraction of a non-empty iterable of numbers and sets.
+```
+##### truediv
+```
+truediv(iterable)
+
+Return the division of an non-empty iterable of numbers.
 ```
 ##### uniquer
 ```

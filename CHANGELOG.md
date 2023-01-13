@@ -1,5 +1,6 @@
 ## In Progress ##
 
+- **Added:** iterator.mul, iterator.truediv, iterator.sub
 - **Added:** functional.set_attributes
 - **Added:** json.JSONEncoder. Handles additional types compared to `json.JSONEncoder`
 - **Changed:** dictionary.DigestGetter. Now does not support enums and uses the new `pymince.json.JSONEncoder`.
