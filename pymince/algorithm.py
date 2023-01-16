@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import itertools
 import math
 
 
@@ -32,23 +31,17 @@ def luhn(value: str) -> bool:
 
 def fibonacci(n=None):
     """
-    Returns a generator with fibonacci series.
+    Returns a generator with fibonacci series up to n.
+    Runs indefinitely if n is specified as None.
 
-    :param Optional[int] n: number iterations.
-        Must be None or an integer: 0 <= x <= sys.maxsize
+    :param Optional[int] n: Must be None or number.
     :rtype: Generator[int]
     """
 
-    def worker():
-        a, b = 0, 1
-        while True:
-            yield a
-            b = a + b
-            yield b
-            a = a + b
-
-    it = worker()
-    return itertools.islice(it, 0, n) if n is not None else it
+    a, b = 0, 1
+    while n is None or a < n:
+        yield a
+        a, b = b, a + b
 
 
 def sieve_of_eratosthenes(n):

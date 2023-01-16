@@ -49,6 +49,7 @@ def retry_if_errors(*exceptions, delay=0, tries=1):
     """
 
     def decorator(function):
+        @functools.wraps(function)
         def apply(*args, **kwargs):
             attempt = 0
             while attempt < tries:

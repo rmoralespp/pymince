@@ -50,10 +50,10 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 ```
 fibonacci(n=None)
 
-Returns a generator with fibonacci series.
+Returns a generator with fibonacci series up to n.
+Runs indefinitely if n is specified as None.
 
-:param Optional[int] n: number iterations.
-    Must be None or an integer: 0 <= x <= sys.maxsize
+:param Optional[int] n: Must be None or number.
 :rtype: Generator[int]
 ```
 ##### luhn
@@ -263,18 +263,19 @@ Examples:
 
 ##### decompress
 ```
-decompress(src_path, dst_path)
+decompress(src_path, dst_path, size=65536)
 
 Decompress given file in blocks using gzip.
 
 :param str src_path: source file path
 :param str dst_path: destination file(unzipped) path
+:param int size: Read up to size bytes from src_path for each block.
 :return: dst_path
 
  Examples:
     from pymince.file import decompress
 
-    decompress("/foo/src.txt.gz", "/baz/dst.txt") # --> "/baz/dst.txt"
+    decompress("/foo/src.txt.gz", "/baz/dst.txt")  # --> "/baz/dst.txt"
 ```
 ##### ensure_directory
 ```
@@ -492,7 +493,7 @@ In Cartesian coordinates, the centroid is
 just the mean of the components.
 
 :param Iterable[Iterable[int]] coordinates: Iterable of n-dimensional coordinates.
-:rtype: Iterator[int]
+:rtype: Generator[int]
 
  Examples:
     from pymince.iterator import centroid
@@ -757,7 +758,6 @@ Dump CSV file to a JSON file using "utf-8" encoding.
 :param str csv_path:
 :param str json_path:
 :param fieldnames: list of keys for the JSON
-:param str indent: JSON indent
 :param int start:
     If start is specified, will skip all preceding elements;
     otherwise, start defaults to zero.

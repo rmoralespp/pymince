@@ -1,5 +1,8 @@
 ## In Progress ##
 
+- **Changed:** retry.retry_if_errors. Used `functools.wraps` to apply update_wrapper.
+- **Changed:** file.decompress. Added `size` arg.
+- **Changed:** Purpose of `n` arg of algorithm.fibonacci.
 - **Changed:** json.dump_into, json.dump_into_zip, json.dump_from_csv. Pass **kwargs to `json.dump/s`
 
 ## v2.3.0 (2023-01-13) ##

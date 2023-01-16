@@ -402,7 +402,7 @@ def centroid(coordinates):
     just the mean of the components.
 
     :param Iterable[Iterable[int]] coordinates: Iterable of n-dimensional coordinates.
-    :rtype: Iterator[int]
+    :rtype: Generator[int]
 
      Examples:
         from pymince.iterator import centroid
@@ -411,16 +411,18 @@ def centroid(coordinates):
         tuple(centroid(coord))  # --> (3, 3)
     """
 
-    return map(statistics.mean, itertools.zip_longest(*coordinates))
+    yield from map(statistics.mean, itertools.zip_longest(*coordinates))
 
 
 def sub(iterable):
     """Return the subtraction of a non-empty iterable of numbers and sets."""
+
     return functools.reduce(operator.sub, iter(iterable))
 
 
 def truediv(iterable):
     """Return the division of an non-empty iterable of numbers."""
+
     return functools.reduce(operator.truediv, iter(iterable))
 
 
@@ -431,4 +433,5 @@ def mul(iterable, start=1):
 
     When the iterable is empty, return the start value.
     """
+
     return functools.reduce(operator.mul, iter(iterable), start)

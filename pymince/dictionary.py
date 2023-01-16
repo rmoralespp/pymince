@@ -160,7 +160,7 @@ def from_objects(iterable, key_getter, value_getter):
     for obj in iter(iterable):
         key = key_getter(obj)
         if key in dictionary:
-            raise ValueError
+            raise ValueError(key)
         else:
             dictionary[key] = value_getter(obj)
     return dictionary
