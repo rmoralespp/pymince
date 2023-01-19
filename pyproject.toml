@@ -24,8 +24,15 @@ select = [
     "D300", # Use """triple double quotes"""
 
     # pyupgrade
+    "UP003", # Use str instead of type(...)
+    "UP005", # assertEquals is deprecated, use assertEqual
     "UP008", # Use super() instead of super(__class__, self)
     "UP015", # Unnecessary open mode parameters
+    "UP017", # Use datetime.UTC alias
+    "UP018", # Unnecessary call to `str` and `bytes`
+    "UP020", # Use builtin `open` instead
+    "UP021", # universal_newlines is deprecated, use text
+    "UP022", # Sending stdout and stderr to pipe is deprecated, use capture_output
 
     # flake8-2020
     "YTT",
@@ -45,29 +52,46 @@ select = [
     # flake8-import-conventions
     "ICN",
 
+    # flake8-pytest-style
+    "PT",
+
     # flake8-simplify
     "SIM",
 
     # Pylint
     "PLC",
     "PLE",
-    "PLR",
     "PLW",
 
+    # flake8-commas
+    "COM812", # Trailing comma missing
+
     # Ruff-specific rules
-    "RUF100",  # Unused noqa directive
+    "RUF004", # Keyword argument ... must come after starred arguments
+    "RUF100", # Unused noqa directive
 ]
 
 extend-ignore = [
     # Disabled by default. :)
     # https://github.com/gforcada/flake8-builtins/pull/76
     "A003", # Class attribute `...` is shadowing a python builtin
+
     "B905", # `zip()` without an explicit `strict=` parameter
+
     "C400", # Unnecessary `tuple` call (rewrite as a literal)
     "C401", # Unnecessary generator (rewrite as a set comprehension)
     "C408", # Unnecessary `dict` call (rewrite as a literal)
-    "PLR0402", # Use `from ... import ...` in lieu of alias
+
     "PLW0120", # Else clause on loop without a break statement.
+
+    "SIM102", # Use a single `if` statement instead of nested `if` statements
+    "SIM108", # Use ternary operator ... instead of if-else-block
+    "SIM117", # (Python 3.10) Use a single with statement with multiple contexts instead of nested with statements
+
+    "PT006", # Wrong name(s) type in `@pytest.mark.parametrize`, expected `tuple`
+    "PT007", # Wrong values type in `@pytest.mark.parametrize` expected `list` of `tuple`
+    "PT011", # `pytest.raises(ValueError)` is too broad, set the `match` parameter or use a more specific exception
+    "PT019", # Fixture `_` without value is injected as parameter, use `@pytest.mark.usefixtures` instead
 ]
 
 [tool.black]

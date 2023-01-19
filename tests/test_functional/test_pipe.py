@@ -25,12 +25,12 @@ def test_empty():
 
 
 def test_missing_arguments():
+    fn = pymince.functional.pipe(divmod)
     with pytest.raises(TypeError):
-        fn = pymince.functional.pipe(divmod)
         fn(1)
 
 
 def test_unexpected_arguments():
+    fn = pymince.functional.pipe(bool)
     with pytest.raises(TypeError):
-        fn = pymince.functional.pipe(bool)
         fn(1, 2)

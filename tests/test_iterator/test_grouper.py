@@ -5,8 +5,8 @@ import pymince.iterator
 
 
 def test_grouper_negative():
+    groups = pymince.iterator.grouper(iter((1, 2, 3)), -1)
     with pytest.raises(ValueError):
-        groups = pymince.iterator.grouper(iter((1, 2, 3)), -1)
         tuple(tuple(page) for page in groups)
 
 

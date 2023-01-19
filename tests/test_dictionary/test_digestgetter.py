@@ -62,6 +62,6 @@ def test_digest_type_error():
     class MyEnum(enum.Enum):
         a = "abc"
 
+    getter = pymince.dictionary.DigestGetter()
     with pytest.raises(TypeError):
-        getter = pymince.dictionary.DigestGetter()
         getter({"uuid": MyEnum.a})

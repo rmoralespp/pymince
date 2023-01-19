@@ -70,7 +70,16 @@ def load_from_zip(zip_path, arcname):
 
 
 def dump_from_csv(
-    csv_path, json_path, /, *, fieldnames=None, start=0, stop=None, strip=True, encoding=ENCODING, **kwargs
+    csv_path,
+    json_path,
+    /,
+    *,
+    fieldnames=None,
+    start=0,
+    stop=None,
+    strip=True,
+    encoding=ENCODING,
+    **kwargs,
 ):
     """
     Dump CSV file to a JSON file using "utf-8" encoding.
