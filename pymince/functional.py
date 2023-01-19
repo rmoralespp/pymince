@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import contextlib
 import functools
 
 
@@ -115,3 +116,30 @@ def caller(*args, **kwargs):
     """
 
     return lambda f: f(*args, **kwargs)
+
+
+def suppress(*exceptions, default=None):
+    """
+    Decorator to suppress the specified exceptions and return the
+    default value instead.
+
+    Examples:
+        from pymince.functional import suppress
+
+        @suppress(FileNotFoundError, default=False)
+        def remove(somefile):
+             os.remove(somefile)
+
+        remove("no_found.txt")  # False
+    """
+
+    def decorator(fn):
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            with contextlib.suppress(*exceptions):
+                return fn(*args, **kwargs)
+            return default
+
+        return wrapper
+
+    return decorator
