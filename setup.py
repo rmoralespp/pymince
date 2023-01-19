@@ -22,6 +22,8 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Information Technology",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Internet",
         "Topic :: Utilities",

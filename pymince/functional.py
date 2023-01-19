@@ -100,3 +100,18 @@ def set_attributes(**kwargs):
         return fn
 
     return wrap
+
+
+def caller(*args, **kwargs):
+    """
+    Return a callable that calls with given params.
+
+    Examples:
+        import pymince.functional
+
+        caller = pymince.functional.caller(range(5))
+        caller(len)   #  5
+        caller(list)  # [0, 1, 2, 3, 4]
+    """
+
+    return lambda f: f(*args, **kwargs)
