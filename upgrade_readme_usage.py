@@ -14,7 +14,6 @@ import pymince.functional
 import pymince.iterator
 import pymince.json
 import pymince.logging
-import pymince.retry
 import pymince.std
 import pymince.text
 import pymince.warnings
@@ -30,7 +29,6 @@ modules = (
     pymince.iterator,
     pymince.json,
     pymince.logging,
-    pymince.retry,
     pymince.std,
     pymince.text,
     pymince.warnings,

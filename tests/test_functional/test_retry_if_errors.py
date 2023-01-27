@@ -3,12 +3,12 @@ import unittest.mock
 
 import pytest
 
-import pymince.retry
+import pymince.functional
 
 
 def test_catch_error_with_tries():
     func = unittest.mock.Mock(side_effect=ValueError)
-    decorated_func = pymince.retry.retry_if_errors(ValueError, tries=3)(func)
+    decorated_func = pymince.functional.retry_if_errors(ValueError, tries=3)(func)
 
     with pytest.raises(ValueError):
         decorated_func()
@@ -17,7 +17,7 @@ def test_catch_error_with_tries():
 
 def test_catch_many_errors_with_tries():
     func = unittest.mock.Mock(side_effect=ValueError)
-    decorated_func = pymince.retry.retry_if_errors(ValueError, TypeError, tries=3)(func)
+    decorated_func = pymince.functional.retry_if_errors(ValueError, TypeError, tries=3)(func)
 
     with pytest.raises(ValueError):
         decorated_func()
@@ -26,7 +26,7 @@ def test_catch_many_errors_with_tries():
 
 def test_catch_error_without_tries():
     func = unittest.mock.Mock(side_effect=ValueError)
-    decorated_func = pymince.retry.retry_if_errors(ValueError)(func)
+    decorated_func = pymince.functional.retry_if_errors(ValueError)(func)
 
     with pytest.raises(ValueError):
         decorated_func()
@@ -35,7 +35,7 @@ def test_catch_error_without_tries():
 
 def test_not_raise_error():
     func = unittest.mock.Mock()
-    decorated_func = pymince.retry.retry_if_errors(ValueError, tries=3)(func)
+    decorated_func = pymince.functional.retry_if_errors(ValueError, tries=3)(func)
     res = decorated_func()
     assert func.call_count == 1
     assert res is func.return_value
@@ -43,7 +43,7 @@ def test_not_raise_error():
 
 def test_catch_other_error():
     func = unittest.mock.Mock(side_effect=TypeError)
-    decorated_func = pymince.retry.retry_if_errors(ValueError, tries=3)(func)
+    decorated_func = pymince.functional.retry_if_errors(ValueError, tries=3)(func)
 
     with pytest.raises(TypeError):
         decorated_func()
@@ -52,7 +52,7 @@ def test_catch_other_error():
 
 def test_not_catch_error():
     func = unittest.mock.Mock(side_effect=ValueError)
-    decorated_func = pymince.retry.retry_if_errors(tries=3)(func)
+    decorated_func = pymince.functional.retry_if_errors(tries=3)(func)
 
     with pytest.raises(ValueError):
         decorated_func()

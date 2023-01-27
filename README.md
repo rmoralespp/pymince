@@ -34,11 +34,10 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
-| **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*once*](#once), [*pipe*](#pipe), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
+| **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*mul*](#mul), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
-| **retry.py** |[*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **warnings.py** |[*deprecated*](#deprecated)|
@@ -409,6 +408,37 @@ Examples:
 
     fn = pipe(addtwo, double, square)
     fn(1) # --> 36
+```
+##### retry_if_errors
+```
+retry_if_errors(*exceptions, delay=0, tries=1)
+
+Decorator that retries to call the wrapped function
+if any of given exceptions are thrown.
+
+:param exceptions: Lists of exceptions that trigger a retry attempt.
+:param int delay: seconds delay between attempts. default: 0.
+:param int tries: number of attempts. default: 1
+
+Examples:
+@retry_if_errors(ValueError, TypeError, delay=0, tries=1)
+def foo():
+    return 1
+```
+##### retry_if_none
+```
+retry_if_none(delay=0, tries=1)
+
+Decorator that retries to call the wrapped function
+if it returns None.
+
+:param int delay: seconds delay between attempts. default: 0.
+:param int tries: number of attempts. default: 1
+
+Examples:
+    @retry_if_none(delay=0, tries=1)
+    def foo():
+        return 1
 ```
 ##### set_attributes
 ```
@@ -888,39 +918,6 @@ Examples:
     >>Output<<
     INFO:root:Generating [sleeping]
     DEBUG:root:Finished [sleeping in 1.002 ms.]
-```
-#### retry.py
-
-##### retry_if_errors
-```
-retry_if_errors(*exceptions, delay=0, tries=1)
-
-Decorator that retries to call the wrapped function
-if any of given exceptions are thrown.
-
-:param exceptions: Lists of exceptions that trigger a retry attempt.
-:param int delay: seconds delay between attempts. default: 0.
-:param int tries: number of attempts. default: 1
-
-Examples:
-@retry_if_errors(ValueError, TypeError, delay=0, tries=1)
-def foo():
-    return 1
-```
-##### retry_if_none
-```
-retry_if_none(delay=0, tries=1)
-
-Decorator that retries to call the wrapped function
-if it returns None.
-
-:param int delay: seconds delay between attempts. default: 0.
-:param int tries: number of attempts. default: 1
-
-Examples:
-    @retry_if_none(delay=0, tries=1)
-    def foo():
-        return 1
 ```
 #### std.py
 

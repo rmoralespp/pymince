@@ -1,6 +1,9 @@
 ## In Progress ##
 
+
 - **Added:** functional.caller, functional.suppress
+- **Changed:** Moved `retry.retry_if_errors`, `retry.retry_if_none` to
+               `functional.retry_if_errors`, `functional.retry_if_none`
 - **Changed:** retry.retry_if_errors. Used `functools.wraps` to apply update_wrapper.
 - **Changed:** file.decompress. Added `size` arg.
 - **Changed:** Purpose of `n` arg of algorithm.fibonacci.
