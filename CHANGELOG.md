@@ -1,5 +1,7 @@
 ## In Progress ##
 
+## v2.4.0 (2023-01-30) ##
+
 - **Fixed** `text.multireplace`
 - **Added:** `functional.caller`, `functional.suppress`
 - **Changed:** Moved `retry.retry_if_errors`, `retry.retry_if_none` to
