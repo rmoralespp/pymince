@@ -4,7 +4,6 @@ import collections
 import functools
 import html
 import re
-import string
 import urllib.parse
 
 import pymince.algorithm
@@ -65,7 +64,7 @@ def multireplace(text, replacements):
     Given a string and a replacement map, it returns the replaced string.
 
     :param str text: string to execute replacements on.
-    :param Union[dict[str, any], tuple[tuple[str, any], ...] replacements:
+    :param Union[dict[str, str], tuple[tuple[str, str], ...] replacements:
         2-dict or 2-tuples with value to find and value to replace
     :rtype: str
 
@@ -77,14 +76,14 @@ def multireplace(text, replacements):
 
     """
 
-    mapping = dict()
-    template = text
-    for i, (word, new_value) in enumerate(dict(replacements).items()):
-        # set valid identifiers to template
-        uid = f"id{i}"
-        template = template.replace(word, f"${uid}")
-        mapping[uid] = new_value
-    return string.Template(template).substitute(**mapping)
+    if not replacements:
+        return text
+    mapper = dict(replacements)  # ensure dict
+    # Place longer ones first to keep shorter substrings from matching
+    # where the longer ones should take place.
+    values = map(re.escape, sorted(dict(mapper), key=len, reverse=True))
+    regexp = re.compile('|'.join(values))
+    return regexp.sub(lambda match: mapper[match.group(0)], text)
 
 
 def remove_decimal_zeros(value, decimal_sep=".", min_decimals=None):

@@ -1083,7 +1083,7 @@ multireplace(text, replacements)
 Given a string and a replacement map, it returns the replaced string.
 
 :param str text: string to execute replacements on.
-:param Union[dict[str, any], tuple[tuple[str, any], ...] replacements:
+:param Union[dict[str, str], tuple[tuple[str, str], ...] replacements:
     2-dict or 2-tuples with value to find and value to replace
 :rtype: str
 
