@@ -1,5 +1,7 @@
 ## In Progress ##
 
+- **Added:** `iterator.ipush`: Iterator class supporting ´append´ and ´prepend´.
+
 ## v2.4.0 (2023-01-30) ##
 
 - **Fixed** `text.multireplace`

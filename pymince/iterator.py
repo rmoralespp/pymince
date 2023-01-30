@@ -357,44 +357,6 @@ def in_any(obj, iterables):
     return any(obj in it for it in iter(iterables))
 
 
-class ibool:
-    """
-    Iterator class supporting __bool__.
-
-    Examples:
-        from pymince.iterator import ibool
-
-        it = ibool((1, 2, 3))
-        bool(it) # --> True
-        list(it) # --> [1, 2, 3]
-    """
-
-    __slots__ = ("_it", "_queue")
-
-    def __init__(self, iterable):
-        self._it = iter(iterable)
-        self._queue = collections.deque(maxlen=1)
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        return self._queue.popleft() if self._queue else next(self._it)
-
-    def __bool__(self):
-        """Returns True if the iterator is not consumed, False otherwise."""
-
-        if self._queue:
-            return True
-        else:
-            obj = next(self._it, empty)
-            if obj is empty:  # Consumed
-                return False
-            else:
-                self._queue.append(obj)
-                return True
-
-
 def centroid(coordinates):
     """
     Calculate the centroid of a set of n-dimensional coordinates.
@@ -435,3 +397,88 @@ def mul(iterable, start=1):
     """
 
     return functools.reduce(operator.mul, iter(iterable), start)
+
+
+class ibool:
+    """
+    Iterator class supporting ´__bool__´.
+
+    Examples:
+        from pymince.iterator import ibool
+
+        it = ibool((1, 2, 3))
+        bool(it) # --> True
+        list(it) # --> [1, 2, 3]
+    """
+
+    __slots__ = ("_it", "_queue")
+
+    def __init__(self, iterable):
+        self._it = iter(iterable)
+        self._queue = collections.deque(maxlen=1)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self._queue.popleft() if self._queue else next(self._it)
+
+    def __bool__(self):
+        """Returns True if the iterator is not consumed, False otherwise."""
+
+        if self._queue:
+            return True
+        else:
+            obj = next(self._it, empty)
+            if obj is empty:  # Consumed
+                return False
+            else:
+                self._queue.append(obj)
+                return True
+
+
+class ipush:
+    """
+    Iterator class supporting ´append´ and ´prepend´.
+
+    Examples:
+        from pymince.iterator import ipush
+
+        it = ipush(iter([2, 3])
+
+        it.prepend(0)
+        it.prepend(1)
+
+        it.append(4)
+        it.append(5)
+
+        list(it)  # --> [0, 1, 2, 3, 4, 5]
+    """
+
+    __slots__ = ("_it", "_prefix", "_suffix")
+
+    def __init__(self, iterable):
+        self._it = iter(iterable)
+        self._prefix = collections.deque()
+        self._suffix = collections.deque()
+
+    def append(self, v):
+        """Append a single value in back of the iterator."""
+        self._suffix.append(v)
+
+    def prepend(self, v):
+        """Prepend a single value in front of the iterator."""
+        self._prefix.appendleft(v)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._prefix:
+            return self._prefix.popleft()
+        elif (n := next(self._it, empty)) is not empty:
+            return n
+        elif self._suffix:
+            return self._suffix.popleft()
+        else:
+            raise StopIteration
