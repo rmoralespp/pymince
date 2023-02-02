@@ -206,3 +206,11 @@ def retry_if_errors(*exceptions, delay=0, tries=1):
         return apply
 
     return decorator
+
+
+def identity(x):
+    """
+    Takes a single argument and returns it unchanged.
+    Identity function, as defined in https://en.wikipedia.org/wiki/Identity_function.
+    """
+    return x

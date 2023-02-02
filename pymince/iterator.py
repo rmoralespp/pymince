@@ -6,6 +6,8 @@ import itertools
 import operator
 import statistics
 
+import pymince.functional
+
 empty = object()
 consume_all = collections.deque(maxlen=0).extend  # Consume given iterator entirely.
 
@@ -73,7 +75,7 @@ def uniquer(iterable, key=None):
         uniquer([1, 2, 3, 2]) # --> 1 2 3
     """
 
-    get = key or (lambda x: x)
+    get = key or pymince.functional.identity
     bag = set()
     add = bag.add
 
@@ -446,11 +448,11 @@ class ipush:
 
         it = ipush(iter([2, 3])
 
-        it.prepend(0)
-        it.prepend(1)
-
         it.append(4)
         it.append(5)
+
+        it.prepend(1)
+        it.prepend(0)
 
         list(it)  # --> [0, 1, 2, 3, 4, 5]
     """

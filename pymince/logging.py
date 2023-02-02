@@ -20,7 +20,7 @@ def timed_block(name, logger=None):
 
         >>Output<<
         INFO:root:Generating [sleeping]
-        DEBUG:root:Finished [sleeping in 1.002 ms.]
+        DEBUG:root:Finished [sleeping in 1.002 s]
     """
 
     on_logger = logger or logging.getLogger()
@@ -29,7 +29,7 @@ def timed_block(name, logger=None):
     try:
         yield None
     finally:
-        on_logger.debug("Finished [%s in %.3f ms.]", name, time.time() - t0)
+        on_logger.debug("Finished [%s in %.3f s]", name, time.time() - t0)
 
 
 class StructuredFormatter(logging.Formatter):

@@ -59,6 +59,33 @@ def replace(value, old_values, new_value, count=-1):
     return value
 
 
+def multireplacer(replacements):
+    """
+    Given a replacement map, returns a function that can be reused to replace any string.
+
+    :param Union[dict[str, str], tuple[tuple[str, str], ...] replacements:
+        2-dict or 2-tuples with value to find and value to replace
+    :rtype: Callable[[str], str]
+
+     Examples:
+        from pymince.text import multireplacer
+
+        mapping = (("abc", "123"), ("def", "456"))
+        replace = multireplacer(mapping)
+
+        replace("...def...")  # --> "...456..."
+        replace("...abc...")  # --> "...123..."
+        replace("...abc...def...")  # --> "...123...456..."
+    """
+
+    mapper = dict(replacements)  # ensure dict
+    # Place longer ones first to keep shorter substrings from matching
+    # where the longer ones should take place.
+    values = map(re.escape, sorted(dict(mapper), key=len, reverse=True))
+    regexp = re.compile('|'.join(values))
+    return functools.partial(regexp.sub, lambda match: mapper[match.group(0)])
+
+
 def multireplace(text, replacements):
     """
     Given a string and a replacement map, it returns the replaced string.
@@ -76,14 +103,7 @@ def multireplace(text, replacements):
 
     """
 
-    if not replacements:
-        return text
-    mapper = dict(replacements)  # ensure dict
-    # Place longer ones first to keep shorter substrings from matching
-    # where the longer ones should take place.
-    values = map(re.escape, sorted(dict(mapper), key=len, reverse=True))
-    regexp = re.compile('|'.join(values))
-    return regexp.sub(lambda match: mapper[match.group(0)], text)
+    return multireplacer(replacements)(text) if replacements else text
 
 
 def remove_decimal_zeros(value, decimal_sep=".", min_decimals=None):

@@ -1,6 +1,10 @@
 ## In Progress ##
 
-- **Added:** `iterator.ipush`: Iterator class supporting ´append´ and ´prepend´.
+- **Fixed:** `logging.timed_block` docstring
+- **Added:** `functional.identity` Identity function, as defined in *https://en.wikipedia.org/wiki/Identity_function*.
+- **Added:** `text.multireplacer` Returns a multiple replacement function.
+- **Added:** `iterator.ipush` Iterator class supporting **append** and **prepend**.
+
 
 ## v2.4.0 (2023-01-30) ##
 
@@ -8,10 +12,10 @@
 - **Added:** `functional.caller`, `functional.suppress`
 - **Changed:** Moved `retry.retry_if_errors`, `retry.retry_if_none` to
                `functional.retry_if_errors`, `functional.retry_if_none`
-- **Changed:** `retry.retry_if_errors`. Used `functools.wraps` to apply update_wrapper.
+- **Changed:** `retry.retry_if_errors`. Used `functools.wraps` to apply **update_wrapper**.
 - **Changed:** `file.decompress`. Added `size` arg.
-- **Changed:** Purpose of `n` arg of `algorithm.fibonacci`.
-- **Changed:** `json.dump_into`, `json.dump_into_zip`, `json.dump_from_csv`. Pass **kwargs to `json.dump/s`
+- **Changed:** Purpose of **n** arg of `algorithm.fibonacci`.
+- **Changed:** `json.dump_into`, `json.dump_into_zip`, `json.dump_from_csv`. Pass **kwargs to **json.dump/s**
 
 ## v2.3.0 (2023-01-13) ##
 
@@ -32,7 +36,7 @@
 - **Added:** `unctional.once`
 - **Added:** `iterator.centroid`
 - **Added:** Upgrade ruff and fix new warnings
-- **Changed:** Remove fn useless `iterator.contains`, Improve performance of other `iterator.py` functions.
+- **Changed:** Remove fn useless `iterator.contains`. Improve performance of other `iterator.py` functions.
 
 ## v2.1.0 (2022-12-28) ##
 

@@ -34,12 +34,12 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
-| **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
+| **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*identity*](#identity), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
@@ -369,6 +369,13 @@ Examples:
         def foo(cls):
             return cls.__foo
 ```
+##### identity
+```
+identity(x)
+
+Takes a single argument and returns it unchanged.
+Identity function, as defined in https://en.wikipedia.org/wiki/Identity_function.
+```
 ##### once
 ```
 once(fn)
@@ -665,11 +672,11 @@ Examples:
 
     it = ipush(iter([2, 3])
 
-    it.prepend(0)
-    it.prepend(1)
-
     it.append(4)
     it.append(5)
+
+    it.prepend(1)
+    it.prepend(0)
 
     list(it)  # --> [0, 1, 2, 3, 4, 5]
 ```
@@ -936,7 +943,7 @@ Examples:
 
     >>Output<<
     INFO:root:Generating [sleeping]
-    DEBUG:root:Finished [sleeping in 1.002 ms.]
+    DEBUG:root:Finished [sleeping in 1.002 s]
 ```
 #### std.py
 
@@ -1111,6 +1118,26 @@ Given a string and a replacement map, it returns the replaced string.
 
     mapping = {",": "", "cry": "smile"}
     multireplace("No, woman, no cry", mapping) # --> "No woman no smile"
+```
+##### multireplacer
+```
+multireplacer(replacements)
+
+Given a replacement map, returns a function that can be reused to replace any string.
+
+:param Union[dict[str, str], tuple[tuple[str, str], ...] replacements:
+    2-dict or 2-tuples with value to find and value to replace
+:rtype: Callable[[str], str]
+
+ Examples:
+    from pymince.text import multireplacer
+
+    mapping = (("abc", "123"), ("def", "456"))
+    replace = multireplacer(mapping)
+
+    replace("...def...")  # --> "...456..."
+    replace("...abc...")  # --> "...123..."
+    replace("...abc...def...")  # --> "...123...456..."
 ```
 ##### remove_decimal_zeros
 ```
