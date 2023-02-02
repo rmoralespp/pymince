@@ -1002,14 +1002,14 @@ the following methods:
 ```
 ##### get_random_secret
 ```
-get_random_secret(length, choices='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+get_random_secret(length, alphabet='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 Generate a cryptographically secure random string.
 Useful for creating temporary passwords.
 ```
 ##### get_random_string
 ```
-get_random_string(length, choices='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+get_random_string(length, alphabet='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 Generate random string.
 ```

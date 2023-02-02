@@ -22,19 +22,19 @@ _email_address_regexp = re.compile(r"^\S+@\S+$")
 _roman_regex = re.compile(r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")
 
 
-def get_random_string(length, choices=string.ascii_uppercase + string.ascii_lowercase):
+def get_random_string(length, alphabet=string.ascii_letters):
     """Generate random string."""
 
-    return "".join(random.choice(choices) for _ in range(length))
+    return "".join(random.choice(alphabet) for _ in range(length))
 
 
-def get_random_secret(length, choices=string.ascii_uppercase + string.ascii_lowercase):
+def get_random_secret(length, alphabet=string.ascii_letters):
     """
     Generate a cryptographically secure random string.
     Useful for creating temporary passwords.
     """
 
-    return "".join(secrets.choice(choices) for _ in range(length))
+    return "".join(secrets.choice(alphabet) for _ in range(length))
 
 
 def remove_number_commas(s):
