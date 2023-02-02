@@ -39,7 +39,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
@@ -1000,6 +1000,19 @@ the following methods:
 - is_roman(self)
 - are_anagram(self, other)
 ```
+##### get_random_secret
+```
+get_random_secret(length, choices='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+
+Generate a cryptographically secure random string.
+Useful for creating temporary passwords.
+```
+##### get_random_string
+```
+get_random_string(length, choices='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+
+Generate random string.
+```
 ##### is_binary
 ```
 is_binary(text)
@@ -1154,12 +1167,12 @@ Examples:
 ```
 ##### remove_number_commas
 ```
-remove_number_commas(string)
+remove_number_commas(s)
 
 Removes commas from a formatted text number having commas
 as group separator.
 
-:param str string:
+:param str s:
 :rtype str
 
 Examples:

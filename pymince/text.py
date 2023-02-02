@@ -3,7 +3,10 @@
 import collections
 import functools
 import html
+import random
 import re
+import secrets
+import string
 import urllib.parse
 
 import pymince.algorithm
@@ -19,12 +22,27 @@ _email_address_regexp = re.compile(r"^\S+@\S+$")
 _roman_regex = re.compile(r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")
 
 
-def remove_number_commas(string):
+def get_random_string(length, choices=string.ascii_uppercase + string.ascii_lowercase):
+    """Generate random string."""
+
+    return "".join(random.choice(choices) for _ in range(length))
+
+
+def get_random_secret(length, choices=string.ascii_uppercase + string.ascii_lowercase):
+    """
+    Generate a cryptographically secure random string.
+    Useful for creating temporary passwords.
+    """
+
+    return "".join(secrets.choice(choices) for _ in range(length))
+
+
+def remove_number_commas(s):
     """
     Removes commas from a formatted text number having commas
     as group separator.
 
-    :param str string:
+    :param str s:
     :rtype str
 
     Examples:
@@ -32,7 +50,7 @@ def remove_number_commas(string):
         remove_number_commas('1,234,567.8') # --> '1234567.8'
     """
 
-    return __remove_number_commas(string)
+    return __remove_number_commas(s)
 
 
 def replace(value, old_values, new_value, count=-1):
