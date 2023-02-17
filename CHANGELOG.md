@@ -1,5 +1,7 @@
 ## In Progress ##
 
+## v2.5.0 (2023-02-17) ##
+
 - **Fixed:** `logging.timed_block` docstring
 - **Added:** `text.get_random_secret`, `text.get_random_string`
 - **Added:** `functional.identity` Identity function, as defined in *https://en.wikipedia.org/wiki/Identity_function*.
