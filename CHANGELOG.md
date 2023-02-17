@@ -5,6 +5,7 @@
 - **Added:** `functional.identity` Identity function, as defined in *https://en.wikipedia.org/wiki/Identity_function*.
 - **Added:** `text.multireplacer` Returns a multiple replacement function.
 - **Added:** `iterator.ipush` Iterator class supporting **append** and **prepend**.
+- **Added:** `dates.IsoWeekDay`, `dates.WeekDay` enums.
 
 
 ## v2.4.0 (2023-01-30) ##

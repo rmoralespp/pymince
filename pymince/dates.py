@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import contextlib
 import datetime
+import enum
 
 
 def irange(start_date, stop_date=None, time_step=None):
@@ -78,3 +79,61 @@ def string2year(value, gte=None, lte=None, shift=None):
         return year
     else:
         raise ValueError
+
+
+@enum.unique
+class WeekDay(enum.IntEnum):
+    """
+    Python Enum containing Days of the Week,
+    where Monday == 0 ... Sunday == 6.
+
+    Provides a 'of' method can be used to verbalize a datetime.datetime.weekday
+    return value.
+
+    Example:
+        from pymince.dates import WeekDay
+
+        friday = datetime.datetime(2023, 2, 17)
+        WeekDay.of(friday)  #  pymince.dates.WeekDay.FRIDAY
+    """
+
+    MONDAY = 0
+    TUESDAY = 1
+    WEDNESDAY = 2
+    THURSDAY = 3
+    FRIDAY = 4
+    SATURDAY = 5
+    SUNDAY = 6
+
+    @classmethod
+    def of(cls, date):
+        return cls(date.weekday())
+
+
+@enum.unique
+class IsoWeekDay(enum.IntEnum):
+    """
+    Python Enum containing Days of the Week, according to ISO,
+    where Monday == 1 ... Sunday == 7.
+
+    Provides a 'of' method can be used to verbalize a datetime.datetime.isoweekday
+    return value.
+
+    Example:
+         from pymince.dates import IsoWeekDay
+
+        friday = datetime.datetime(2023, 2, 17)
+        IsoWeekDay.of(friday)  #  pymince.dates.IsoWeekDay.FRIDAY
+    """
+
+    MONDAY = 1
+    TUESDAY = 2
+    WEDNESDAY = 3
+    THURSDAY = 4
+    FRIDAY = 5
+    SATURDAY = 6
+    SUNDAY = 7
+
+    @classmethod
+    def of(cls, date):
+        return cls(date.isoweekday())

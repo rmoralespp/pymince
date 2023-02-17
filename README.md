@@ -31,7 +31,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | :--------  | :----- |
 | **algorithm.py** |[*fibonacci*](#fibonacci), [*luhn*](#luhn), [*sieve_of_eratosthenes*](#sieve_of_eratosthenes)|
 | **boolean.py** |[*string2bool*](#string2bool)|
-| **dates.py** |[*irange*](#irange), [*string2year*](#string2year)|
+| **dates.py** |[*IsoWeekDay*](#IsoWeekDay), [*WeekDay*](#WeekDay), [*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*identity*](#identity), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
@@ -109,6 +109,38 @@ Examples:
 ```
 #### dates.py
 
+##### IsoWeekDay
+```
+IsoWeekDay(value, names=None, *, module=None, qualname=None, type=None, start=1)
+
+Python Enum containing Days of the Week, according to ISO,
+where Monday == 1 ... Sunday == 7.
+
+Provides a 'of' method can be used to verbalize a datetime.datetime.isoweekday
+return value.
+
+Example:
+     from pymince.dates import IsoWeekDay
+
+    friday = datetime.datetime(2023, 2, 17)
+    IsoWeekDay.of(friday)  #  pymince.dates.IsoWeekDay.FRIDAY
+```
+##### WeekDay
+```
+WeekDay(value, names=None, *, module=None, qualname=None, type=None, start=1)
+
+Python Enum containing Days of the Week,
+where Monday == 0 ... Sunday == 6.
+
+Provides a 'of' method can be used to verbalize a datetime.datetime.weekday
+return value.
+
+Example:
+    from pymince.dates import WeekDay
+
+    friday = datetime.datetime(2023, 2, 17)
+    WeekDay.of(friday)  #  pymince.dates.WeekDay.FRIDAY
+```
 ##### irange
 ```
 irange(start_date, stop_date=None, time_step=None)
