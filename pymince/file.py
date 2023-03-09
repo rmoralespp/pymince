@@ -115,3 +115,18 @@ def decompress(src_path, dst_path, size=64 * 1024):
         lines = iter(functools.partial(src.read, size), b"")
         dst.writelines(lines)
     return dst_path
+
+
+def get_valid_filename(s):
+    """
+    Returns a valid filename for the given string.
+
+    - Remove leading/trailing spaces
+    - Change spaces to underscores
+    - Remove anything that is not an alphanumeric, dash, underscore, or dot
+    """
+
+    filename = re.sub(r"(?u)[^-\w.]", "", s.strip().replace(" ", "_"))
+    if filename in ("", ".", ".."):
+        raise ValueError(filename)
+    return filename

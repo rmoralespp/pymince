@@ -1,5 +1,10 @@
 ## In Progress ##
 
+- **Added:** `file.get_valid_filename`
+- **Added:** `iterator.partition`
+- **Added:** `iterator.normalize_newlines`
+- **Changed:** Rename `iterator.has_only_one` to `iterator.only_one`
+
 ## v2.5.0 (2023-02-17) ##
 
 - **Fixed:** `logging.timed_block` docstring

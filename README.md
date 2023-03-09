@@ -33,13 +33,13 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **boolean.py** |[*string2bool*](#string2bool)|
 | **dates.py** |[*IsoWeekDay*](#IsoWeekDay), [*WeekDay*](#WeekDay), [*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict)|
-| **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
+| **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*get_valid_filename*](#get_valid_filename), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*identity*](#identity), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
-| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*has_only_one*](#has_only_one), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
+| **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*only_one*](#only_one), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*partition*](#partition), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*normalize_newlines*](#normalize_newlines), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
@@ -322,6 +322,16 @@ If it does not exist, a new directory will be created.
 
     If "cleaning" is True and a file already exists,
     this file will be deleted.
+```
+##### get_valid_filename
+```
+get_valid_filename(s)
+
+Returns a valid filename for the given string.
+
+- Remove leading/trailing spaces
+- Change spaces to underscores
+- Remove anything that is not an alphanumeric, dash, underscore, or dot
 ```
 ##### is_empty_directory
 ```
@@ -629,22 +639,6 @@ Examples:
     groups = grouper([1, 2, 3, 4, 5], 2)
     list(list(g) for g in groups) # --> [[1, 2], [3, 4], [5]]
 ```
-##### has_only_one
-```
-has_only_one(iterable)
-
-Check if given iterable has only one element.
-
-:param iterable:
-:rtype: bool
-
-Examples:
-    from pymince.iterator import has_only_one
-
-    has_only_one([1]) # --> True
-    has_only_one([1, 2]) # --> False
-    has_only_one([]) # --> False
-```
 ##### ibool
 ```
 ibool(iterable)
@@ -721,6 +715,22 @@ plus an iterable of numbers.
 
 When the iterable is empty, return the start value.
 ```
+##### only_one
+```
+only_one(iterable)
+
+Check if given iterable has only one element.
+
+:param iterable:
+:rtype: bool
+
+Examples:
+    from pymince.iterator import only_one
+
+    only_one([1]) # --> True
+    only_one([1, 2]) # --> False
+    only_one([]) # --> False
+```
 ##### pad_end
 ```
 pad_end(iterable, length, fill_value=None)
@@ -762,6 +772,19 @@ the given "iterable", no filling is done.
     pad_start(("a", "b"), 3, fill_value="1") # --> "1" "a" "b"
     pad_start(("a", "b"), 3) # --> None "a" "b"
     pad_start(("a", "b", "c"), 3) # --> "a" "b" "c"
+```
+##### partition
+```
+partition(predicate, iterable)
+
+Split the iterable into two lists, based on the boolean return-value
+of the predicate.
+
+Examples:
+    from pymince.iterator import partition
+
+    is_odd = lambda x: x % 2 != 0
+    even_items, odd_items = partition(is_odd, range(10))  # ([0, 2, 4, 6, 8], [1, 3, 5, 7, 9])
 ```
 ##### replacer
 ```
@@ -963,7 +986,7 @@ Examples:
 ```
 timed_block(name, logger=None)
 
-Logger the duration of the handled context.
+Log the duration of the handled context.
 
 Examples:
     import logging
@@ -1183,6 +1206,12 @@ Given a replacement map, returns a function that can be reused to replace any st
     replace("...def...")  # --> "...456..."
     replace("...abc...")  # --> "...123..."
     replace("...abc...def...")  # --> "...123...456..."
+```
+##### normalize_newlines
+```
+normalize_newlines(s)
+
+Normalize CRLF and CR newlines to just LF.
 ```
 ##### remove_decimal_zeros
 ```

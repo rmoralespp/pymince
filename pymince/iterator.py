@@ -185,7 +185,7 @@ def all_equal(iterable, key=None):
     """
 
     grouped = itertools.groupby(iterable, key=key)
-    return has_only_one(grouped)
+    return only_one(grouped)
 
 
 def all_distinct(iterable, key=None):
@@ -204,10 +204,10 @@ def all_distinct(iterable, key=None):
     """
 
     grouped = itertools.groupby(iterable, key=key)
-    return all(has_only_one(group) for _, group in grouped)
+    return all(only_one(group) for _, group in grouped)
 
 
-def has_only_one(iterable):
+def only_one(iterable):
     """
     Check if given iterable has only one element.
 
@@ -215,15 +215,36 @@ def has_only_one(iterable):
     :rtype: bool
 
     Examples:
-        from pymince.iterator import has_only_one
+        from pymince.iterator import only_one
 
-        has_only_one([1]) # --> True
-        has_only_one([1, 2]) # --> False
-        has_only_one([]) # --> False
+        only_one([1]) # --> True
+        only_one([1, 2]) # --> False
+        only_one([]) # --> False
     """
 
     it = iter(iterable)
     return next(it, empty) is not empty and next(it, empty) is empty
+
+
+def partition(predicate, iterable):
+    """
+    Split the iterable into two lists, based on the boolean return-value
+    of the predicate.
+
+    Examples:
+        from pymince.iterator import partition
+
+        is_odd = lambda x: x % 2 != 0
+        even_items, odd_items = partition(is_odd, range(10))  # ([0, 2, 4, 6, 8], [1, 3, 5, 7, 9])
+    """
+
+    if predicate is None:
+        predicate = bool
+
+    results = ([], [])
+    for n in iter(iterable):
+        results[predicate(n)].append(n)
+    return results
 
 
 def splitter(iterable, sep, key=None, maxsplit=-1, container=None):

@@ -8,7 +8,7 @@ import time
 @contextlib.contextmanager
 def timed_block(name, logger=None):
     """
-    Logger the duration of the handled context.
+    Log the duration of the handled context.
 
     Examples:
         import logging

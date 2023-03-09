@@ -20,6 +20,7 @@ _bin_regexp_not = re.compile(r"[^01]")
 _percentage_regexp = re.compile(r"^(?:0|[1-9]\d*)(?:\.\d+)?(?:\s)?%$")
 _email_address_regexp = re.compile(r"^\S+@\S+$")
 _roman_regex = re.compile(r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")
+_re_newlines = re.compile(r"\r\n|\r")  # used in normalize_newlines
 
 
 def get_random_string(length, alphabet=string.ascii_letters):
@@ -35,6 +36,12 @@ def get_random_secret(length, alphabet=string.ascii_letters):
     """
 
     return "".join(secrets.choice(alphabet) for _ in range(length))
+
+
+def normalize_newlines(s):
+    """Normalize CRLF and CR newlines to just LF."""
+
+    return _re_newlines.sub("\n", s)
 
 
 def remove_number_commas(s):
