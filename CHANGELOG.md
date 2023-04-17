@@ -1,5 +1,7 @@
 ## In Progress ##
 
+## v2.6.0 (2023-04-17) ##
+
 - **Added:** `json.idump_into`
 - **Added:** `file.get_valid_filename`
 - **Added:** `iterator.partition`
