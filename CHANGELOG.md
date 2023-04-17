@@ -1,5 +1,6 @@
 ## In Progress ##
 
+- **Added:** `json.idump_into`
 - **Added:** `file.get_valid_filename`
 - **Added:** `iterator.partition`
 - **Added:** `iterator.normalize_newlines`

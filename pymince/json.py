@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Useful functions for working with JSONs."""
+
 import csv
 import dataclasses
 import datetime
@@ -8,6 +9,7 @@ import functools
 import itertools
 import json
 import operator
+import textwrap
 import uuid
 import zipfile
 
@@ -114,6 +116,39 @@ def dump_from_csv(
         pool = tuple(data)
 
     dump_into(json_path, pool, encoding=encoding, **kwargs)
+
+
+def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
+    """
+    Dump an iterable incrementally into a JSON file
+    using the "utf-8" encoding.
+    The result will always be an array with the elements of the iterable.
+
+    Examples:
+        from pymince.json import idump_into
+
+        it = iter([{"key": "foo"}, {"key": "bar"}])
+        dump_into("foo.json", it)
+    """
+
+    def worker(items):
+        encode = functools.partial(dumps, **kwargs)
+        indent = kwargs.get("indent")
+        prefix = " " * indent if indent else ""
+        yield "[\n"
+        obj = next(items, None)
+        if obj is not None:
+            yield textwrap.indent(encode(obj), prefix)
+        for obj in items:
+            yield ",\n"
+            yield textwrap.indent(encode(obj), prefix)
+
+        yield "\n"
+        yield "]"
+
+    it = iter(iterable)
+    with open(filename, mode="w", encoding=encoding) as f:
+        f.writelines(worker(it))
 
 
 class JSONEncoder(json.JSONEncoder):
