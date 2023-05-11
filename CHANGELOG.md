@@ -1,9 +1,12 @@
 ## In Progress ##
 
-## v2.6.0 (2023-04-17) ##
+## v2.7.0 (2023-05-11) ##
 
 - **Improved:** `json.dump_from_csv` reduce memory consumption, now uses `idump_into`
 - **Added:** `json.idump_lines`
+
+## v2.6.0 (2023-04-17) ##
+
 - **Added:** `json.idump_into`
 - **Added:** `file.get_valid_filename`
 - **Added:** `iterator.partition`

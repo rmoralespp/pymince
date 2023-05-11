@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 __title__ = "pymince"
-__version__ = "2.6.0"
+__version__ = "2.7.0"
