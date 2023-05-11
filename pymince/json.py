@@ -113,9 +113,32 @@ def dump_from_csv(
         # universal newlines translation.
 
         data = itertools.islice(read(), start, stop)
-        pool = tuple(data)
+        idump_into(json_path, data, encoding=encoding, **kwargs)
 
-    dump_into(json_path, pool, encoding=encoding, **kwargs)
+
+def idump_lines(iterable, **dumps_kwargs):
+    """
+    Generator yielding string lines that form a JSON array
+    with the serialized elements of given iterable.
+    *** Useful to reduce memory consumption ***
+
+    :param iterable: Iterable[dict]
+    :rtype: Iterable[str]
+    """
+
+    it = iter(iterable)
+    encode = functools.partial(dumps, **dumps_kwargs)
+    indent = dumps_kwargs.get("indent")
+    prefix = " " * indent if indent else ""
+    yield "[\n"
+    obj = next(it, None)
+    if obj is not None:
+        yield textwrap.indent(encode(obj), prefix)
+    for obj in it:
+        yield ",\n"
+        yield textwrap.indent(encode(obj), prefix)
+    yield "\n"
+    yield "]"
 
 
 def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
@@ -123,6 +146,7 @@ def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
     Dump an iterable incrementally into a JSON file
     using the "utf-8" encoding.
     The result will always be an array with the elements of the iterable.
+    *** Useful to reduce memory consumption ***
 
     Examples:
         from pymince.json import idump_into
@@ -131,24 +155,8 @@ def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
         dump_into("foo.json", it)
     """
 
-    def worker(items):
-        encode = functools.partial(dumps, **kwargs)
-        indent = kwargs.get("indent")
-        prefix = " " * indent if indent else ""
-        yield "[\n"
-        obj = next(items, None)
-        if obj is not None:
-            yield textwrap.indent(encode(obj), prefix)
-        for obj in items:
-            yield ",\n"
-            yield textwrap.indent(encode(obj), prefix)
-
-        yield "\n"
-        yield "]"
-
-    it = iter(iterable)
     with open(filename, mode="w", encoding=encoding) as f:
-        f.writelines(worker(it))
+        f.writelines(idump_lines(iterable, **kwargs))
 
 
 class JSONEncoder(json.JSONEncoder):
