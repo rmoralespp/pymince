@@ -779,6 +779,9 @@ partition(predicate, iterable)
 
 Split the iterable into two lists, based on the boolean return-value
 of the predicate.
+- (1): items that have predicate(item) == False.
+- (2): items that have predicate(item) == True.
+
 
 Examples:
     from pymince.iterator import partition
