@@ -1,5 +1,9 @@
 ## In Progress ##
 
+- **Added:** `jsonlines module:` Useful functions for working with `jsonlines` and `ndjson`:
+              dumper, dumps, dump, dump_into, load, load_from.
+              TODO: stream compressors: `gzip` `bzip2` supporting
+
 ## v2.7.0 (2023-05-11) ##
 
 - **Improved:** `json.dump_from_csv` reduce memory consumption, now uses `idump_into`

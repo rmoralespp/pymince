@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 """Functions that use iterators for efficient loops."""
 import collections
 import functools
@@ -6,9 +7,10 @@ import itertools
 import operator
 import statistics
 
+import pymince._constants
 import pymince.functional
 
-empty = object()
+empty = pymince._constants.empty
 consume_all = collections.deque(maxlen=0).extend  # Consume given iterator entirely.
 
 
