@@ -13,6 +13,7 @@ import pymince.file
 import pymince.functional
 import pymince.iterator
 import pymince.json
+import pymince.jsonlines
 import pymince.logging
 import pymince.std
 import pymince.text
@@ -28,6 +29,7 @@ modules = (
     pymince.functional,
     pymince.iterator,
     pymince.json,
+    pymince.jsonlines,
     pymince.logging,
     pymince.std,
     pymince.text,

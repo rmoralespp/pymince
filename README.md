@@ -37,6 +37,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*identity*](#identity), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*only_one*](#only_one), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*partition*](#partition), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
+| **jsonlines.py** |[*dump*](#dump), [*dump_into*](#dump_into), [*dumper*](#dumper), [*dumps*](#dumps), [*load*](#load), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*normalize_newlines*](#normalize_newlines), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
@@ -979,6 +980,66 @@ Examples:
     from pymince.json import load_from_zip
 
     dictionary = load_from_zip("archive.zip", "foo.json")
+```
+#### jsonlines.py
+Useful functions for working with `jsonlines` and `ndjson` data as described:
+- http://ndjson.org/
+- https://jsonlines.org/
+##### dump
+```
+dump(iterable, fp, **kwargs)
+
+Serialize iterable as a `jsonlines` formatted stream to file.
+
+:param iterable: Iterable[Any]
+:param fp: file-like object
+:param kwargs: `json.dumps` kwargs
+
+Example:
+
+import pymince.jsonlines as jsonl
+
+with open('myfile.jsonl', mode='w', encoding ='utf-8') as f:
+    jsonl.dump(d, f, ensure_ascii=False, indent=2)
+```
+##### dump_into
+```
+dump_into(filename, iterable, encoding='utf-8', **kwargs)
+
+
+```
+##### dumper
+```
+dumper(iterable, **kwargs)
+
+Generator yielding JSON lines.
+```
+##### dumps
+```
+dumps(iterable, **kwargs)
+
+Serialize iterable to a `jsonlines` formatted string.
+```
+##### load
+```
+load(fp, **kwargs)
+
+Returns iterable from a file formatted as JSON lines.
+
+:param fp: file-like object
+:param kwargs: `json.loads` kwargs
+:rtype: Iterable[Any]
+```
+##### load_from
+```
+load_from(filename, encoding='utf-8', **kwargs)
+
+Returns iterable from a filename formatted as JSON lines.
+
+:param filename: path
+:param encoding: file encoding. 'utf-8' used by default
+:param kwargs: `json.loads` kwargs
+:rtype: Iterable[Any]
 ```
 #### logging.py
 
