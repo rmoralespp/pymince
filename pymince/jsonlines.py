@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Useful functions for working with `jsonlines` and `ndjson` data as described:
+Useful functions for working with JSON lines data as described:
 - http://ndjson.org/
 - https://jsonlines.org/
 """
