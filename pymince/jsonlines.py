@@ -10,13 +10,11 @@ import functools
 import json
 
 import pymince._constants
-import pymince.file
 
 empty = pymince._constants.empty
 dumps_line = functools.partial(json.dumps, ensure_ascii=False)
 utf_8 = pymince._constants.utf_8
 new_line = "\n"
-ext = "jsonl"
 
 
 def dumper(iterable, **kwargs):
@@ -29,7 +27,13 @@ def dumper(iterable, **kwargs):
 
 
 def dumps(iterable, **kwargs):
-    """Serialize iterable to a `jsonlines` formatted string."""
+    """
+    Serialize iterable to a `jsonlines` formatted string.
+
+    :param iterable: Iterable[Any]
+    :param kwargs: `json.dumps` kwargs
+    :rtype: str
+    """
 
     return "".join(dumper(iterable, **kwargs))
 
@@ -43,18 +47,27 @@ def dump(iterable, fp, **kwargs):
     :param kwargs: `json.dumps` kwargs
 
     Example:
+        from pymince.jsonlines import dump
 
-    import pymince.jsonlines as jsonl
-
-    with open('myfile.jsonl', mode='w', encoding ='utf-8') as f:
-        jsonl.dump(d, f, ensure_ascii=False, indent=2)
-
+        data = ({'foo': 1}, {'bar': 2})
+        with open('myfile.jsonl', mode='w', encoding ='utf-8') as file:
+            dump(iter(data), file)
     """
 
     fp.writelines(dumper(iterable, **kwargs))
 
 
 def dump_into(filename, iterable, encoding=utf_8, **kwargs):
+    """
+    Dump iterable to a `jsonlines` file.
+
+    Example:
+        from pymince.jsonlines import dump_into
+
+        data = ({'foo': 1}, {'bar': 2})
+        dump_into("myfile.jsonl", iter(data))
+    """
+
     with open(filename, mode="w", encoding=encoding) as f:
         dump(iterable, f, **kwargs)
 
@@ -65,7 +78,7 @@ def load(fp, **kwargs):
 
     :param fp: file-like object
     :param kwargs: `json.loads` kwargs
-    :rtype: Iterable[Any]
+    :rtype: Iterable[str]
     """
 
     decode = functools.partial(json.loads, **kwargs)
@@ -79,7 +92,13 @@ def load_from(filename, encoding=utf_8, **kwargs):
     :param filename: path
     :param encoding: file encoding. 'utf-8' used by default
     :param kwargs: `json.loads` kwargs
-    :rtype: Iterable[Any]
+    :rtype: Iterable[str]
+
+    Examples:
+        from pymince.jsonlines import load_from
+
+        it = load_from("myfile.jsonl")
+        next(it)
     """
 
     with open(filename, encoding=encoding) as f:

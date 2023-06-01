@@ -4,24 +4,19 @@ import os
 import tempfile
 
 import pymince.jsonlines as jsonl
-
-data = (
-    {"en": "Afghanistan", "es": "Afganistán"},
-    {"en": "Albania", "es": "Albania"},
-)
+import tests.test_jsonlines as tests_jsonl
 
 
-def test_dumped_file():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        filename = os.path.join(tmpdir, "countries.jsonl")
-        jsonl.dump_into(filename, ())
-        assert os.path.exists(filename)
+def test_exists_file():
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, "foo.jsonl")
+        jsonl.dump_into(path, ())
+        assert os.path.exists(path)
 
 
-def test_dumped_data():
-    expected = '{"en": "Afghanistan", "es": "Afganistán"}\n{"en": "Albania", "es": "Albania"}\n'
-    with tempfile.TemporaryDirectory() as tmpdir:
-        filename = os.path.join(tmpdir, "countries.jsonl")
-        jsonl.dump_into(filename, iter(data))
-        with open(filename, encoding='utf-8') as f:
-            assert f.read() == expected
+def test_dumped_iter_data():
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, "foo.jsonl")
+        jsonl.dump_into(path, iter(tests_jsonl.sample_data))
+        with open(path, encoding="utf-8") as f:
+            assert f.read() == tests_jsonl.sample_text

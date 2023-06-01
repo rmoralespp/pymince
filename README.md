@@ -996,17 +996,23 @@ Serialize iterable as a `jsonlines` formatted stream to file.
 :param kwargs: `json.dumps` kwargs
 
 Example:
+    from pymince.jsonlines import dump
 
-import pymince.jsonlines as jsonl
-
-with open('myfile.jsonl', mode='w', encoding ='utf-8') as f:
-    jsonl.dump(d, f, ensure_ascii=False, indent=2)
+    data = ({'foo': 1}, {'bar': 2})
+    with open('myfile.jsonl', mode='w', encoding ='utf-8') as file:
+        dump(iter(data), file)
 ```
 ##### dump_into
 ```
 dump_into(filename, iterable, encoding='utf-8', **kwargs)
 
+Dump iterable to a `jsonlines` file.
 
+Example:
+    from pymince.jsonlines import dump_into
+
+    data = ({'foo': 1}, {'bar': 2})
+    dump_into("myfile.jsonl", iter(data))
 ```
 ##### dumper
 ```
@@ -1019,6 +1025,10 @@ Generator yielding JSON lines.
 dumps(iterable, **kwargs)
 
 Serialize iterable to a `jsonlines` formatted string.
+
+:param iterable: Iterable[Any]
+:param kwargs: `json.dumps` kwargs
+:rtype: str
 ```
 ##### load
 ```
@@ -1028,7 +1038,7 @@ Returns iterable from a file formatted as JSON lines.
 
 :param fp: file-like object
 :param kwargs: `json.loads` kwargs
-:rtype: Iterable[Any]
+:rtype: Iterable[str]
 ```
 ##### load_from
 ```
@@ -1039,7 +1049,13 @@ Returns iterable from a filename formatted as JSON lines.
 :param filename: path
 :param encoding: file encoding. 'utf-8' used by default
 :param kwargs: `json.loads` kwargs
-:rtype: Iterable[Any]
+:rtype: Iterable[str]
+
+Examples:
+    from pymince.jsonlines import load_from
+
+    it = load_from("myfile.jsonl")
+    next(it)
 ```
 #### logging.py
 
