@@ -5,7 +5,7 @@ import tests.test_jsonlines as tests_jsonl
 
 
 def test_dumps_empty():
-    assert jsonl.dumps(()) == ""
+    assert not jsonl.dumps(())
 
 
 def test_dumps_data():

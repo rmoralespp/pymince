@@ -62,10 +62,10 @@ def remove_number_commas(s):
 
 def replace(value, old_values, new_value, count=-1):
     """
-    Replace matching values ​​in the given string with new_value.
+    Replace matching values \u200b\u200bin the given string with new_value.
 
     :param str value:
-    :param old_values: iterable of values ​​to replace.
+    :param old_values: iterable of values \u200b\u200bto replace.
     :param str new_value: replacement value.
     :param int count:
         Maximum number of occurrences to replace.

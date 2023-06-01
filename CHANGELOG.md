@@ -1,5 +1,6 @@
 ## In Progress ##
 
+- **Added:** new tests to `logging` `iterator`
 - **Added:** new tests to `jsonlines`
 - **Added:** `jsonlines module:` Useful functions for working with `jsonlines` and `ndjson`:
               dumper, dumps, dump, dump_into, load, load_from.

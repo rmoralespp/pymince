@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
+
 import json
 import logging
 import sys
-
-import pytest
+import unittest.mock
 
 import pymince.json
 import pymince.logging
 
 
-def test_structured_formatter(capsys):
+@unittest.mock.patch('logging.StreamHandler.handleError')
+def test_structured_formatter(mock_handle_error, capsys):
     # prepare logging
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
@@ -26,7 +27,8 @@ def test_structured_formatter(capsys):
     captured = json.loads(capsys.readouterr().out)
     assert captured["payload"] == payload
     assert captured["level"] == "DEBUG"
+    mock_handle_error.assert_not_called()
 
     # check TypeError
-    with pytest.raises(TypeError):
-        logger.debug("", "")
+    logger.debug("foo")
+    mock_handle_error.assert_called_once()

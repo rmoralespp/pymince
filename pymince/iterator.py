@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """Functions that use iterators for efficient loops."""
+
 import collections
 import functools
 import itertools
@@ -34,6 +35,7 @@ def replacer(iterable, matcher, new_value, count=-1):
         replacer([1,2,3,1,2,3], is_one, None) # --> None 2 3 None 2 3
         replacer([1,2,3,1,2,3], is_one, None, count=1) # --> None 2 3 1 2 3
     """
+
     changed = 0
     for obj in iterable:
         if matcher(obj) and (count == -1 or changed < count):

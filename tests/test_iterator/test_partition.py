@@ -3,6 +3,12 @@
 import pymince.iterator
 
 
+def test_partition_none():
+    left, right = pymince.iterator.partition(None, range(3))
+    assert left == [0]
+    assert right == [1, 2]
+
+
 def test_partition():
     left, right = pymince.iterator.partition(lambda x: x % 2 != 0, range(10))
     assert left == [0, 2, 4, 6, 8]
