@@ -1,5 +1,7 @@
 ## In Progress ##
 
+## v2.8.0 (2023-06-16) ##
+
 - **Added:** `dictionary.tree`
 - **Added:** new tests to `logging` `iterator`
 - **Added:** new tests to `jsonlines`
