@@ -1,5 +1,6 @@
 ## In Progress ##
 
+- **Added:** `dictionary.tree`
 - **Added:** new tests to `logging` `iterator`
 - **Added:** new tests to `jsonlines`
 - **Added:** `jsonlines module:` Useful functions for working with `jsonlines` and `ndjson`:

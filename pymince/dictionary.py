@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """Useful functions that use dictionaries."""
 
+import collections
 import functools
 import hashlib
 import operator
 import types
 
+import pymince.functional
 import pymince.json
 
 
@@ -164,3 +166,23 @@ def from_objects(iterable, key_getter, value_getter):
         else:
             dictionary[key] = value_getter(obj)
     return dictionary
+
+
+def tree():
+    """
+    Returns a dict whose defaults are dicts.
+    As suggested here: https://gist.github.com/2012250
+
+    Examples:
+        import json
+
+        from pymince.dictionary import tree
+
+        users = tree()
+        users['user1']['username'] = 'foo'
+        users['user2']['username'] = 'bar'
+
+        print(json.dumps(users))  # {"user1": {"username": "foo"}, "user2": {"username": "bar"}}
+    """
+
+    return collections.defaultdict(tree)
