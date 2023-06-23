@@ -1,8 +1,14 @@
 ## In Progress ##
 
+
+- **Added:** `jsonlines.dump_fork`: Incrementally dumps different groups of elements
+              into the indicated `jsonlines` file.
+- **Added:** tests to `json.idump_fork`
+- **Added:** `json.idump_fork`: Incrementally dumps different groups of elements into
+              the indicated JSON file. *** Useful to reduce memory consumption ***
+
 ## v2.8.0 (2023-06-16) ##
 
-- **Added:** `json.dump_fork`: Dump different groups of items into the indicated JSON file.
 - **Added:** `dictionary.tree`
 - **Added:** new tests to `logging` `iterator`
 - **Added:** new tests to `jsonlines`

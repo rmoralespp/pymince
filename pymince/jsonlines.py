@@ -8,6 +8,7 @@ Useful functions for working with JSON lines data as described:
 
 import functools
 import json
+import os
 
 import pymince._constants
 
@@ -70,6 +71,63 @@ def dump_into(filename, iterable, encoding=utf_8, **kwargs):
 
     with open(filename, mode="w", encoding=encoding) as f:
         dump(iterable, f, **kwargs)
+
+
+def dump_fork(path_items, encoding=utf_8, dump_if_empty=True, **kwargs):
+    """
+    Incrementally dumps different groups of elements into
+    the indicated `jsonlines` file.
+    *** Useful to reduce memory consumption ***
+
+    :param Iterable[file_path, Iterable[dict]] path_items: group items by file path
+    :param encoding: 'utf-8' by default.
+    :param bool dump_if_empty: If false, don't create an empty `jsonlines` file.
+    :param kwargs: json.dumps kwargs.
+
+    Examples:
+        from pymince.jsonlines import dump_fork
+
+        path_items = (
+            ("num.jsonl", ({"value": 1}, {"value": 2})),
+            ("num.jsonl", ({"value": 3},)),
+            ("foo.jsonl", ({"a": "1"}, {"b": 2})),
+            ("baz.jsonl", ()),
+        )
+        dump_fork(iter(path_items))
+    """
+
+    def get_writer(dst):
+        nothing = True
+        with open(dst, mode="w", encoding=encoding) as fd:
+            try:
+                while True:
+                    obj = yield
+                    if nothing:
+                        nothing = False
+                    else:
+                        fd.write(new_line)
+                    fd.write(encoder(obj))
+            except GeneratorExit:
+                pass
+        if nothing and not dump_if_empty:
+            os.unlink(dst)
+
+    encoder = functools.partial(dumps_line, **kwargs)
+    writers = dict()
+
+    for path, items in path_items:
+        if path in writers:
+            writer = writers[path]
+        else:
+            writer = get_writer(path)
+            writer.send(None)
+            writers[path] = writer
+
+        for item in items:
+            writer.send(item)
+    # Cleanup
+    for writer in writers.values():
+        writer.close()
 
 
 def load(fp, **kwargs):

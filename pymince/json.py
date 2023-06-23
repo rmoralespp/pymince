@@ -160,49 +160,51 @@ def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
         f.writelines(idump_lines(iterable, **kwargs))
 
 
-def dump_fork(path_items, encoding=ENCODING, dump_if_empty=False, **dumps_kwargs):
+def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs):
     """
-    Dump different groups of items into the indicated JSON file.
+    Incrementally dumps different groups of elements into
+    the indicated JSON file.
+    *** Useful to reduce memory consumption ***
 
-    :param Iterable[file_path, Iterable[dict]] path_items: group items by file path.
+    :param Iterable[file_path, Iterable[dict]] path_items: group items by file path
     :param encoding: 'utf-8' by default.
     :param bool dump_if_empty: If false, don't create an empty file.
     :param dumps_kwargs: json.dumps kwargs.
 
     Examples:
-        from pymince.json import dump_fork
+        from pymince.json import idump_fork
 
         path_items = (
-            ("var.json", ({"a": 1}, {"b": 2})),
-            ("foo.json", ({1: "1"}, {2: "b"})),
+            ("num.json", ({"value": 1}, {"value": 2})),
+            ("num.json", ({"value": 3},)),
+            ("foo.json", ({"a": "1"}, {"b": 2})),
             ("baz.json", ()),
         )
-        dump_fork(iter(path_items))
+        idump_fork(iter(path_items))
     """
 
-    # TODO: unit tests
-
     def get_dumper(dst):
-        encode = functools.partial(dumps, **dumps_kwargs)
-        indent = dumps_kwargs.get("indent")
-        prefix = " " * indent if indent else ""
-        empty = True
+        nothing = True
         with open(dst, mode="w", encoding=encoding) as fd:
             write = fd.write
             write("[\n")
             try:
                 while True:
                     obj = yield
-                    if empty:
-                        empty = False
+                    if nothing:
+                        nothing = False
                     else:
                         write(",\n")
                     write(textwrap.indent(encode(obj), prefix))
             except GeneratorExit:
-                write("\n]")
+                write("]") if nothing else write("\n]")
 
-        if empty and dump_if_empty:
-            os.unlink(path)
+        if nothing and not dump_if_empty:
+            os.unlink(dst)
+
+    encode = functools.partial(dumps, **dumps_kwargs)
+    indent = dumps_kwargs.get("indent")
+    prefix = " " * indent if indent else ""
 
     dumpers = dict()
     for path, items in path_items:
