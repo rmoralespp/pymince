@@ -12,7 +12,7 @@ def read(filename):
 def get_long_description():
     blocks = (
         read("README.md"),
-        read("CHANGELOG.md"),
+        # Fixme read("CHANGELOG.md"),
     )
     return "\n".join(blocks)
 
