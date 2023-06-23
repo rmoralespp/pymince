@@ -36,8 +36,8 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*get_valid_filename*](#get_valid_filename), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*identity*](#identity), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*only_one*](#only_one), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*partition*](#partition), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
-| **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_fork*](#dump_fork), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
-| **jsonlines.py** |[*dump*](#dump), [*dump_into*](#dump_into), [*dumper*](#dumper), [*dumps*](#dumps), [*load*](#load), [*load_from*](#load_from)|
+| **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_fork*](#idump_fork), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
+| **jsonlines.py** |[*dump*](#dump), [*dump_fork*](#dump_fork), [*dump_into*](#dump_into), [*dumper*](#dumper), [*dumps*](#dumps), [*load*](#load), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*normalize_newlines*](#normalize_newlines), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
@@ -911,27 +911,6 @@ to `json.JSONEncoder`
 - `dataclasses.dataclass` is passed to `dataclasses.asdict`.
 - `frozenset` and `set` are serialized by ordering their values.
 ```
-##### dump_fork
-```
-dump_fork(path_items, encoding='utf-8', dump_if_empty=False, **dumps_kwargs)
-
-Dump different groups of items into the indicated JSON file.
-
-:param Iterable[file_path, Iterable[dict]] path_items: group items by file path.
-:param encoding: 'utf-8' by default.
-:param bool dump_if_empty: If false, don't create an empty file.
-:param dumps_kwargs: json.dumps kwargs.
-
-Examples:
-    from pymince.json import dump_fork
-
-    path_items = (
-        ("var.json", ({"a": 1}, {"b": 2})),
-        ("foo.json", ({1: "1"}, {2: "b"})),
-        ("baz.json", ()),
-    )
-    dump_fork(iter(path_items))
-```
 ##### dump_from_csv
 ```
 dump_from_csv(csv_path, json_path, /, *, fieldnames=None, start=0, stop=None, strip=True, encoding='utf-8', **kwargs)
@@ -971,6 +950,30 @@ Examples:
     from pymince.json import dump_into_zip
 
     dump_into_zip("archive.zip", "foo.json", {"key": "value"})
+```
+##### idump_fork
+```
+idump_fork(path_items, encoding='utf-8', dump_if_empty=True, **dumps_kwargs)
+
+Incrementally dumps different groups of elements into
+the indicated JSON file.
+*** Useful to reduce memory consumption ***
+
+:param Iterable[file_path, Iterable[dict]] path_items: group items by file path
+:param encoding: 'utf-8' by default.
+:param bool dump_if_empty: If false, don't create an empty file.
+:param dumps_kwargs: json.dumps kwargs.
+
+Examples:
+    from pymince.json import idump_fork
+
+    path_items = (
+        ("num.json", ({"value": 1}, {"value": 2})),
+        ("num.json", ({"value": 3},)),
+        ("foo.json", ({"a": "1"}, {"b": 2})),
+        ("baz.json", ()),
+    )
+    idump_fork(iter(path_items))
 ```
 ##### idump_into
 ```
@@ -1040,6 +1043,30 @@ Example:
     data = ({'foo': 1}, {'bar': 2})
     with open('myfile.jsonl', mode='w', encoding ='utf-8') as file:
         dump(iter(data), file)
+```
+##### dump_fork
+```
+dump_fork(path_items, encoding='utf-8', dump_if_empty=True, **kwargs)
+
+Incrementally dumps different groups of elements into
+the indicated `jsonlines` file.
+*** Useful to reduce memory consumption ***
+
+:param Iterable[file_path, Iterable[dict]] path_items: group items by file path
+:param encoding: 'utf-8' by default.
+:param bool dump_if_empty: If false, don't create an empty `jsonlines` file.
+:param kwargs: json.dumps kwargs.
+
+Examples:
+    from pymince.jsonlines import dump_fork
+
+    path_items = (
+        ("num.jsonl", ({"value": 1}, {"value": 2})),
+        ("num.jsonl", ({"value": 3},)),
+        ("foo.jsonl", ({"a": "1"}, {"b": 2})),
+        ("baz.jsonl", ()),
+    )
+    dump_fork(iter(path_items))
 ```
 ##### dump_into
 ```
