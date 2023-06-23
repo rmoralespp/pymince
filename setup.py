@@ -9,11 +9,19 @@ def read(filename):
         return f.read()
 
 
+def get_long_description():
+    blocks = (
+        read("README.md"),
+        read("CHANGELOG.md"),
+    )
+    return "\n".join(blocks)
+
+
 setup(
     name=__title__,
     version=__version__,
     description="Python shredded utilities",
-    long_description=read("README.md"),
+    long_description=get_long_description(),
     long_description_content_type="text/markdown",
     classifiers=[
         "Programming Language :: Python",
