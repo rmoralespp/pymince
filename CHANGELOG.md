@@ -1,5 +1,6 @@
 ## In Progress ##
 
+## v2.9.0 (2023-06-23) ##
 
 - **Added:** `jsonlines.dump_fork`: Incrementally dumps different groups of elements
               into the indicated `jsonlines` file.
