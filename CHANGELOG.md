@@ -2,6 +2,7 @@
 
 ## v2.8.0 (2023-06-16) ##
 
+- **Added:** `json.dump_fork`: Dump different groups of items into the indicated JSON file.
 - **Added:** `dictionary.tree`
 - **Added:** new tests to `logging` `iterator`
 - **Added:** new tests to `jsonlines`

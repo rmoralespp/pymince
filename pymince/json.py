@@ -9,6 +9,7 @@ import functools
 import itertools
 import json
 import operator
+import os
 import textwrap
 import uuid
 import zipfile
@@ -157,6 +158,66 @@ def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
 
     with open(filename, mode="w", encoding=encoding) as f:
         f.writelines(idump_lines(iterable, **kwargs))
+
+
+def dump_fork(path_items, encoding=ENCODING, dump_if_empty=False, **dumps_kwargs):
+    """
+    Dump different groups of items into the indicated JSON file.
+
+    :param Iterable[file_path, Iterable[dict]] path_items: group items by file path.
+    :param encoding: 'utf-8' by default.
+    :param bool dump_if_empty: If false, don't create an empty file.
+    :param dumps_kwargs: json.dumps kwargs.
+
+    Examples:
+        from pymince.json import dump_fork
+
+        path_items = (
+            ("var.json", ({"a": 1}, {"b": 2})),
+            ("foo.json", ({1: "1"}, {2: "b"})),
+            ("baz.json", ()),
+        )
+        dump_fork(iter(path_items))
+    """
+
+    # TODO: unit tests
+
+    def get_dumper(dst):
+        encode = functools.partial(dumps, **dumps_kwargs)
+        indent = dumps_kwargs.get("indent")
+        prefix = " " * indent if indent else ""
+        empty = True
+        with open(dst, mode="w", encoding=encoding) as fd:
+            write = fd.write
+            write("[\n")
+            try:
+                while True:
+                    obj = yield
+                    if empty:
+                        empty = False
+                    else:
+                        write(",\n")
+                    write(textwrap.indent(encode(obj), prefix))
+            except GeneratorExit:
+                write("\n]")
+
+        if empty and dump_if_empty:
+            os.unlink(path)
+
+    dumpers = dict()
+    for path, items in path_items:
+        if path in dumpers:
+            dumper = dumpers[path]
+        else:
+            dumper = get_dumper(path)
+            dumper.send(None)
+            dumpers[path] = dumper
+
+        for item in items:
+            dumper.send(item)
+    # Cleanup
+    for dumper in dumpers.values():
+        dumper.close()
 
 
 class JSONEncoder(json.JSONEncoder):

@@ -36,7 +36,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*get_valid_filename*](#get_valid_filename), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*identity*](#identity), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*only_one*](#only_one), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*partition*](#partition), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
-| **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
+| **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_fork*](#dump_fork), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **jsonlines.py** |[*dump*](#dump), [*dump_into*](#dump_into), [*dumper*](#dumper), [*dumps*](#dumps), [*load*](#load), [*load_from*](#load_from)|
 | **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
@@ -910,6 +910,27 @@ to `json.JSONEncoder`
 - `uuid.UUID` is serialized to a string.
 - `dataclasses.dataclass` is passed to `dataclasses.asdict`.
 - `frozenset` and `set` are serialized by ordering their values.
+```
+##### dump_fork
+```
+dump_fork(path_items, encoding='utf-8', dump_if_empty=False, **dumps_kwargs)
+
+Dump different groups of items into the indicated JSON file.
+
+:param Iterable[file_path, Iterable[dict]] path_items: group items by file path.
+:param encoding: 'utf-8' by default.
+:param bool dump_if_empty: If false, don't create an empty file.
+:param dumps_kwargs: json.dumps kwargs.
+
+Examples:
+    from pymince.json import dump_fork
+
+    path_items = (
+        ("var.json", ({"a": 1}, {"b": 2})),
+        ("foo.json", ({1: "1"}, {2: "b"})),
+        ("baz.json", ()),
+    )
+    dump_fork(iter(path_items))
 ```
 ##### dump_from_csv
 ```
