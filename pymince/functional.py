@@ -26,6 +26,12 @@ class classproperty:
     def __get__(self, instance, cls=None):
         return self.fget(cls)
 
+    def getter(self, method):
+        """Descriptor to change the getter on a classproperty."""
+
+        self.fget = method
+        return self
+
 
 def pipe(*fns):
     """

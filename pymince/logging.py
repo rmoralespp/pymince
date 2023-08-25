@@ -90,3 +90,81 @@ class StructuredFormatter(logging.Formatter):
             "level": record.levelname,
             "payload": record.args,
         }
+
+
+class ColoredFormatter(logging.Formatter):
+    """
+    A class for formatting colored logs.
+
+    Default colors:
+    - DEBUG: blue
+    - INFO: green
+    - WARNING: yellow
+    - ERROR: red
+    - CRITICAL: red
+
+    Examples:
+        import logging
+        from pymince.logging import ColoredFormatter
+
+        # Config
+        logger = logging.getLogger('mylog')
+        logger.setLevel('DEBUG')
+
+        stream_handler = logging.StreamHandler()
+        stream_handler.setFormatter(ColoredFormatter(logging.BASIC_FORMAT))
+        logger.addHandler(stream_handler)
+
+        # Use default colors
+        logger.debug("This is debug") # blue color
+
+        # Use custom colors
+        import colorama
+        logger.debug("This is debug", extra={"color": colorama.Fore.BLACK})
+    """
+
+    COLORS = {
+        logging.DEBUG: "\033[94m",  # blue
+        logging.INFO: "\033[92m",  # green
+        logging.WARNING: "\033[93m",  # yellow
+        logging.ERROR: "\033[91m",  # red
+        logging.CRITICAL: "\033[1;31m",  # bold red
+    }
+
+    def format(self, record):
+        formatted = super().format(record)
+        if hasattr(record, "color"):
+            color = record.color
+        else:
+            level = logging._nameToLevel[record.levelname]
+            color = self.COLORS[level]
+        return f"{color}{formatted}\033[0m"
+
+
+class ColoredLogger:
+    """
+    Custom logger to generate color logs.
+
+    Examples:
+        from pymince.logging import ColoredLogger
+
+        logger = ColoredLogger()
+
+        # Use default colors
+        logger.debug("This is debug") # blue color
+
+        # Use custom colors
+        import colorama
+        logger.debug("This is debug", extra={"color": colorama.Fore.BLACK})
+    """
+
+    def __init__(self, name=None, level=logging.DEBUG, **fmt_kwargs):
+        self.logger = logging.getLogger(name or __name__)
+        self.logger.setLevel(level)
+
+        stream_handler = logging.StreamHandler()
+        stream_handler.setFormatter(ColoredFormatter(**fmt_kwargs))
+        self.logger.addHandler(stream_handler)
+
+    def __getattr__(self, item):
+        return getattr(self.logger, item)

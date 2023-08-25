@@ -20,9 +20,18 @@ def test_from_cls():
 
         @pymince.functional.classproperty
         def foo(cls):
-            return cls._foo
+            return cls._foo + "baz"
 
-    assert MyClass.foo == "var"
+    assert MyClass.foo == "varbaz"
+
+
+def test_from_cls_getter():
+    class MyClass:
+        _foo = "foo"
+        foo1 = pymince.functional.classproperty().getter(lambda cls: cls._foo + "baz")
+        foo2 = pymince.functional.classproperty().getter(lambda cls: cls._foo + "var")
+
+    assert (MyClass.foo1, MyClass.foo2) == ('foobaz', 'foovar')
 
 
 def test_from_obj():

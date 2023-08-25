@@ -38,9 +38,9 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*only_one*](#only_one), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*partition*](#partition), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_fork*](#idump_fork), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **jsonlines.py** |[*dump*](#dump), [*dump_fork*](#dump_fork), [*dump_into*](#dump_into), [*dumper*](#dumper), [*dumps*](#dumps), [*load*](#load), [*load_from*](#load_from)|
-| **logging.py** |[*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
+| **logging.py** |[*ColoredFormatter*](#ColoredFormatter), [*ColoredLogger*](#ColoredLogger), [*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*normalize_newlines*](#normalize_newlines), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace)|
+| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*normalize_newlines*](#normalize_newlines), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*slugify*](#slugify)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
@@ -1125,6 +1125,56 @@ Examples:
 ```
 #### logging.py
 
+##### ColoredFormatter
+```
+ColoredFormatter(fmt=None, datefmt=None, style='%', validate=True)
+
+A class for formatting colored logs.
+
+Default colors:
+- DEBUG: blue
+- INFO: green
+- WARNING: yellow
+- ERROR: red
+- CRITICAL: red
+
+Examples:
+    import logging
+    from pymince.logging import ColoredFormatter
+
+    # Config
+    logger = logging.getLogger('mylog')
+    logger.setLevel('DEBUG')
+
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(ColoredFormatter(logging.BASIC_FORMAT))
+    logger.addHandler(stream_handler)
+
+    # Use default colors
+    logger.debug("This is debug") # blue color
+
+    # Use custom colors
+    import colorama
+    logger.debug("This is debug", extra={"color": colorama.Fore.BLACK})
+```
+##### ColoredLogger
+```
+ColoredLogger(name=None, level=10, **fmt_kwargs)
+
+Custom logger to generate color logs.
+
+Examples:
+    from pymince.logging import ColoredLogger
+
+    logger = ColoredLogger()
+
+    # Use default colors
+    logger.debug("This is debug") # blue color
+
+    # Use custom colors
+    import colorama
+    logger.debug("This is debug", extra={"color": colorama.Fore.BLACK})
+```
 ##### StructuredFormatter
 ```
 StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True)
@@ -1431,6 +1481,17 @@ Examples:
 
     replace("No, woman, no cry", [","], ";") # --> "No; woman; no cry"
     replace("No, woman, no cry", [","], ";", count=1) # --> "No; woman, no cry"
+```
+##### slugify
+```
+slugify(value, allow_unicode=False)
+
+Convert to ASCII if 'allow_unicode' is False. Convert spaces or repeated
+dashes to single dashes. Remove characters that aren't alphanumerics,
+underscores, or hyphens. Convert to lowercase. Also strip leading and
+trailing whitespace, dashes, and underscores.
+
+https://github.com/django/django/blob/main/django/utils/text.py
 ```
 #### warnings.py
 

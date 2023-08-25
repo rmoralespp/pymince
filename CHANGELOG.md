@@ -1,5 +1,9 @@
 ## Releases ##
 
+- **Added:** `logging.ColoredFormatter`, `logging.ColoredLogger`: Generates colored logs.
+- **Added:** `text.slugify`: Generate slug from string.
+- **Changed:** `functional.classproperty`: Descriptor to change the getter on a classproperty.
+
 ## v2.9.0 (2023-06-23) ##
 
 - **Added:** `jsonlines.dump_fork`: Incrementally dumps different groups of elements
