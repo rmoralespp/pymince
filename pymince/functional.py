@@ -172,8 +172,9 @@ def retry_if_none(delay=0, tries=1):
             attempt = 0
             result = None
             while attempt < tries and result is None:
-                time.sleep(delay)
                 result = function(*args, **kwargs)
+                if delay:
+                    time.sleep(delay)
                 attempt += 1
             return result
 
@@ -202,10 +203,11 @@ def retry_if_errors(*exceptions, delay=0, tries=1):
         def apply(*args, **kwargs):
             attempt = 0
             while attempt < tries:
-                time.sleep(delay)
                 try:
                     return function(*args, **kwargs)
                 except exceptions:
+                    if delay:
+                        time.sleep(delay)
                     attempt += 1
             return function(*args, **kwargs)
 
