@@ -37,7 +37,6 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*identity*](#identity), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*only_one*](#only_one), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*partition*](#partition), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
 | **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_fork*](#idump_fork), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
-| **jsonlines.py** |[*dump*](#dump), [*dump_fork*](#dump_fork), [*dump_into*](#dump_into), [*dumper*](#dumper), [*dumps*](#dumps), [*load*](#load), [*load_from*](#load_from)|
 | **logging.py** |[*ColoredFormatter*](#ColoredFormatter), [*ColoredLogger*](#ColoredLogger), [*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*normalize_newlines*](#normalize_newlines), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*slugify*](#slugify)|
@@ -112,7 +111,7 @@ Examples:
 
 ##### IsoWeekDay
 ```
-IsoWeekDay(value, names=None, *, module=None, qualname=None, type=None, start=1)
+IsoWeekDay(*values)
 
 Python Enum containing Days of the Week, according to ISO,
 where Monday == 1 ... Sunday == 7.
@@ -128,7 +127,7 @@ Example:
 ```
 ##### WeekDay
 ```
-WeekDay(value, names=None, *, module=None, qualname=None, type=None, start=1)
+WeekDay(*values)
 
 Python Enum containing Days of the Week,
 where Monday == 0 ... Sunday == 6.
@@ -1023,111 +1022,11 @@ Examples:
 
     dictionary = load_from_zip("archive.zip", "foo.json")
 ```
-#### jsonlines.py
-Useful functions for working with JSON lines data as described:
-- http://ndjson.org/
-- https://jsonlines.org/
-##### dump
-```
-dump(iterable, fp, **kwargs)
-
-Serialize iterable as a `jsonlines` formatted stream to file.
-
-:param iterable: Iterable[Any]
-:param fp: file-like object
-:param kwargs: `json.dumps` kwargs
-
-Example:
-    from pymince.jsonlines import dump
-
-    data = ({'foo': 1}, {'bar': 2})
-    with open('myfile.jsonl', mode='w', encoding ='utf-8') as file:
-        dump(iter(data), file)
-```
-##### dump_fork
-```
-dump_fork(path_items, encoding='utf-8', dump_if_empty=True, **kwargs)
-
-Incrementally dumps different groups of elements into
-the indicated `jsonlines` file.
-*** Useful to reduce memory consumption ***
-
-:param Iterable[file_path, Iterable[dict]] path_items: group items by file path
-:param encoding: 'utf-8' by default.
-:param bool dump_if_empty: If false, don't create an empty `jsonlines` file.
-:param kwargs: json.dumps kwargs.
-
-Examples:
-    from pymince.jsonlines import dump_fork
-
-    path_items = (
-        ("num.jsonl", ({"value": 1}, {"value": 2})),
-        ("num.jsonl", ({"value": 3},)),
-        ("foo.jsonl", ({"a": "1"}, {"b": 2})),
-        ("baz.jsonl", ()),
-    )
-    dump_fork(iter(path_items))
-```
-##### dump_into
-```
-dump_into(filename, iterable, encoding='utf-8', **kwargs)
-
-Dump iterable to a `jsonlines` file.
-
-Example:
-    from pymince.jsonlines import dump_into
-
-    data = ({'foo': 1}, {'bar': 2})
-    dump_into("myfile.jsonl", iter(data))
-```
-##### dumper
-```
-dumper(iterable, **kwargs)
-
-Generator yielding JSON lines.
-```
-##### dumps
-```
-dumps(iterable, **kwargs)
-
-Serialize iterable to a `jsonlines` formatted string.
-
-:param iterable: Iterable[Any]
-:param kwargs: `json.dumps` kwargs
-:rtype: str
-```
-##### load
-```
-load(fp, **kwargs)
-
-Returns iterable from a file formatted as JSON lines.
-
-:param fp: file-like object
-:param kwargs: `json.loads` kwargs
-:rtype: Iterable[str]
-```
-##### load_from
-```
-load_from(filename, encoding='utf-8', **kwargs)
-
-Returns iterable from a filename formatted as JSON lines.
-
-:param filename: path
-:param encoding: file encoding. 'utf-8' used by default
-:param kwargs: `json.loads` kwargs
-:rtype: Iterable[str]
-
-Examples:
-    from pymince.jsonlines import load_from
-
-    it = load_from("myfile.jsonl")
-    next(it)
-```
 #### logging.py
 
 ##### ColoredFormatter
 ```
-ColoredFormatter(fmt=None, datefmt=None, style='%', validate=True)
+ColoredFormatter(fmt=None, datefmt=None, style='%', validate=True, *, defaults=None)
 
 A class for formatting colored logs.
 
@@ -1177,7 +1076,7 @@ Examples:
 ```
 ##### StructuredFormatter
 ```
-StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True)
+StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True, *, defaults=None)
 
 Implementation of JSON structured logging that works
 for most handlers.

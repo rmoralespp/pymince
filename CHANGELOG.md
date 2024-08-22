@@ -3,6 +3,7 @@
 - **Added:** `logging.ColoredFormatter`, `logging.ColoredLogger`: Generates colored logs.
 - **Added:** `text.slugify`: Generate slug from string.
 - **Changed:** `functional.classproperty`: Descriptor to change the getter on a classproperty.
+- **Changed:** Remove `jsonlines` module. Use instead "https://github.com/rmoralespp/jsonl" package.
 
 ## v2.9.0 (2023-06-23) ##
 
