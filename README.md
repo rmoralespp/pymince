@@ -11,8 +11,8 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
 ### About
-pymince is a collection of useful tools that are "missing" from the Python standard library.
 
+pymince is a collection of useful tools that are "missing" from the Python standard library.
 
 ### Installation (via pip)
 
@@ -917,7 +917,7 @@ to `json.JSONEncoder`
 dump_from_csv(csv_path, json_path, /, *, fieldnames=None, start=0, stop=None, strip=True, encoding='utf-8', **kwargs)
 
 Dump CSV file to a JSON file.
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
 - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
 :param str csv_path:
@@ -937,13 +937,16 @@ Dump CSV file to a JSON file.
 dump_into(filename, obj, encoding='utf-8', **kwargs)
 
 Dump JSON to a file.
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
 - Dumps falls back to the functions: (`orjson.dump`, `ujson.dump`, and `json.dump`).
 
 Examples:
     from pymince.json import dump_into
 
-    dump_into("foo.json", {"key": "value"})
+    dump_into("foo.json", {"key": "value"})     # uncompressed
+    dump_into("foo.json.gz", {"key": "value"})  # gzip-compressed
+    dump_into("foo.json.xz", {"key": "value"})  # lzma-compressed
+    dump_into("foo.json.bz2", {"key": "value"}) # bz2-compressed
 ```
 ##### dump_into_zip
 ```
@@ -964,6 +967,9 @@ Incrementally dumps different groups of elements into
 the indicated JSON file.
 *** Useful to reduce memory consumption ***
 
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+
 :param Iterable[file_path, Iterable[dict]] path_items: group items by file path
 :param encoding: 'utf-8' by default.
 :param bool dump_if_empty: If false, don't create an empty file.
@@ -973,8 +979,8 @@ Examples:
     from pymince.json import idump_fork
 
     path_items = (
-        ("num.json", ({"value": 1}, {"value": 2})),
-        ("num.json", ({"value": 3},)),
+        ("num.json.gz", ({"value": 1}, {"value": 2})),
+        ("num.json.gz", ({"value": 3},)),
         ("foo.json", ({"a": "1"}, {"b": 2})),
         ("baz.json", ()),
     )
@@ -985,7 +991,8 @@ Examples:
 idump_into(filename, iterable, encoding='utf-8', **kwargs)
 
 Dump an iterable incrementally into a JSON file.
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
 The result will always be an array with the elements of the iterable.
 *** Useful to reduce memory consumption ***
@@ -993,8 +1000,12 @@ The result will always be an array with the elements of the iterable.
 Examples:
     from pymince.json import idump_into
 
-    it = iter([{"key": "foo"}, {"key": "bar"}])
-    dump_into("foo.json", it)
+    values = ([{"key": "foo"}, {"key": "bar"}])
+
+    idump_into("foo.json", values)     # uncompressed
+    idump_into("foo.json.gz", values)  # gzip-compressed
+    idump_into("foo.json.xz", values)  # lzma-compressed
+    idump_into("foo.json.bz2", values) # bz2-compressed
 ```
 ##### idump_lines
 ```
@@ -1040,7 +1051,10 @@ Load JSON from a file.
 Examples:
     from pymince.json import load_from
 
-    dictionary = load_from("foo.json")
+    dictionary1 = load_from("foo.json")     # uncompressed
+    dictionary2 = load_from("foo.json.gz")  # gzip-compressed
+    dictionary3 = load_from("foo.json.xz")  # lzma-compressed
+    dictionary4 = load_from("foo.json.bz2") # bz2-compressed
 ```
 ##### load_from_zip
 ```
@@ -1494,6 +1508,7 @@ This allows to process 7GB XML with with a memory usage up to 10MB (in case of g
 ### Upgrade README.md
 
 Upgrade README.md `Usage` section according to current *pymince* code.
+
 ```
 (env) python upgrade_readme_usage.py
 ```

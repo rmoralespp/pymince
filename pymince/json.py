@@ -70,7 +70,10 @@ def load_from(filename, encoding=ENCODING):
     Examples:
         from pymince.json import load_from
 
-        dictionary = load_from("foo.json")
+        dictionary1 = load_from("foo.json")     # uncompressed
+        dictionary2 = load_from("foo.json.gz")  # gzip-compressed
+        dictionary3 = load_from("foo.json.xz")  # lzma-compressed
+        dictionary4 = load_from("foo.json.bz2") # bz2-compressed
     """
 
     with xopen(filename, "rt", encoding) as file:
@@ -80,16 +83,19 @@ def load_from(filename, encoding=ENCODING):
 def dump_into(filename, obj, encoding=ENCODING, **kwargs):
     """
     Dump JSON to a file.
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
     - Dumps falls back to the functions: (`orjson.dump`, `ujson.dump`, and `json.dump`).
 
     Examples:
         from pymince.json import dump_into
 
-        dump_into("foo.json", {"key": "value"})
+        dump_into("foo.json", {"key": "value"})     # uncompressed
+        dump_into("foo.json.gz", {"key": "value"})  # gzip-compressed
+        dump_into("foo.json.xz", {"key": "value"})  # lzma-compressed
+        dump_into("foo.json.bz2", {"key": "value"}) # bz2-compressed
     """
 
-    with xopen(filename, mode="wt", encoding=encoding) as fd:
+    with xopen(filename, "wt", encoding) as fd:
         json_dump(obj, fd, **kwargs)
 
 
@@ -136,7 +142,7 @@ def dump_from_csv(
 ):
     """
     Dump CSV file to a JSON file.
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
     - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     :param str csv_path:
@@ -198,7 +204,8 @@ def idump_lines(iterable, **dumps_kwargs):
 def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
     """
     Dump an iterable incrementally into a JSON file.
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+    - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     The result will always be an array with the elements of the iterable.
     *** Useful to reduce memory consumption ***
@@ -206,11 +213,15 @@ def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
     Examples:
         from pymince.json import idump_into
 
-        it = iter([{"key": "foo"}, {"key": "bar"}])
-        dump_into("foo.json", it)
+        values = ([{"key": "foo"}, {"key": "bar"}])
+
+        idump_into("foo.json", values)     # uncompressed
+        idump_into("foo.json.gz", values)  # gzip-compressed
+        idump_into("foo.json.xz", values)  # lzma-compressed
+        idump_into("foo.json.bz2", values) # bz2-compressed
     """
 
-    with xopen(filename, mode="wt", encoding=encoding) as f:
+    with xopen(filename, "wt", encoding) as f:
         f.writelines(idump_lines(iterable, **kwargs))
 
 
@@ -219,6 +230,9 @@ def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs
     Incrementally dumps different groups of elements into
     the indicated JSON file.
     *** Useful to reduce memory consumption ***
+
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+    - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     :param Iterable[file_path, Iterable[dict]] path_items: group items by file path
     :param encoding: 'utf-8' by default.
@@ -229,8 +243,8 @@ def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs
         from pymince.json import idump_fork
 
         path_items = (
-            ("num.json", ({"value": 1}, {"value": 2})),
-            ("num.json", ({"value": 3},)),
+            ("num.json.gz", ({"value": 1}, {"value": 2})),
+            ("num.json.gz", ({"value": 3},)),
             ("foo.json", ({"a": "1"}, {"b": 2})),
             ("baz.json", ()),
         )
@@ -239,7 +253,7 @@ def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs
 
     def get_dumper(dst):
         nothing = True
-        with xopen(dst, mode="wt", encoding=encoding) as fd:
+        with xopen(dst, "wt", encoding) as fd:
             write = fd.write
             write("[\n")
             try:
