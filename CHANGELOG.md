@@ -1,5 +1,7 @@
 ## Releases ##
 
+## v2.10.1 (2024-09-05) ##
+
 - **Added:** `logging.ColoredFormatter`, `logging.ColoredLogger`: Generates colored logs.
 - **Added:** `text.slugify`: Generate slug from string.
 - **Changed:** `functional.classproperty`: Descriptor to change the getter on a classproperty.
