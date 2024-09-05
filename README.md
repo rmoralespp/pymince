@@ -36,7 +36,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*get_valid_filename*](#get_valid_filename), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
 | **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*identity*](#identity), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*only_one*](#only_one), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*partition*](#partition), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
-| **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_fork*](#idump_fork), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
+| **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_fork*](#idump_fork), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load*](#load), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip), [*xopen*](#xopen)|
 | **logging.py** |[*ColoredFormatter*](#ColoredFormatter), [*ColoredLogger*](#ColoredLogger), [*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
 | **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*normalize_newlines*](#normalize_newlines), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*slugify*](#slugify)|
@@ -897,6 +897,8 @@ Examples:
 ```
 #### json.py
 Useful functions for working with JSONs.
+- Supports `orjson`, `ujson` libraries or standard `json`.
+- Supports following compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
 ##### JSONEncoder
 ```
 JSONEncoder(*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)
@@ -914,7 +916,9 @@ to `json.JSONEncoder`
 ```
 dump_from_csv(csv_path, json_path, /, *, fieldnames=None, start=0, stop=None, strip=True, encoding='utf-8', **kwargs)
 
-Dump CSV file to a JSON file using "utf-8" encoding.
+Dump CSV file to a JSON file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
 :param str csv_path:
 :param str json_path:
@@ -924,15 +928,17 @@ Dump CSV file to a JSON file using "utf-8" encoding.
     otherwise, start defaults to zero.
 :param int stop:
 :param bool strip:
-    Whether or not white space should be removed from the
+    Whether white space should be removed from the
     beginning and end of field values.
 :param str encoding: utf-8 is used by default.
 ```
 ##### dump_into
 ```
-dump_into(filename, payload, encoding='utf-8', **kwargs)
+dump_into(filename, obj, encoding='utf-8', **kwargs)
 
-Dump JSON to a file using "utf-8" encoding.
+Dump JSON to a file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+- Dumps falls back to the functions: (`orjson.dump`, `ujson.dump`, and `json.dump`).
 
 Examples:
     from pymince.json import dump_into
@@ -978,8 +984,9 @@ Examples:
 ```
 idump_into(filename, iterable, encoding='utf-8', **kwargs)
 
-Dump an iterable incrementally into a JSON file
-using the "utf-8" encoding.
+Dump an iterable incrementally into a JSON file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+
 The result will always be an array with the elements of the iterable.
 *** Useful to reduce memory consumption ***
 
@@ -996,15 +1003,39 @@ idump_lines(iterable, **dumps_kwargs)
 Generator yielding string lines that form a JSON array
 with the serialized elements of given iterable.
 *** Useful to reduce memory consumption ***
+- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
 :param iterable: Iterable[dict]
 :rtype: Iterable[str]
+```
+##### load
+```
+load(fp, *, cls=None, object_hook=None, parse_float=None, parse_int=None, parse_constant=None, object_pairs_hook=None, **kw)
+
+Deserialize ``fp`` (a ``.read()``-supporting file-like object containing
+a JSON document) to a Python object.
+
+``object_hook`` is an optional function that will be called with the
+result of any object literal decode (a ``dict``). The return value of
+``object_hook`` will be used instead of the ``dict``. This feature
+can be used to implement custom decoders (e.g. JSON-RPC class hinting).
+
+``object_pairs_hook`` is an optional function that will be called with the
+result of any object literal decoded with an ordered list of pairs.  The
+return value of ``object_pairs_hook`` will be used instead of the ``dict``.
+This feature can be used to implement custom decoders.  If ``object_hook``
+is also defined, the ``object_pairs_hook`` takes priority.
+
+To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
+kwarg; otherwise ``JSONDecoder`` is used.
 ```
 ##### load_from
 ```
 load_from(filename, encoding='utf-8')
 
-Load JSON from a file using "utf-8" encoding.
+Load JSON from a file.
+- Recognizes (`.gz`, `.xz`, `.bz2`) extensions to load compressed files.
+- Loads falls back to the functions: (`orjson.load`, `ujson.load`, and `json.load`).
 
 Examples:
     from pymince.json import load_from
@@ -1021,6 +1052,12 @@ Examples:
     from pymince.json import load_from_zip
 
     dictionary = load_from_zip("archive.zip", "foo.json")
+```
+##### xopen
+```
+xopen(name, mode, encoding)
+
+Open file depending on supported file extension.
 ```
 #### logging.py
 

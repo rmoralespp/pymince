@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import xml.etree.ElementTree as etree
+import xml.etree.ElementTree as ET
 
 
 def iterparse(filename):
@@ -31,7 +31,7 @@ def iterparse(filename):
 
     """
 
-    parser = etree.XMLPullParser(["start", "end"])  # can be replaced with iterparse as well
+    parser = ET.XMLPullParser(["start", "end"])  # can be replaced with iterparse as well
     root = None
     with open(filename, encoding="utf-8") as f:
         for line in f:

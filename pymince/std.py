@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import functools
 import json
 import operator
@@ -37,7 +38,7 @@ def bind_json_std(encoding="utf-8"):
             data = json.load(sys.stdin)
             resp = function(*args, **kwargs, data=data)
             if resp:
-                pymince.json.dump(resp, sys.stdout)
+                pymince.json.json_dump(resp, sys.stdout)
 
         return apply
 

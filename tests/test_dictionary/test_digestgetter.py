@@ -7,7 +7,7 @@ import pytest
 import pymince.dictionary
 
 
-@pytest.fixture()
+@pytest.fixture
 def payload():
     return {
         "numb": 1.0,

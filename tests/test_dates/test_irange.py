@@ -33,6 +33,6 @@ def test_iter_by_min():
 
 
 def test_equals_dates():
-    ini = end = datetime.datetime.utcnow()
+    ini = end = datetime.datetime.now(datetime.UTC)
     obj = pymince.dates.irange(ini, stop_date=end)
     assert tuple(obj) == ()

@@ -1,48 +1,96 @@
 # -*- coding: utf-8 -*-
-"""Useful functions for working with JSONs."""
 
+"""
+Useful functions for working with JSONs.
+- Supports `orjson`, `ujson` libraries or standard `json`.
+- Supports following compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
+"""
+
+import bz2
 import csv
 import dataclasses
 import datetime
 import decimal
 import functools
+import gzip
 import itertools
 import json
+import lzma
 import operator
 import os
 import textwrap
 import uuid
 import zipfile
 
-dumps = functools.partial(json.dumps, ensure_ascii=False)
-dump = functools.partial(json.dump, ensure_ascii=False)
+# Use the fastest available JSON library for serialization/deserialization, prioritizing `orjson`,
+# then `ujson`, and defaulting to the standard `json` if none are installed.
+try:
+    import orjson
+except ImportError:
+    orjson = None
+
+try:
+    import ujson
+except ImportError:
+    ujson = None
+
+PROVIDER = (orjson or ujson or json)
 ENCODING = "utf-8"
+EXTENSIONS = (".json.gz", ".json.bz2", ".json.xz", ".json")
+
+json_dumps = functools.partial(PROVIDER.dumps, ensure_ascii=False)
+json_dump = functools.partial(PROVIDER.dump, ensure_ascii=False)
+json_load = (orjson or ujson or json).load
+
+
+def xopen(name, mode, encoding):
+    """Open file depending on supported file extension."""
+
+    if not name.endswith(EXTENSIONS):
+        raise ValueError(name)
+    elif name.endswith(".gz"):
+        opener = gzip.open
+    elif name.endswith(".bz2"):
+        opener = bz2.open
+    elif name.endswith(".xz"):
+        opener = lzma.open
+    else:
+        opener = open
+
+    encoding = encoding if "t" in mode else None  # Text mode encoding is required.
+    return opener(name, mode=mode, encoding=encoding)
 
 
 def load_from(filename, encoding=ENCODING):
     """
-    Load JSON from a file using "utf-8" encoding.
+    Load JSON from a file.
+    - Recognizes (`.gz`, `.xz`, `.bz2`) extensions to load compressed files.
+    - Loads falls back to the functions: (`orjson.load`, `ujson.load`, and `json.load`).
 
     Examples:
         from pymince.json import load_from
 
         dictionary = load_from("foo.json")
     """
-    with open(filename, encoding=encoding) as file:
+
+    with xopen(filename, "rt", encoding) as file:
         return json.load(file)
 
 
-def dump_into(filename, payload, encoding=ENCODING, **kwargs):
+def dump_into(filename, obj, encoding=ENCODING, **kwargs):
     """
-    Dump JSON to a file using "utf-8" encoding.
+    Dump JSON to a file.
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+    - Dumps falls back to the functions: (`orjson.dump`, `ujson.dump`, and `json.dump`).
 
     Examples:
         from pymince.json import dump_into
 
         dump_into("foo.json", {"key": "value"})
     """
-    with open(filename, "w", encoding=encoding) as file:
-        dump(payload, file, **kwargs)
+
+    with xopen(filename, mode="wt", encoding=encoding) as fd:
+        json_dump(obj, fd, **kwargs)
 
 
 def dump_into_zip(zip_path, arcname, payload, **kwargs):
@@ -54,8 +102,9 @@ def dump_into_zip(zip_path, arcname, payload, **kwargs):
 
         dump_into_zip("archive.zip", "foo.json", {"key": "value"})
     """
+
     with zipfile.ZipFile(zip_path, mode="w") as zf:
-        json_string = dumps(payload, **kwargs)
+        json_string = json_dumps(payload, **kwargs)
         zf.writestr(arcname, json_string)
 
 
@@ -68,6 +117,7 @@ def load_from_zip(zip_path, arcname):
 
         dictionary = load_from_zip("archive.zip", "foo.json")
     """
+
     with zipfile.ZipFile(zip_path, mode="r") as zf, zf.open(arcname) as file:
         return json.load(file)
 
@@ -85,7 +135,9 @@ def dump_from_csv(
     **kwargs,
 ):
     """
-    Dump CSV file to a JSON file using "utf-8" encoding.
+    Dump CSV file to a JSON file.
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+    - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     :param str csv_path:
     :param str json_path:
@@ -95,7 +147,7 @@ def dump_from_csv(
         otherwise, start defaults to zero.
     :param int stop:
     :param bool strip:
-        Whether or not white space should be removed from the
+        Whether white space should be removed from the
         beginning and end of field values.
     :param str encoding: utf-8 is used by default.
     """
@@ -122,13 +174,14 @@ def idump_lines(iterable, **dumps_kwargs):
     Generator yielding string lines that form a JSON array
     with the serialized elements of given iterable.
     *** Useful to reduce memory consumption ***
+    - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     :param iterable: Iterable[dict]
     :rtype: Iterable[str]
     """
 
     it = iter(iterable)
-    encode = functools.partial(dumps, **dumps_kwargs)
+    encode = functools.partial(json_dumps, **dumps_kwargs)
     indent = dumps_kwargs.get("indent")
     prefix = " " * indent if indent else ""
     yield "[\n"
@@ -144,8 +197,9 @@ def idump_lines(iterable, **dumps_kwargs):
 
 def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
     """
-    Dump an iterable incrementally into a JSON file
-    using the "utf-8" encoding.
+    Dump an iterable incrementally into a JSON file.
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed dump of the file.
+
     The result will always be an array with the elements of the iterable.
     *** Useful to reduce memory consumption ***
 
@@ -156,7 +210,7 @@ def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
         dump_into("foo.json", it)
     """
 
-    with open(filename, mode="w", encoding=encoding) as f:
+    with xopen(filename, mode="wt", encoding=encoding) as f:
         f.writelines(idump_lines(iterable, **kwargs))
 
 
@@ -185,7 +239,7 @@ def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs
 
     def get_dumper(dst):
         nothing = True
-        with open(dst, mode="w", encoding=encoding) as fd:
+        with xopen(dst, mode="wt", encoding=encoding) as fd:
             write = fd.write
             write("[\n")
             try:
@@ -202,7 +256,7 @@ def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs
         if nothing and not dump_if_empty:
             os.unlink(dst)
 
-    encode = functools.partial(dumps, **dumps_kwargs)
+    encode = functools.partial(json_dumps, **dumps_kwargs)
     indent = dumps_kwargs.get("indent")
     prefix = " " * indent if indent else ""
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import io
 import json
 import sys
@@ -9,7 +10,7 @@ import pytest
 import pymince.std
 
 
-@pytest.fixture()
+@pytest.fixture
 def stub_stdin_payload():
     sys_stdin = sys.stdin
     initial = {"in": "value"}

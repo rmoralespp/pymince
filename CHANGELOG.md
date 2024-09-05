@@ -1,5 +1,8 @@
 ## Releases ##
 
+- **Changed:** `json` module. Supports `orjson`, `ujson` libraries or standard `json`. Supports following compression
+  formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
+
 ## v2.10.1 (2024-09-05) ##
 
 - **Added:** `logging.ColoredFormatter`, `logging.ColoredLogger`: Generates colored logs.
@@ -10,10 +13,10 @@
 ## v2.9.0 (2023-06-23) ##
 
 - **Added:** `jsonlines.dump_fork`: Incrementally dumps different groups of elements
-              into the indicated `jsonlines` file.
+  into the indicated `jsonlines` file.
 - **Added:** tests to `json.idump_fork`
 - **Added:** `json.idump_fork`: Incrementally dumps different groups of elements into
-              the indicated JSON file. *** Useful to reduce memory consumption ***
+  the indicated JSON file. *** Useful to reduce memory consumption ***
 
 ## v2.8.0 (2023-06-16) ##
 
@@ -21,8 +24,8 @@
 - **Added:** new tests to `logging` `iterator`
 - **Added:** new tests to `jsonlines`
 - **Added:** `jsonlines module:` Useful functions for working with `jsonlines` and `ndjson`:
-              dumper, dumps, dump, dump_into, load, load_from.
-              TODO: stream compressors: `gzip` `bzip2` supporting
+  dumper, dumps, dump, dump_into, load, load_from.
+  TODO: stream compressors: `gzip` `bzip2` supporting
 
 ## v2.7.0 (2023-05-11) ##
 
@@ -46,13 +49,12 @@
 - **Added:** `iterator.ipush` Iterator class supporting **append** and **prepend**.
 - **Added:** `dates.IsoWeekDay`, `dates.WeekDay` enums.
 
-
 ## v2.4.0 (2023-01-30) ##
 
 - **Fixed** `text.multireplace`
 - **Added:** `functional.caller`, `functional.suppress`
 - **Changed:** Moved `retry.retry_if_errors`, `retry.retry_if_none` to
-               `functional.retry_if_errors`, `functional.retry_if_none`
+  `functional.retry_if_errors`, `functional.retry_if_none`
 - **Changed:** `retry.retry_if_errors`. Used `functools.wraps` to apply **update_wrapper**.
 - **Changed:** `file.decompress`. Added `size` arg.
 - **Changed:** Purpose of **n** arg of `algorithm.fibonacci`.
@@ -89,7 +91,7 @@
 - **Added:** `algorithm.sieve_of_eratosthenes`. *Primes less than n.*
 - **Added:** `functional.pipe`. *Pipe function*
 - **Improved:** iterator: `splitter`, `uniques`, `uniquer`, `consume`, `all_equals`, `all_identical`, `all_equal`,
-`has_only_one`
+  `has_only_one`
 
 ## v2.0.0 (2022-12-22) ##
 
