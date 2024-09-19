@@ -33,13 +33,13 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | **boolean.py** |[*string2bool*](#string2bool)|
 | **dates.py** |[*IsoWeekDay*](#IsoWeekDay), [*WeekDay*](#WeekDay), [*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*tree*](#tree)|
-| **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*get_valid_filename*](#get_valid_filename), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension)|
+| **file.py** |[*decompress*](#decompress), [*ensure_directory*](#ensure_directory), [*get_valid_filename*](#get_valid_filename), [*is_empty_directory*](#is_empty_directory), [*match_from_zip*](#match_from_zip), [*replace_extension*](#replace_extension), [*xopen*](#xopen)|
 | **functional.py** |[*caller*](#caller), [*classproperty*](#classproperty), [*identity*](#identity), [*once*](#once), [*pipe*](#pipe), [*retry_if_errors*](#retry_if_errors), [*retry_if_none*](#retry_if_none), [*set_attributes*](#set_attributes), [*suppress*](#suppress)|
 | **iterator.py** |[*all_distinct*](#all_distinct), [*all_equal*](#all_equal), [*all_equals*](#all_equals), [*all_identical*](#all_identical), [*centroid*](#centroid), [*consume*](#consume), [*grouper*](#grouper), [*ibool*](#ibool), [*in_all*](#in_all), [*in_any*](#in_any), [*ipush*](#ipush), [*mul*](#mul), [*only_one*](#only_one), [*pad_end*](#pad_end), [*pad_start*](#pad_start), [*partition*](#partition), [*replacer*](#replacer), [*splitter*](#splitter), [*sub*](#sub), [*truediv*](#truediv), [*uniquer*](#uniquer), [*uniques*](#uniques)|
-| **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_fork*](#idump_fork), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load*](#load), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip), [*xopen*](#xopen)|
+| **json.py** |[*JSONEncoder*](#JSONEncoder), [*dump_from_csv*](#dump_from_csv), [*dump_into*](#dump_into), [*dump_into_zip*](#dump_into_zip), [*idump_fork*](#idump_fork), [*idump_into*](#idump_into), [*idump_lines*](#idump_lines), [*load*](#load), [*load_from*](#load_from), [*load_from_zip*](#load_from_zip)|
 | **logging.py** |[*ColoredFormatter*](#ColoredFormatter), [*ColoredLogger*](#ColoredLogger), [*StructuredFormatter*](#StructuredFormatter), [*timed_block*](#timed_block)|
 | **std.py** |[*bind_json_std*](#bind_json_std)|
-| **text.py** |[*are_anagram*](#are_anagram), [*fullstr*](#fullstr), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*normalize_newlines*](#normalize_newlines), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*slugify*](#slugify)|
+| **text.py** |[*are_anagram*](#are_anagram), [*get_random_secret*](#get_random_secret), [*get_random_string*](#get_random_string), [*is_binary*](#is_binary), [*is_email_address*](#is_email_address), [*is_int*](#is_int), [*is_negative_int*](#is_negative_int), [*is_palindrome*](#is_palindrome), [*is_payment_card*](#is_payment_card), [*is_percentage*](#is_percentage), [*is_positive_int*](#is_positive_int), [*is_roman*](#is_roman), [*is_url*](#is_url), [*multireplace*](#multireplace), [*multireplacer*](#multireplacer), [*normalize_newlines*](#normalize_newlines), [*remove_decimal_zeros*](#remove_decimal_zeros), [*remove_number_commas*](#remove_number_commas), [*replace*](#replace), [*slugify*](#slugify)|
 | **warnings.py** |[*deprecated*](#deprecated)|
 | **xml.py** |[*iterparse*](#iterparse)|
 
@@ -111,7 +111,7 @@ Examples:
 
 ##### IsoWeekDay
 ```
-IsoWeekDay(*values)
+IsoWeekDay(value, names=None, *, module=None, qualname=None, type=None, start=1)
 
 Python Enum containing Days of the Week, according to ISO,
 where Monday == 1 ... Sunday == 7.
@@ -127,7 +127,7 @@ Example:
 ```
 ##### WeekDay
 ```
-WeekDay(*values)
+WeekDay(value, names=None, *, module=None, qualname=None, type=None, start=1)
 
 Python Enum containing Days of the Week,
 where Monday == 0 ... Sunday == 6.
@@ -314,7 +314,8 @@ Examples:
 ```
 decompress(src_path, dst_path, size=65536)
 
-Decompress given file in blocks using gzip.
+Decompress the given compressed file in blocks based on its extension format.
+Supports compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
 
 :param str src_path: source file path
 :param str dst_path: destination file(unzipped) path
@@ -324,7 +325,9 @@ Decompress given file in blocks using gzip.
  Examples:
     from pymince.file import decompress
 
-    decompress("/foo/src.txt.gz", "/baz/dst.txt")  # --> "/baz/dst.txt"
+    decompress("/foo/src.txt.gz", "/baz/dst.txt")   # --> "/baz/dst.txt"
+    decompress("/foo/src.txt.bz2", "/baz/dst.txt")  # --> "/baz/dst.txt"
+    decompress("/foo/src.txt.xz", "/baz/dst.txt")   # --> "/baz/dst.txt"
 ```
 ##### ensure_directory
 ```
@@ -396,6 +399,16 @@ Examples:
     replace_extension("/home/user/file.old", new_ext=".new") # --> "/home/user/file.new"
     replace_extension("/home/user/file.old", old_ext=".old", new_ext=".new") # --> "/home/user/file.new"
     replace_extension("/home/user/file.old", old_ext=".new", new_ext=".new") # --> "/home/user/file.old"
+```
+##### xopen
+```
+xopen(name, mode='rb', encoding=None)
+
+Open compressed files in Python based on their file extension.
+
+- Supports compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
+- If the file extension is not recognized, the file will be opened without compression.
+- When text mode is required, UTF-8 encoding is used by default.
 ```
 #### functional.py
 
@@ -937,7 +950,7 @@ Dump CSV file to a JSON file.
 dump_into(filename, obj, encoding='utf-8', **kwargs)
 
 Dump JSON to a file.
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
 - Dumps falls back to the functions: (`orjson.dump`, `ujson.dump`, and `json.dump`).
 
 Examples:
@@ -967,7 +980,7 @@ Incrementally dumps different groups of elements into
 the indicated JSON file.
 *** Useful to reduce memory consumption ***
 
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
 - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
 :param Iterable[file_path, Iterable[dict]] path_items: group items by file path
@@ -991,7 +1004,7 @@ Examples:
 idump_into(filename, iterable, encoding='utf-8', **kwargs)
 
 Dump an iterable incrementally into a JSON file.
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
 - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
 The result will always be an array with the elements of the iterable.
@@ -1067,17 +1080,11 @@ Examples:
 
     dictionary = load_from_zip("archive.zip", "foo.json")
 ```
-##### xopen
-```
-xopen(name, mode, encoding)
-
-Open file depending on supported file extension.
-```
 #### logging.py
 
 ##### ColoredFormatter
 ```
-ColoredFormatter(fmt=None, datefmt=None, style='%', validate=True, *, defaults=None)
+ColoredFormatter(fmt=None, datefmt=None, style='%', validate=True)
 
 A class for formatting colored logs.
 
@@ -1127,7 +1134,7 @@ Examples:
 ```
 ##### StructuredFormatter
 ```
-StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True, *, defaults=None)
+StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True)
 
 Implementation of JSON structured logging that works
 for most handlers.
@@ -1208,25 +1215,6 @@ Examples:
     are_anagram("listen", "silent")      # --> True
     are_anagram("they see", "the eyes")  # --> True
 ```
-##### fullstr
-```
-fullstr()
-
-Custom string inheriting from "str" which adds
-the following methods:
-
-- is_url(self, schemes=None, hostnames=None)
-- is_int(self)
-- is_positive_int(self)
-- is_negative_int(self)
-- is_payment_card(self)
-- is_binary(self)
-- is_percentage(self)
-- is_palindrome(self)
-- is_email_address(self)
-- is_roman(self)
-- are_anagram(self, other)
-```
 ##### get_random_secret
 ```
 get_random_secret(length, alphabet='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
@@ -1262,10 +1250,7 @@ is_int(text)
 Check if the string is the representation of
 a integer number.
 
-True:
- "10",   "10.",   "10.0",
-"+10",  "+10.",  "+10.0",
-"-10",  "-10.",  "-10.0"
+True: "10", "+10", "-10", "0"
 ```
 ##### is_negative_int
 ```
@@ -1274,8 +1259,7 @@ is_negative_int(text)
 Check if the string is the representation of
 negative integer number.
 
-True:
-"-10",  "-10.",  "-10.0"
+True: "-10"
 ```
 ##### is_palindrome
 ```
@@ -1308,9 +1292,7 @@ is_positive_int(text)
 Check if the string is the representation of
 positive integer number.
 
-True:
- "10",   "10.",   "10.0",
-"+10",  "+10.",  "+10.0",
+True: "10", "+10"
 ```
 ##### is_roman
 ```
