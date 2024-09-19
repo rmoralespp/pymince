@@ -120,7 +120,14 @@ class ColoredFormatter(logging.Formatter):
 
         # Use custom colors
         import colorama
-        logger.debug("This is debug", extra={"color": colorama.Fore.BLACK})
+    
+        black = colorama.Fore.BLACK
+        bold_black_on_green = colorama.Back.GREEN + colorama.Fore.BLACK + colorama.Style.BRIGHT
+        bold_green_on_black = colorama.Back.BLACK + colorama.Fore.GREEN + colorama.Style.BRIGHT
+
+        logger.debug("This is debug", extra={"color": black})
+        logger.debug("This is debug", extra={"color": bold_black_on_green})
+        logger.debug("This is debug", extra={"color": bold_green_on_black})
     """
 
     COLORS = {
