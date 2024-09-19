@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import datetime
 
 import pymince.dates
@@ -33,6 +34,6 @@ def test_iter_by_min():
 
 
 def test_equals_dates():
-    ini = end = datetime.datetime.now(datetime.UTC)
+    ini = end = datetime.datetime.now(datetime.timezone.utc)
     obj = pymince.dates.irange(ini, stop_date=end)
     assert tuple(obj) == ()

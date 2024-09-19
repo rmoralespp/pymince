@@ -1,7 +1,9 @@
 ## Releases ##
 
+- **Changed:** `text.is_positive_int`, `text.is_negative_int`, `text.is_int`. Now it is stricter
 - **Changed:** `json` module. Supports `orjson`, `ujson` libraries or standard `json`. Supports following compression
   formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
+- **Changed:** `file.decompress`: Supports more compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
 
 ## v2.10.1 (2024-09-05) ##
 

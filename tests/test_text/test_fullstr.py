@@ -3,29 +3,14 @@ import pytest
 
 import pymince.text
 
-int_positives = (
-    "10",
-    "10.",
-    "10.0",
-    "+10",
-    "+10.",
-    "+10.0",
-)
-
-int_negatives = (
-    "-10",
-    "-10.",
-    "-10.0",
-)
+int_positives = ("10", "+10")
+int_negatives = ("-10", "-1")
 
 not_int = (
-    "" "0",
-    "+0",
-    "-0",
-    "0.0",
+    "",
+    "0." "0.0",
     "+0.0",
     "-0.0",
-    "01",
     "foo",
     "foo123",
     "1.0001",
@@ -38,31 +23,31 @@ not_int = (
 class TestIsAnyInt:
     @pytest.mark.parametrize("numb", int_positives + int_negatives)
     def test_true(self, numb):
-        assert pymince.text.fullstr(numb).is_int()
+        assert pymince.text.is_int(numb)
 
     @pytest.mark.parametrize("numb", not_int)
     def test_false(self, numb):
-        assert not pymince.text.fullstr(numb).is_int()
+        assert not pymince.text.is_int(numb)
 
 
 class TestIsPositiveInt:
     @pytest.mark.parametrize("param", int_positives)
     def test_true(self, param):
-        assert pymince.text.fullstr(param).is_positive_int()
+        assert pymince.text.is_positive_int(param)
 
     @pytest.mark.parametrize("param", not_int + int_negatives)
     def test_false(self, param):
-        assert not pymince.text.fullstr(param).is_positive_int()
+        assert not pymince.text.is_positive_int(param)
 
 
 class TestIsNegativeInt:
     @pytest.mark.parametrize("param", int_negatives)
     def test_true(self, param):
-        assert pymince.text.fullstr(param).is_negative_int()
+        assert pymince.text.is_negative_int(param)
 
     @pytest.mark.parametrize("param", not_int + int_positives)
     def test_false(self, param):
-        assert not pymince.text.fullstr(param).is_negative_int()
+        assert not pymince.text.is_negative_int(param)
 
 
 class TestIsUrl:
@@ -92,7 +77,7 @@ class TestIsUrl:
         ],
     )
     def test_false(self, param):
-        assert not pymince.text.fullstr(param).is_url(schemes=self.schemes, hostnames=self.hostnames)
+        assert not pymince.text.is_url(param, schemes=self.schemes, hostnames=self.hostnames)
 
     @pytest.mark.parametrize(
         "param",
@@ -112,7 +97,7 @@ class TestIsUrl:
         ],
     )
     def test_true(self, param):
-        assert pymince.text.fullstr(param).is_url(schemes=self.schemes, hostnames=self.hostnames)
+        assert pymince.text.is_url(param, schemes=self.schemes, hostnames=self.hostnames)
 
 
 class TestIsPaymentCard:
@@ -132,7 +117,7 @@ class TestIsPaymentCard:
         ],
     )
     def test_true(self, card_numb):
-        assert pymince.text.fullstr(card_numb).is_payment_card()
+        assert pymince.text.is_payment_card(card_numb)
 
     @pytest.mark.parametrize(
         "card_numb",
@@ -145,7 +130,7 @@ class TestIsPaymentCard:
         ],
     )
     def test_false(self, card_numb):
-        assert not pymince.text.fullstr(card_numb).is_payment_card()
+        assert not pymince.text.is_payment_card(card_numb)
 
 
 class TestIsBinary:
@@ -161,11 +146,11 @@ class TestIsBinary:
         ],
     )
     def test_true(self, v):
-        assert pymince.text.fullstr(v).is_binary()
+        assert pymince.text.is_binary(v)
 
     @pytest.mark.parametrize("v", ["" "02", "12", "21", "20", "012", "foo"])
     def test_false(self, v):
-        assert not pymince.text.fullstr(v).is_binary()
+        assert not pymince.text.is_binary(v)
 
 
 class TestIsPercentage:
@@ -182,11 +167,11 @@ class TestIsPercentage:
         ],
     )
     def test_true(self, v):
-        assert pymince.text.fullstr(v).is_percentage()
+        assert pymince.text.is_percentage(v)
 
     @pytest.mark.parametrize("v", ["", "foo", "-1%", "0.%", "1  %", "01.000 %", "00 %", "90"])
     def test_false(self, v):
-        assert not pymince.text.fullstr(v).is_percentage()
+        assert not pymince.text.is_percentage(v)
 
 
 class TestIsPalindrome:
@@ -204,7 +189,7 @@ class TestIsPalindrome:
         ],
     )
     def test_true(self, v):
-        assert pymince.text.fullstr(v).is_palindrome()
+        assert pymince.text.is_palindrome(v)
 
     @pytest.mark.parametrize(
         "v",
@@ -215,7 +200,7 @@ class TestIsPalindrome:
         ],
     )
     def test_false(self, v):
-        assert not pymince.text.fullstr(v).is_palindrome()
+        assert not pymince.text.is_palindrome(v)
 
 
 class TestIsEmailAddress:
@@ -235,7 +220,7 @@ class TestIsEmailAddress:
         ],
     )
     def test_true(self, v):
-        assert pymince.text.fullstr(v).is_email_address()
+        assert pymince.text.is_email_address(v)
 
     @pytest.mark.parametrize(
         "v",
@@ -253,7 +238,7 @@ class TestIsEmailAddress:
         ],
     )
     def test_false(self, v):
-        assert not pymince.text.fullstr(v).is_email_address()
+        assert not pymince.text.is_email_address(v)
 
 
 class TestIsRoman:
@@ -278,7 +263,7 @@ class TestIsRoman:
         ],
     )
     def test_true(self, v):
-        assert pymince.text.fullstr(v).is_roman()
+        assert pymince.text.is_roman(v)
 
     @pytest.mark.parametrize(
         "v",
@@ -306,7 +291,7 @@ class TestIsRoman:
         ],
     )
     def test_false(self, v):
-        assert not pymince.text.fullstr(v).is_roman()
+        assert not pymince.text.is_roman(v)
 
 
 class TestAreAnagram:
@@ -315,11 +300,11 @@ class TestAreAnagram:
         [("", ""), (" ", " "), ("listen", 'silent'), ("they see", 'the eyes'), ("node", 'deno')],
     )
     def test_true(self, s1, s2):
-        assert pymince.text.fullstr(s1).are_anagram(s2)
+        assert pymince.text.are_anagram(s1, s2)
 
     @pytest.mark.parametrize(
         "s1,s2",
         [("", " "), ("listen", 'silent '), ("theysee", 'the eyes'), ("node", 'de no')],
     )
     def test_false(self, s1, s2):
-        assert not pymince.text.fullstr(s1).are_anagram(s2)
+        assert not pymince.text.are_anagram(s1, s2)

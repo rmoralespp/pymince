@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+
 def string2bool(value, ignorecase=False):
     """
     Function to convert a string representation of

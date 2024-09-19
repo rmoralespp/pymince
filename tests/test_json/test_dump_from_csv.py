@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import contextlib
 import csv
 import os
@@ -14,6 +15,8 @@ csv_rows = [
     [" baz", "foo ", " %6$ ", 567],
 ]
 
+EXTENSIONS = (".json.gz", ".json.bz2", ".json.xz", ".json")
+
 
 @contextlib.contextmanager
 def temp_paths(extension):
@@ -28,7 +31,7 @@ def temp_paths(extension):
         yield csv_path, json_path
 
 
-@pytest.mark.parametrize("extension", pymince.json.EXTENSIONS)
+@pytest.mark.parametrize("extension", EXTENSIONS)
 def test_dumped_data(extension):
     expected = [
         {"co l3": "co l3", "col1": "col1", "col2": "col2", "col4": "col4"},

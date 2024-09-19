@@ -1,10 +1,36 @@
 # -*- coding: utf-8 -*-
+
+import bz2
 import functools
 import gzip
+import lzma
 import os
 import re
 import shutil
 import zipfile
+
+import pymince._constants
+
+
+def xopen(name, mode="rb", encoding=None):
+    """
+    Open compressed files in Python based on their file extension.
+
+    - Supports compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
+    - If the file extension is not recognized, the file will be opened without compression.
+    - When text mode is required, UTF-8 encoding is used by default.
+    """
+
+    openers = {
+        ".gz": gzip.open,
+        ".bz2": bz2.open,
+        ".xz": lzma.open,
+    }
+
+    ext = os.path.splitext(name)[1]
+    fn = openers.get(ext, open)
+    encoding = (encoding or pymince._constants.utf_8) if "t" in mode else None  # Text mode encoding is required.
+    return fn(name, mode=mode, encoding=encoding)
 
 
 def match_from_zip(zip_file, pattern):
@@ -49,6 +75,7 @@ def ensure_directory(path, cleaning=False):
         If "cleaning" is True and a file already exists,
         this file will be deleted.
     """
+
     if os.path.exists(path):
         if cleaning:
             if os.path.isdir(path):
@@ -98,7 +125,8 @@ def replace_extension(filename, old_ext=None, new_ext=None):
 
 def decompress(src_path, dst_path, size=64 * 1024):
     """
-    Decompress given file in blocks using gzip.
+    Decompress the given compressed file in blocks based on its extension format.
+    Supports compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
 
     :param str src_path: source file path
     :param str dst_path: destination file(unzipped) path
@@ -108,10 +136,12 @@ def decompress(src_path, dst_path, size=64 * 1024):
      Examples:
         from pymince.file import decompress
 
-        decompress("/foo/src.txt.gz", "/baz/dst.txt")  # --> "/baz/dst.txt"
+        decompress("/foo/src.txt.gz", "/baz/dst.txt")   # --> "/baz/dst.txt"
+        decompress("/foo/src.txt.bz2", "/baz/dst.txt")  # --> "/baz/dst.txt"
+        decompress("/foo/src.txt.xz", "/baz/dst.txt")   # --> "/baz/dst.txt"
     """
 
-    with gzip.open(src_path) as src, open(dst_path, mode="wb") as dst:
+    with xopen(src_path, mode="rb") as src, open(dst_path, mode="wb") as dst:
         lines = iter(functools.partial(src.read, size), b"")
         dst.writelines(lines)
     return dst_path

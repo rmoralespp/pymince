@@ -6,21 +6,21 @@ Useful functions for working with JSONs.
 - Supports following compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
 """
 
-import bz2
 import csv
 import dataclasses
 import datetime
 import decimal
 import functools
-import gzip
 import itertools
 import json
-import lzma
 import operator
 import os
 import textwrap
 import uuid
 import zipfile
+
+import pymince._constants
+import pymince.file
 
 # Use the fastest available JSON library for serialization/deserialization, prioritizing `orjson`,
 # then `ujson`, and defaulting to the standard `json` if none are installed.
@@ -34,31 +34,12 @@ try:
 except ImportError:
     ujson = None
 
-PROVIDER = (orjson or ujson or json)
-ENCODING = "utf-8"
-EXTENSIONS = (".json.gz", ".json.bz2", ".json.xz", ".json")
+PROVIDER = orjson or ujson or json
+ENCODING = pymince._constants.utf_8
 
 json_dumps = functools.partial(PROVIDER.dumps, ensure_ascii=False)
 json_dump = functools.partial(PROVIDER.dump, ensure_ascii=False)
 json_load = (orjson or ujson or json).load
-
-
-def xopen(name, mode, encoding):
-    """Open file depending on supported file extension."""
-
-    if not name.endswith(EXTENSIONS):
-        raise ValueError(name)
-    elif name.endswith(".gz"):
-        opener = gzip.open
-    elif name.endswith(".bz2"):
-        opener = bz2.open
-    elif name.endswith(".xz"):
-        opener = lzma.open
-    else:
-        opener = open
-
-    encoding = encoding if "t" in mode else None  # Text mode encoding is required.
-    return opener(name, mode=mode, encoding=encoding)
 
 
 def load_from(filename, encoding=ENCODING):
@@ -76,14 +57,14 @@ def load_from(filename, encoding=ENCODING):
         dictionary4 = load_from("foo.json.bz2") # bz2-compressed
     """
 
-    with xopen(filename, "rt", encoding) as file:
+    with pymince.file.xopen(filename, mode="rt", encoding=encoding) as file:
         return json.load(file)
 
 
 def dump_into(filename, obj, encoding=ENCODING, **kwargs):
     """
     Dump JSON to a file.
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
     - Dumps falls back to the functions: (`orjson.dump`, `ujson.dump`, and `json.dump`).
 
     Examples:
@@ -95,7 +76,7 @@ def dump_into(filename, obj, encoding=ENCODING, **kwargs):
         dump_into("foo.json.bz2", {"key": "value"}) # bz2-compressed
     """
 
-    with xopen(filename, "wt", encoding) as fd:
+    with pymince.file.xopen(filename, mode="wt", encoding=encoding) as fd:
         json_dump(obj, fd, **kwargs)
 
 
@@ -204,7 +185,7 @@ def idump_lines(iterable, **dumps_kwargs):
 def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
     """
     Dump an iterable incrementally into a JSON file.
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
     - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     The result will always be an array with the elements of the iterable.
@@ -221,7 +202,7 @@ def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
         idump_into("foo.json.bz2", values) # bz2-compressed
     """
 
-    with xopen(filename, "wt", encoding) as f:
+    with pymince.file.xopen(filename, mode="wt", encoding=encoding) as f:
         f.writelines(idump_lines(iterable, **kwargs))
 
 
@@ -231,7 +212,7 @@ def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs
     the indicated JSON file.
     *** Useful to reduce memory consumption ***
 
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+    - Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
     - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     :param Iterable[file_path, Iterable[dict]] path_items: group items by file path
@@ -253,7 +234,7 @@ def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs
 
     def get_dumper(dst):
         nothing = True
-        with xopen(dst, "wt", encoding) as fd:
+        with pymince.file.xopen(dst, mode="wt", encoding=encoding) as fd:
             write = fd.write
             write("[\n")
             try:

@@ -16,9 +16,9 @@ import pymince.algorithm
 
 __remove_number_commas = functools.partial(re.compile("(?<=\\d),(?=\\d{3})").sub, "")
 
-_int_regexp_any = re.compile(r"^[-+]?[1-9]\d*\.?[0]*$")
-_int_regexp_pos = re.compile(r"^[+]?[1-9]\d*\.?[0]*$")
-_int_regexp_neg = re.compile(r"^-[1-9]\d*\.?[0]*$")
+_int_regexp_any = re.compile(r"^[-+]?[0-9]\d*$")
+_int_regexp_pos = re.compile(r"^[+]?[1-9]\d*$")
+_int_regexp_neg = re.compile(r"^-[1-9]\d*$")
 _bin_regexp_not = re.compile(r"[^01]")
 _percentage_regexp = re.compile(r"^(?:0|[1-9]\d*)(?:\.\d+)?(?:\s)?%$")
 _email_address_regexp = re.compile(r"^\S+@\S+$")
@@ -220,6 +220,7 @@ def is_url(text, schemes=None, hostnames=None):
 
 def is_binary(text):
     """Check if the string is binary or not."""
+
     return not next(_bin_regexp_not.finditer(text), None)
 
 
@@ -228,11 +229,9 @@ def is_int(text):
     Check if the string is the representation of
     a integer number.
 
-    True:
-     "10",   "10.",   "10.0",
-    "+10",  "+10.",  "+10.0",
-    "-10",  "-10.",  "-10.0"
+    True: "10", "+10", "-10", "0"
     """
+
     return _int_regexp_any.fullmatch(text) is not None
 
 
@@ -241,10 +240,9 @@ def is_positive_int(text):
     Check if the string is the representation of
     positive integer number.
 
-    True:
-     "10",   "10.",   "10.0",
-    "+10",  "+10.",  "+10.0",
+    True: "10", "+10"
     """
+
     return _int_regexp_pos.fullmatch(text) is not None
 
 
@@ -253,8 +251,7 @@ def is_negative_int(text):
     Check if the string is the representation of
     negative integer number.
 
-    True:
-    "-10",  "-10.",  "-10.0"
+    True: "-10"
     """
 
     return _int_regexp_neg.fullmatch(text) is not None
@@ -300,6 +297,7 @@ def is_percentage(text):
 
     True: "100%", "100 %", "100&nbsp;%", 100.0 %",
     """
+
     unescaped = html.unescape(text)  # 100&nbsp;% => 100 %
     return _percentage_regexp.fullmatch(unescaped) is not None
 
@@ -309,11 +307,13 @@ def is_palindrome(text):
     Check if the string is palindrome or not.
     A string is said to be palindrome if the reverse of the string is the same as string
     """
+
     return text == text[::-1]
 
 
 def is_roman(text):
     """Check if the string is a valid roman numeral."""
+
     return _roman_regex.fullmatch(text) is not None
 
 
@@ -326,58 +326,6 @@ def are_anagram(text1, text2):
 
         are_anagram("listen", "silent")      # --> True
         are_anagram("they see", "the eyes")  # --> True
-
     """
+
     return collections.Counter(text1) == collections.Counter(text2)
-
-
-class fullstr(str):
-    """
-    Custom string inheriting from "str" which adds
-    the following methods:
-
-    - is_url(self, schemes=None, hostnames=None)
-    - is_int(self)
-    - is_positive_int(self)
-    - is_negative_int(self)
-    - is_payment_card(self)
-    - is_binary(self)
-    - is_percentage(self)
-    - is_palindrome(self)
-    - is_email_address(self)
-    - is_roman(self)
-    - are_anagram(self, other)
-    """
-
-    def is_url(self, schemes=None, hostnames=None):
-        return is_url(self, schemes=schemes, hostnames=hostnames)
-
-    def is_binary(self):
-        return is_binary(self)
-
-    def is_int(self):
-        return is_int(self)
-
-    def is_positive_int(self):
-        return is_positive_int(self)
-
-    def is_negative_int(self):
-        return is_negative_int(self)
-
-    def is_payment_card(self):
-        return is_payment_card(self)
-
-    def is_email_address(self):
-        return is_email_address(self)
-
-    def is_percentage(self):
-        return is_percentage(self)
-
-    def is_palindrome(self):
-        return is_palindrome(self)
-
-    def is_roman(self):
-        return is_roman(self)
-
-    def are_anagram(self, other):
-        return are_anagram(self, other)

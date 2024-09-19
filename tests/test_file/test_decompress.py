@@ -4,6 +4,8 @@ import json
 import os
 import tempfile
 
+import pytest
+
 import pymince.file
 import pymince.json
 
@@ -25,20 +27,20 @@ def test_decompress_txt():
             assert dst.read() == text
 
 
-def test_decompress_json():
+@pytest.mark.parametrize("ext", (".json.gz", ".json.bz2", ".json.xz", ".json"))
+def test_decompress_json(ext):
     data = {
         "foo": "var",
         "baz": "ño",
         "nested": ["á", 1, {"date": "2019-01-22T17:27:22+08:00"}],
     }
     with tempfile.TemporaryDirectory() as tmpdir:
-        src_path = os.path.join(tmpdir, "src.json.gz")
+        src_path = os.path.join(tmpdir, f"src{ext}")
         dst_path = os.path.join(tmpdir, "dst.json")
 
         dumped = json.dumps(data).encode(pymince.json.ENCODING)
-        compressed = gzip.compress(dumped)
-        with open(src_path, "wb") as f:
-            f.write(compressed)
+        with pymince.file.xopen(src_path, mode="wb") as f:
+            f.write(dumped)
 
         res_path = pymince.file.decompress(src_path, dst_path)
         assert res_path == dst_path
