@@ -1,5 +1,11 @@
 ## Releases ##
 
+## v2.11.2 (2024-10-01) ##
+
+- **Added:** `benchmark`: Utilities to measure memory consumption and duration of a given code fragment.
+
+## v2.11.1 (2024-09-05) ##
+
 - **Changed:** `text.is_positive_int`, `text.is_negative_int`, `text.is_int`. Now it is stricter
 - **Changed:** `json` module. Supports `orjson`, `ujson` libraries or standard `json`. Supports following compression
   formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)

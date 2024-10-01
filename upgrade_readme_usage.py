@@ -7,6 +7,7 @@ import os
 import re
 
 import pymince.algorithm
+import pymince.benchmark
 import pymince.boolean
 import pymince.dates
 import pymince.dictionary
@@ -22,6 +23,7 @@ import pymince.xml
 
 modules = (
     pymince.algorithm,
+    pymince.benchmark,
     pymince.boolean,
     pymince.dates,
     pymince.dictionary,

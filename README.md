@@ -30,6 +30,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | PyModules  | Tools  |
 | :--------  | :----- |
 | **algorithm.py** |[*fibonacci*](#fibonacci), [*luhn*](#luhn), [*sieve_of_eratosthenes*](#sieve_of_eratosthenes)|
+| **benchmark.py** |[*Benchmark*](#Benchmark), [*MemoryUsage*](#MemoryUsage), [*Timed*](#Timed)|
 | **boolean.py** |[*string2bool*](#string2bool)|
 | **dates.py** |[*IsoWeekDay*](#IsoWeekDay), [*WeekDay*](#WeekDay), [*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*tree*](#tree)|
@@ -80,6 +81,50 @@ Examples:
     from pymince.algorithm import sieve_of_eratosthenes as primes
     primes(30) # --> 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
 ```
+#### benchmark.py
+
+##### Benchmark
+```
+Benchmark(name=None, logger=None)
+
+
+```
+##### MemoryUsage
+```
+MemoryUsage(name=None, logger=None)
+
+Usage:
+
+logging.basicConfig(level=logging.DEBUG)
+
+# Using context manager
+with MemoryUsage():
+    print(sum(list(range(1000))))
+
+# Using decorator
+@MemoryUsage()
+def calculate():
+    print(sum(list(range(1000))))
+calculate()
+```
+##### Timed
+```
+Timed(name=None, logger=None, decimals=3)
+
+Usage:
+
+logging.basicConfig(level=logging.DEBUG)
+
+# Using context manager
+with Timed():
+    print(sum(list(range(1000))))
+
+# Using decorator
+@Timed()
+def calculate():
+    print(sum(list(range(1000))))
+calculate()
+```
 #### boolean.py
 
 ##### string2bool
@@ -111,7 +156,7 @@ Examples:
 
 ##### IsoWeekDay
 ```
-IsoWeekDay(value, names=None, *, module=None, qualname=None, type=None, start=1)
+IsoWeekDay(*values)
 
 Python Enum containing Days of the Week, according to ISO,
 where Monday == 1 ... Sunday == 7.
@@ -127,7 +172,7 @@ Example:
 ```
 ##### WeekDay
 ```
-WeekDay(value, names=None, *, module=None, qualname=None, type=None, start=1)
+WeekDay(*values)
 
 Python Enum containing Days of the Week,
 where Monday == 0 ... Sunday == 6.
@@ -1084,7 +1129,7 @@ Examples:
 
 ##### ColoredFormatter
 ```
-ColoredFormatter(fmt=None, datefmt=None, style='%', validate=True)
+ColoredFormatter(fmt=None, datefmt=None, style='%', validate=True, *, defaults=None)
 
 A class for formatting colored logs.
 
@@ -1112,7 +1157,14 @@ Examples:
 
     # Use custom colors
     import colorama
-    logger.debug("This is debug", extra={"color": colorama.Fore.BLACK})
+
+    black = colorama.Fore.BLACK
+    bold_black_on_green = colorama.Back.GREEN + colorama.Fore.BLACK + colorama.Style.BRIGHT
+    bold_green_on_black = colorama.Back.BLACK + colorama.Fore.GREEN + colorama.Style.BRIGHT
+
+    logger.debug("This is debug", extra={"color": black})
+    logger.debug("This is debug", extra={"color": bold_black_on_green})
+    logger.debug("This is debug", extra={"color": bold_green_on_black})
 ```
 ##### ColoredLogger
 ```
@@ -1130,18 +1182,11 @@ Examples:
 
     # Use custom colors
     import colorama
-
-    black = colorama.Fore.BLACK
-    bold_black_on_green = colorama.Back.GREEN + colorama.Fore.BLACK + colorama.Style.BRIGHT
-    bold_green_on_black = colorama.Back.BLACK + colorama.Fore.GREEN + colorama.Style.BRIGHT
-
-    logger.debug("This is debug", extra={"color": black})
-    logger.debug("This is debug", extra={"color": bold_black_on_green})
-    logger.debug("This is debug", extra={"color": bold_green_on_black})
+    logger.debug("This is debug", extra={"color": colorama.Fore.BLACK})
 ```
 ##### StructuredFormatter
 ```
-StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True)
+StructuredFormatter(fmt=None, datefmt=None, style='%', validate=True, *, defaults=None)
 
 Implementation of JSON structured logging that works
 for most handlers.
