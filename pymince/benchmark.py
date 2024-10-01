@@ -6,24 +6,24 @@ import time
 import tracemalloc
 
 
-class Benchmark:
+class _Benchmark:
 
     def __init__(self, name=None, logger=None):
         self.name = name or self.__class__.__name__
         self.logger = logger or logging
 
     def __call__(self, fn):
-        self.name = fn.__name__
+        name = getattr(fn, "__name__", self.name)
 
         @functools.wraps(fn)
         def decorator(*args, **kwargs):
-            with self:
+            with _Benchmark(name=name, logger=self.logger):
                 return fn(*args, **kwargs)
 
         return decorator
 
 
-class Timed(Benchmark):
+class Timed(_Benchmark):
     """
     Usage:
 
@@ -53,7 +53,7 @@ class Timed(Benchmark):
         self.logger.debug(f"{self.name}: [{elapsed_time:.{self.decimals}f} seconds]")
 
 
-class MemoryUsage(Benchmark):
+class MemoryUsage(_Benchmark):
     """
     Usage:
 

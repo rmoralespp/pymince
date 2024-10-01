@@ -30,7 +30,7 @@ pymince is a collection of useful tools that are "missing" from the Python stand
 | PyModules  | Tools  |
 | :--------  | :----- |
 | **algorithm.py** |[*fibonacci*](#fibonacci), [*luhn*](#luhn), [*sieve_of_eratosthenes*](#sieve_of_eratosthenes)|
-| **benchmark.py** |[*Benchmark*](#Benchmark), [*MemoryUsage*](#MemoryUsage), [*Timed*](#Timed)|
+| **benchmark.py** |[*MemoryUsage*](#MemoryUsage), [*Timed*](#Timed)|
 | **boolean.py** |[*string2bool*](#string2bool)|
 | **dates.py** |[*IsoWeekDay*](#IsoWeekDay), [*WeekDay*](#WeekDay), [*irange*](#irange), [*string2year*](#string2year)|
 | **dictionary.py** |[*DigestGetter*](#DigestGetter), [*all_true_values*](#all_true_values), [*find_leaf_value*](#find_leaf_value), [*from_objects*](#from_objects), [*frozendict*](#frozendict), [*tree*](#tree)|
@@ -83,12 +83,6 @@ Examples:
 ```
 #### benchmark.py
 
-##### Benchmark
-```
-Benchmark(name=None, logger=None)
-
-
-```
 ##### MemoryUsage
 ```
 MemoryUsage(name=None, logger=None)

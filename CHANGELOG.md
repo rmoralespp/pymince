@@ -1,5 +1,10 @@
 ## Releases ##
 
+## v2.11.3 (2024-10-01) ##
+
+- **Added:** Improve "benchmark" decorators to avoid replacing given aliases. Improvement to 
+  remove '_Benchmark' class from README.md
+
 ## v2.11.2 (2024-10-01) ##
 
 - **Added:** `benchmark`: Utilities to measure memory consumption and duration of a given code fragment.

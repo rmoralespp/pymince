@@ -67,7 +67,11 @@ def member2markdown(member):
 
 def getmembers(module):
     def filtering(n):
-        return inspect.isclass(n) or inspect.isfunction(n)
+        name = getattr(n, "__name__", None)
+        if name and name.startswith("_"):
+            return False
+        else:
+            return inspect.isclass(n) or inspect.isfunction(n)
 
     yield from inspect.getmembers(module, filtering)
 
