@@ -1,5 +1,9 @@
 ## Releases ##
 
+## v2.11.4 (2024-10-01) ##
+
+- **Fixed:** Fix "benchmark" decorators. Humanize size memory consumption.
+
 ## v2.11.3 (2024-10-01) ##
 
 - **Added:** Improve "benchmark" decorators to avoid replacing given aliases. Improvement to 
