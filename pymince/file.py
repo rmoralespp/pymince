@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Common file operations."""
+
 import bz2
 import functools
 import gzip

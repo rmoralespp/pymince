@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Contains boolean utilities."""
+
 
 def string2bool(value, ignorecase=False):
     """

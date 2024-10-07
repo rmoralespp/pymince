@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Standard library utilities."""
+
 import functools
 import json
 import operator

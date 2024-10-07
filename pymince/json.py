@@ -2,6 +2,7 @@
 
 """
 Useful functions for working with JSONs.
+
 - Supports `orjson`, `ujson` libraries or standard `json`.
 - Supports following compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
 """
@@ -160,8 +161,9 @@ def idump_lines(iterable, **dumps_kwargs):
     """
     Generator yielding string lines that form a JSON array
     with the serialized elements of given iterable.
-    *** Useful to reduce memory consumption ***
-    - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+
+    Useful to reduce memory consumption
+    Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     :param iterable: Iterable[dict]
     :rtype: Iterable[str]
@@ -189,7 +191,7 @@ def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
     - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     The result will always be an array with the elements of the iterable.
-    *** Useful to reduce memory consumption ***
+    Useful to reduce memory consumption
 
     Examples:
         from pymince.json import idump_into
@@ -210,7 +212,8 @@ def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs
     """
     Incrementally dumps different groups of elements into
     the indicated JSON file.
-    *** Useful to reduce memory consumption ***
+
+    Useful to reduce memory consumption
 
     - Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
     - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).

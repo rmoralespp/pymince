@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Benchmarking utilities."""
+
 import functools
 import logging
 import time

@@ -1,12 +1,15 @@
 ## Releases ##
 
+- **Added:** Generate documentation site with `mkdocs`. 
+- **Changed:** Simplify the README.
+
 ## v2.11.4 (2024-10-01) ##
 
 - **Fixed:** Fix "benchmark" decorators. Humanize size memory consumption.
 
 ## v2.11.3 (2024-10-01) ##
 
-- **Added:** Improve "benchmark" decorators to avoid replacing given aliases. Improvement to 
+- **Added:** Improve "benchmark" decorators to avoid replacing given aliases. Improvement to
   remove '_Benchmark' class from README.md
 
 ## v2.11.2 (2024-10-01) ##

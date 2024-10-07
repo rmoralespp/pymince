@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+"""Contains useful algorithms."""
+
 import math
 
 

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Logging utilities."""
+
 import contextlib
 import json
 import logging

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Contains date utilities."""
+
 import contextlib
 import datetime
 import enum

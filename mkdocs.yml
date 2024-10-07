@@ -1,0 +1,25 @@
+site_name: pymince
+site_description: Documentation for the pymince Python library
+site_url: https://github.com/rmoralespp/pymince
+repo_url: https://github.com/rmoralespp/pymince
+repo_name: pymince
+theme:
+  name: readthedocs
+  custom_dir: docs
+nav:
+- Introduction: index.md
+- Api usage:
+  - Algorithm utils: algorithm.md
+  - Benchmark utils: benchmark.md
+  - Boolean utils: boolean.md
+  - Dates utils: dates.md
+  - Dictionary utils: dictionary.md
+  - File utils: file.md
+  - Functional utils: functional.md
+  - Iterator utils: iterator.md
+  - Json utils: json.md
+  - Logging utils: logging.md
+  - Std utils: std.md
+  - Text utils: text.md
+  - Warnings utils: warnings.md
+  - Xml utils: xml.md

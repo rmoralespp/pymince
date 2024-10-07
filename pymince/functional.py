@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+"""Functional programming utilities."""
+
 import contextlib
 import functools
 import time

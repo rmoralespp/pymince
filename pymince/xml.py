@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+"""XML utilities."""
+
 import xml.etree.ElementTree as ET
 
 

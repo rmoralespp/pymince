@@ -4,3 +4,4 @@ pytest-cov
 ruff
 black
 pre-commit
+ruamel.yaml

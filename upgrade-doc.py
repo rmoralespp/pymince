@@ -2,9 +2,9 @@
 
 import inspect
 import itertools
-import logging
 import os
-import re
+
+import ruamel.yaml
 
 import pymince.algorithm
 import pymince.benchmark
@@ -45,7 +45,7 @@ def cleandoc(obj):
     return docstring
 
 
-def member2markdown(member):
+def member2md(member):
     name = member.__name__
     docstring = cleandoc(member)
 
@@ -55,7 +55,7 @@ def member2markdown(member):
         signature = ()
 
     lines = (
-        f"##### {member.__name__}",
+        f"**{member.__name__}**",
         "```",
         f"{name}{signature}",
         "",
@@ -76,64 +76,51 @@ def getmembers(module):
     yield from inspect.getmembers(module, filtering)
 
 
-def module2markdown(module):
+def module2md(module):
     def members2markdown():
         for _name, member in getmembers(module):
-            yield member2markdown(member)
+            yield member2md(member)
 
-    module_name = os.path.basename(module.__file__)
+    module_name, _ = os.path.splitext(os.path.basename(module.__file__))
     module_desc = cleandoc(module)
+    module_desc = module_desc
 
-    lines = itertools.chain((f"\n#### {module_name}\n{module_desc}",), members2markdown())
-    return "\n".join(lines)
-
-
-def make_table():
-    """
-    | Modules | Tools |
-    | -----:  | ----: |
-    | dictionary.py   | [from_objects](#from_objects), [frozendict](#frozendict) |
-    | file.py         | [ensure_directory](#ensure_directory) |
-    """
-
-    header = "| PyModules  | Tools  |"
-    border = "| :--------  | :----- |"
-    table = [header, border]
-    for module in modules:
-        row = ""
-        module_name = os.path.basename(module.__file__)
-        row += f"| **{module_name}** |"
-        row += ", ".join((f"[*{m.__name__}*](#{m.__name__})" for _, m in getmembers(module)))
-        row += "|"
-        table.append(row)
-    table = "\n".join(table)
-    return table
+    lines = itertools.chain((f"# {module_name.capitalize()}", module_desc, ""), members2markdown())
+    return (module_name, "\n".join(lines))
 
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.basename(__file__))
-    readme_path = os.path.join(base_dir, "README.md")
+    mkdocs_path = os.path.join(base_dir, "mkdocs.yml")
+    dir_docs = os.path.join(base_dir, "docs")
+    index_path = os.path.join(dir_docs, "index.md")
 
-    pattern = re.compile(r"### Usage.*(?=###)", flags=re.DOTALL)
+    api_usage = []
+    nav = [
+        {"Introduction": "index.md"},
+        {"Api usage": api_usage},
+    ]
 
-    content_title = "### Usage"
-    content_table = make_table()
-    content_items = "".join(module2markdown(module) for module in modules)
+    mkdocs_data = {
+        "site_name": "pymince",
+        "site_description": "Documentation for the pymince Python library",
+        "site_url": "https://github.com/rmoralespp/pymince",
+        "repo_url": "https://github.com/rmoralespp/pymince",
+        "repo_name": "pymince",
+        "theme": {
+            "name": "readthedocs",
+            "custom_dir": 'docs',
+        },
+        "nav": nav,
+    }
 
-    content_lines = (
-        content_title,
-        content_table,
-        content_items,
-        "",  # ensure last \n
-    )
-    content = "\n".join(content_lines)
+    for module in modules:
+        name, content = module2md(module)
+        module_path = os.path.join(dir_docs, f"{name}.md")
+        api_usage.append({f"{name.capitalize()} utils": f"{name}.md"})
+        with open(module_path, "w", encoding="utf-8") as f:
+            f.write(content)
 
-    with open(readme_path, encoding="utf-8") as f:
-        old_string = f.read()
-        new_string = pattern.sub(content, old_string)
-
-    if new_string != old_string:
-        logging.basicConfig(level=logging.DEBUG)
-
-        with pymince.logging.timed_block("upgrade_readme_usage"), open(readme_path, mode="w", encoding="utf-8") as f:
-            f.write(new_string)
+    yaml = ruamel.yaml.YAML()
+    with open(mkdocs_path, 'w', encoding="utf-8") as file:
+        yaml.dump(mkdocs_data, file)

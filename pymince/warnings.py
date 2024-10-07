@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Warnings utilities."""
+
 import functools
 import warnings
 
