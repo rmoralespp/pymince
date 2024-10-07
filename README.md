@@ -28,7 +28,7 @@ See project [documentation](https://rmoralespp.github.io/pymince/) for more deta
 
 ```
 (env)$ pip install -r requirements-doc.txt   # Ignore this command if it has already been executed
-(env) python upgrade-doc.py # Upgrade the documentation from the source code
+(env)$ python upgrade-doc.py # Upgrade the documentation from the source code
 (env)$ mkdocs serve # Start the live-reloading docs server
 (env)$ mkdocs build # Build the documentation site
 ```
