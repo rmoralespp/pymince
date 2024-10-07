@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/rmoralespp/pymince/dictionary.py/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>dictionary.py - pymince</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "dictionary.py";
+        var mkdocs_page_input_path = "dictionary.py.md";
+        var mkdocs_page_url = "/rmoralespp/pymince/dictionary.py/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> pymince
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Introduction</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Api usage</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../algorithm/">Algorithm utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../benchmark/">Benchmark utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../boolean/">Boolean utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dates/">Dates utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dictionary/">Dictionary utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../file/">File utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functional/">Functional utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../iterator/">Iterator utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../json/">Json utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../std/">Std utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../text/">Text utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../warnings/">Warnings utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../xml/">Xml utils</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">pymince</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">dictionary.py</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/rmoralespp/pymince/edit/master/docs/dictionary.py.md">Edit on pymince</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="dictionarypy">dictionary.py</h1>
+<p>Useful functions that use dictionaries.</p>
+<h5 id="digestgetter">DigestGetter</h5>
+<pre><code>DigestGetter(include_keys=None, exclude_keys=None)
+
+Calculate a digest of a &quot;jsonified&quot; python dictionary.
+
+:param include_keys: dictionary keys to exclude
+:param exclude_keys: dictionary keys to include
+:rtype: str
+
+Examples:
+    from pymince.dictionary import DigestGetter
+
+    getter = DigestGetter(include_keys=(&quot;a&quot;,))
+    getter({&quot;a&quot;: 1, &quot;b&quot;: 1}) # --&gt; bb6cb5c68df4652941caf652a366f2d8
+    getter({&quot;a&quot;: 1}) # --&gt; bb6cb5c68df4652941caf652a366f2d8
+</code></pre>
+<h5 id="all_true_values">all_true_values</h5>
+<pre><code>all_true_values(dictionary, keys)
+
+Check if a dictionary has all the specified keys and if all its
+evaluated key-related values are True.
+
+:param dict dictionary:
+:param keys: keys sequence
+:rtype: bool
+
+Examples:
+from pymince.dictionary import all_true_values
+
+all_true_values({&quot;a&quot;: 1, &quot;b&quot;: 2}, (&quot;a&quot;, &quot;b&quot;)) # --&gt; True
+all_true_values({&quot;a&quot;: 1, &quot;b&quot;: 0}, (&quot;a&quot;, &quot;b&quot;)) # --&gt; False
+all_true_values({&quot;a&quot;: 1, &quot;b&quot;: 0}, (&quot;a&quot;,)) # --&gt; True
+</code></pre>
+<h5 id="find_leaf_value">find_leaf_value</h5>
+<pre><code>find_leaf_value(key, dictionary)
+
+Find leaf value in mapping.
+
+:param Any key: key to find
+:param dict dictionary:
+
+Examples:
+    from pymince.dictionary import find_leaf_value
+
+    find_leaf_value('a', {}) # --&gt; 'a'
+    find_leaf_value('a', {'a': 'b', 'b': 'c'}) # --&gt; 'c'
+    find_leaf_value('a', {'a': 'a'}) # --&gt; 'a'
+</code></pre>
+<h5 id="from_objects">from_objects</h5>
+<pre><code>from_objects(iterable, key_getter, value_getter)
+
+Create a new dictionary with elements generated from
+the &quot;key_getter&quot; and &quot;value_getter&quot; callbacks applied to each element of the iterable.
+
+:param Iterable[any] iterable:
+:param Callable key_getter:
+    Dictionary keys getter.
+    It is called with each element of &quot;iterable&quot; passing it as an argument.
+:param Callable value_getter:
+    Dictionary values getter.
+    It is called with each element of &quot;iterable&quot; passing it as an argument.
+
+:raise: ValueError if any generated key is duplicate.
+:rtype: dict
+
+Examples:
+    from pymince.dictionary import from_objects
+
+    keygetter = operator.itemgetter(0)
+    valgetter = operator.itemgetter(1, 2)
+
+    values = iter([(1, &quot;a&quot;, &quot;b&quot;), (2, &quot;a&quot;, &quot;b&quot;)])
+    from_objects(values, keygetter, valgetter) # --&gt; {1: ('a', 'b'), 2: ('a', 'b')}
+</code></pre>
+<h5 id="frozendict">frozendict</h5>
+<pre><code>frozendict(*args, **kwargs)
+
+Returns a &quot;MappingProxyType&quot; from a dictionary built according to given parameters.
+Add immutability only on a first level.
+
+Examples:
+    from pymince.dictionary import frozendict
+
+    my_dict = frozendict(a=1, b=2)
+    my_dict[&quot;a&quot;] # --&gt; 1
+    list(my_dict.items())  # --&gt; [(&quot;a&quot;, 1), (&quot;b&quot;, 2)]
+    my_dict[&quot;c&quot;] = 3  # --&gt; TypeError
+</code></pre>
+<h5 id="tree">tree</h5>
+<pre><code>tree()
+
+Returns a dict whose defaults are dicts.
+As suggested here: https://gist.github.com/2012250
+
+Examples:
+    import json
+
+    from pymince.dictionary import tree
+
+    users = tree()
+    users['user1']['username'] = 'foo'
+    users['user2']['username'] = 'bar'
+
+    print(json.dumps(users))  # {&quot;user1&quot;: {&quot;username&quot;: &quot;foo&quot;}, &quot;user2&quot;: {&quot;username&quot;: &quot;bar&quot;}}
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/rmoralespp/pymince" class="fa fa-code-fork" style="color: #fcfcfc"> pymince</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

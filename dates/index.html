@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/rmoralespp/pymince/dates/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Dates utils - pymince</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Dates utils";
+        var mkdocs_page_input_path = "dates.md";
+        var mkdocs_page_url = "/rmoralespp/pymince/dates/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> pymince
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Introduction</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Api usage</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../algorithm/">Algorithm utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../benchmark/">Benchmark utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../boolean/">Boolean utils</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Dates utils</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dictionary/">Dictionary utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../file/">File utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functional/">Functional utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../iterator/">Iterator utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../json/">Json utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../std/">Std utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../text/">Text utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../warnings/">Warnings utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../xml/">Xml utils</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">pymince</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Api usage</li>
+      <li class="breadcrumb-item active">Dates utils</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/rmoralespp/pymince/edit/master/docs/dates.md">Edit on pymince</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="dates">Dates</h1>
+<p>Contains date utilities.</p>
+<p><strong>IsoWeekDay</strong></p>
+<pre><code>IsoWeekDay(*values)
+
+Python Enum containing Days of the Week, according to ISO,
+where Monday == 1 ... Sunday == 7.
+
+Provides a 'of' method can be used to verbalize a datetime.datetime.isoweekday
+return value.
+
+Example:
+     from pymince.dates import IsoWeekDay
+
+    friday = datetime.datetime(2023, 2, 17)
+    IsoWeekDay.of(friday)  #  pymince.dates.IsoWeekDay.FRIDAY
+</code></pre>
+<p><strong>WeekDay</strong></p>
+<pre><code>WeekDay(*values)
+
+Python Enum containing Days of the Week,
+where Monday == 0 ... Sunday == 6.
+
+Provides a 'of' method can be used to verbalize a datetime.datetime.weekday
+return value.
+
+Example:
+    from pymince.dates import WeekDay
+
+    friday = datetime.datetime(2023, 2, 17)
+    WeekDay.of(friday)  #  pymince.dates.WeekDay.FRIDAY
+</code></pre>
+<p><strong>irange</strong></p>
+<pre><code>irange(start_date, stop_date=None, time_step=None)
+
+Returns a generator that produces a sequence of datetime's from &quot;start_date&quot; (inclusive)
+to &quot;stop_date&quot; (exclusive) by &quot;time_step&quot;.
+
+:param datetime.datetime start_date: Inclusive.
+:param datetime.datetime stop_date: Exclusive. `utcnow` is used by default.
+:param datetime.delta time_step: one-day `timedelta` is used by default.
+
+ Examples:
+    import datetime
+
+    from pymince.dates import irange
+
+    ini = datetime.datetime.fromisoformat(&quot;2022-10-31&quot;)
+    end = datetime.datetime.fromisoformat(&quot;2022-11-02&quot;)
+    day = datetime.timedelta(days=1)
+
+    it = irange(ini, stop_date=end, time_step=day)
+
+    next(it) # --&gt; datetime.datetime(2022, 10, 31, 0, 0)
+    next(it) # --&gt; datetime.datetime(2022, 11, 1, 0, 0)
+    next(it) # --&gt; raise StopIteration
+</code></pre>
+<p><strong>string2year</strong></p>
+<pre><code>string2year(value, gte=None, lte=None, shift=None)
+
+Function to convert a string year representation to integer year.
+
+:param str value: Value to convert.
+:param Optional[int] gte: if it is specified is required that: year &gt;= gte
+:param Optional[int] lte: if it is specified is required that: year &lt;= lte
+:param Optional[int] shift: use a two-digit year on shift
+
+:raise: &quot;ValueError&quot; if &quot;value&quot; cannot be converted.
+:rtype: int
+
+Examples:
+    from pymince.dates import string2year
+
+    string2year(&quot;53&quot;, shift=None) # --&gt; 2053
+    string2year(&quot;53&quot;, shift=1953) # --&gt; 1953
+    string2year(&quot;52&quot;, shift=1953) # --&gt; 2052
+    string2year(&quot;54&quot;, shift=1953) # --&gt; 1954
+
+    string2year(&quot;1954&quot;) # --&gt; 1954
+
+    string2year(&quot;123&quot;) # --&gt; ValueError
+    string2year(&quot;1955&quot;, gte=1956) # --&gt; ValueError
+    string2year(&quot;1955&quot;, lte=1954) # --&gt; ValueError
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../boolean/" class="btn btn-neutral float-left" title="Boolean utils"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../dictionary/" class="btn btn-neutral float-right" title="Dictionary utils">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/rmoralespp/pymince" class="fa fa-code-fork" style="color: #fcfcfc"> pymince</a>
+        </span>
+    
+    
+      <span><a href="../boolean/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../dictionary/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/rmoralespp/pymince/file.py/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>file.py - pymince</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "file.py";
+        var mkdocs_page_input_path = "file.py.md";
+        var mkdocs_page_url = "/rmoralespp/pymince/file.py/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> pymince
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Introduction</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Api usage</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../algorithm/">Algorithm utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../benchmark/">Benchmark utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../boolean/">Boolean utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dates/">Dates utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dictionary/">Dictionary utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../file/">File utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functional/">Functional utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../iterator/">Iterator utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../json/">Json utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../std/">Std utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../text/">Text utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../warnings/">Warnings utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../xml/">Xml utils</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">pymince</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">file.py</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/rmoralespp/pymince/edit/master/docs/file.py.md">Edit on pymince</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="filepy">file.py</h1>
+<h5 id="decompress">decompress</h5>
+<pre><code>decompress(src_path, dst_path, size=65536)
+
+Decompress the given compressed file in blocks based on its extension format.
+Supports compression formats: gzip =&gt; (.gz), bzip2 =&gt; (.bz2), xz =&gt; (.xz)
+
+:param str src_path: source file path
+:param str dst_path: destination file(unzipped) path
+:param int size: Read up to size bytes from src_path for each block.
+:return: dst_path
+
+ Examples:
+    from pymince.file import decompress
+
+    decompress(&quot;/foo/src.txt.gz&quot;, &quot;/baz/dst.txt&quot;)   # --&gt; &quot;/baz/dst.txt&quot;
+    decompress(&quot;/foo/src.txt.bz2&quot;, &quot;/baz/dst.txt&quot;)  # --&gt; &quot;/baz/dst.txt&quot;
+    decompress(&quot;/foo/src.txt.xz&quot;, &quot;/baz/dst.txt&quot;)   # --&gt; &quot;/baz/dst.txt&quot;
+</code></pre>
+<h5 id="ensure_directory">ensure_directory</h5>
+<pre><code>ensure_directory(path, cleaning=False)
+
+Make sure the given file path is an existing directory.
+If it does not exist, a new directory will be created.
+
+:param str path:
+:param bool cleaning:
+    If &quot;cleaning&quot; is True and a directory already exists,
+    this directory and the files contained in it will be deleted.
+
+    If &quot;cleaning&quot; is True and a file already exists,
+    this file will be deleted.
+</code></pre>
+<h5 id="get_valid_filename">get_valid_filename</h5>
+<pre><code>get_valid_filename(s)
+
+Returns a valid filename for the given string.
+
+- Remove leading/trailing spaces
+- Change spaces to underscores
+- Remove anything that is not an alphanumeric, dash, underscore, or dot
+</code></pre>
+<h5 id="is_empty_directory">is_empty_directory</h5>
+<pre><code>is_empty_directory(path)
+
+Check if the given path is an empty directory.
+</code></pre>
+<h5 id="match_from_zip">match_from_zip</h5>
+<pre><code>match_from_zip(zip_file, pattern)
+
+Make an iterator that returns file names in the zip file that
+match the given pattern.
+Uppercase/lowercase letters are ignored.
+
+:param zip_file: ZipFile object or zip path.
+:param pattern: &quot;re.Pattern&quot; to filter filename list
+:return: Iterator with the filenames found
+
+Examples:
+    import pymince.file
+    pymince.file.match_from_zip(&quot;archive.zip&quot;, &quot;^file&quot;) # --&gt; file1.log file2.txt
+    pymince.file.match_from_zip(zipfile.ZipFile(&quot;archive.zip&quot;), &quot;^file&quot;) # --&gt; file1.log file2.txt
+</code></pre>
+<h5 id="replace_extension">replace_extension</h5>
+<pre><code>replace_extension(filename, old_ext=None, new_ext=None)
+
+Replace filename &quot;old_ext&quot; with &quot;new_ext&quot;.
+
+:param str filename:
+:param Optional[str] old_ext:
+:param Optional[str] new_ext:
+
+Examples:
+    from pymince.file import replace_extension
+
+    # remove extensions
+    replace_extension(&quot;/home/user/file.old&quot;) # --&gt; &quot;/home/user/file&quot;
+    replace_extension(&quot;/home/user/file.old&quot;, old_ext=&quot;.old&quot;) # --&gt; &quot;/home/user/file&quot;
+    replace_extension(&quot;/home/user/file.old&quot;, old_ext=&quot;.new&quot;) # --&gt; &quot;/home/user/file.old&quot;
+
+    # replace extensions
+    replace_extension(&quot;/home/user/file.old&quot;, new_ext=&quot;.new&quot;) # --&gt; &quot;/home/user/file.new&quot;
+    replace_extension(&quot;/home/user/file.old&quot;, old_ext=&quot;.old&quot;, new_ext=&quot;.new&quot;) # --&gt; &quot;/home/user/file.new&quot;
+    replace_extension(&quot;/home/user/file.old&quot;, old_ext=&quot;.new&quot;, new_ext=&quot;.new&quot;) # --&gt; &quot;/home/user/file.old&quot;
+</code></pre>
+<h5 id="xopen">xopen</h5>
+<pre><code>xopen(name, mode='rb', encoding=None)
+
+Open compressed files in Python based on their file extension.
+
+- Supports compression formats: gzip =&gt; (.gz), bzip2 =&gt; (.bz2), xz =&gt; (.xz)
+- If the file extension is not recognized, the file will be opened without compression.
+- When text mode is required, UTF-8 encoding is used by default.
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/rmoralespp/pymince" class="fa fa-code-fork" style="color: #fcfcfc"> pymince</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/rmoralespp/pymince/json/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Json utils - pymince</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Json utils";
+        var mkdocs_page_input_path = "json.md";
+        var mkdocs_page_url = "/rmoralespp/pymince/json/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> pymince
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Introduction</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Api usage</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../algorithm/">Algorithm utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../benchmark/">Benchmark utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../boolean/">Boolean utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dates/">Dates utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dictionary/">Dictionary utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../file/">File utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functional/">Functional utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../iterator/">Iterator utils</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Json utils</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../std/">Std utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../text/">Text utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../warnings/">Warnings utils</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../xml/">Xml utils</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">pymince</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Api usage</li>
+      <li class="breadcrumb-item active">Json utils</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/rmoralespp/pymince/edit/master/docs/json.md">Edit on pymince</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="json">Json</h1>
+<p>Useful functions for working with JSONs.</p>
+<ul>
+<li>Supports <code>orjson</code>, <code>ujson</code> libraries or standard <code>json</code>.</li>
+<li>Supports following compression formats: gzip =&gt; (.gz), bzip2 =&gt; (.bz2), xz =&gt; (.xz)</li>
+</ul>
+<p><strong>JSONEncoder</strong></p>
+<pre><code>JSONEncoder(*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)
+
+JSON encoder that handles additional types compared
+to `json.JSONEncoder`
+
+- `datetime` and `date` are serialized to strings according to the isoformat.
+- `decimal.Decimal` is serialized to a string.
+- `uuid.UUID` is serialized to a string.
+- `dataclasses.dataclass` is passed to `dataclasses.asdict`.
+- `frozenset` and `set` are serialized by ordering their values.
+</code></pre>
+<p><strong>dump_from_csv</strong></p>
+<pre><code>dump_from_csv(csv_path, json_path, /, *, fieldnames=None, start=0, stop=None, strip=True, encoding='utf-8', **kwargs)
+
+Dump CSV file to a JSON file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
+- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+
+:param str csv_path:
+:param str json_path:
+:param fieldnames: list of keys for the JSON
+:param int start:
+    If start is specified, will skip all preceding elements;
+    otherwise, start defaults to zero.
+:param int stop:
+:param bool strip:
+    Whether white space should be removed from the
+    beginning and end of field values.
+:param str encoding: utf-8 is used by default.
+</code></pre>
+<p><strong>dump_into</strong></p>
+<pre><code>dump_into(filename, obj, encoding='utf-8', **kwargs)
+
+Dump JSON to a file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
+- Dumps falls back to the functions: (`orjson.dump`, `ujson.dump`, and `json.dump`).
+
+Examples:
+    from pymince.json import dump_into
+
+    dump_into(&quot;foo.json&quot;, {&quot;key&quot;: &quot;value&quot;})     # uncompressed
+    dump_into(&quot;foo.json.gz&quot;, {&quot;key&quot;: &quot;value&quot;})  # gzip-compressed
+    dump_into(&quot;foo.json.xz&quot;, {&quot;key&quot;: &quot;value&quot;})  # lzma-compressed
+    dump_into(&quot;foo.json.bz2&quot;, {&quot;key&quot;: &quot;value&quot;}) # bz2-compressed
+</code></pre>
+<p><strong>dump_into_zip</strong></p>
+<pre><code>dump_into_zip(zip_path, arcname, payload, **kwargs)
+
+Dump JSON into the zip archive under the name arcname.
+
+Examples:
+    from pymince.json import dump_into_zip
+
+    dump_into_zip(&quot;archive.zip&quot;, &quot;foo.json&quot;, {&quot;key&quot;: &quot;value&quot;})
+</code></pre>
+<p><strong>idump_fork</strong></p>
+<pre><code>idump_fork(path_items, encoding='utf-8', dump_if_empty=True, **dumps_kwargs)
+
+Incrementally dumps different groups of elements into
+the indicated JSON file.
+
+Useful to reduce memory consumption
+
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
+- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+
+:param Iterable[file_path, Iterable[dict]] path_items: group items by file path
+:param encoding: 'utf-8' by default.
+:param bool dump_if_empty: If false, don't create an empty file.
+:param dumps_kwargs: json.dumps kwargs.
+
+Examples:
+    from pymince.json import idump_fork
+
+    path_items = (
+        (&quot;num.json.gz&quot;, ({&quot;value&quot;: 1}, {&quot;value&quot;: 2})),
+        (&quot;num.json.gz&quot;, ({&quot;value&quot;: 3},)),
+        (&quot;foo.json&quot;, ({&quot;a&quot;: &quot;1&quot;}, {&quot;b&quot;: 2})),
+        (&quot;baz.json&quot;, ()),
+    )
+    idump_fork(iter(path_items))
+</code></pre>
+<p><strong>idump_into</strong></p>
+<pre><code>idump_into(filename, iterable, encoding='utf-8', **kwargs)
+
+Dump an iterable incrementally into a JSON file.
+- Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
+- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+
+The result will always be an array with the elements of the iterable.
+Useful to reduce memory consumption
+
+Examples:
+    from pymince.json import idump_into
+
+    values = ([{&quot;key&quot;: &quot;foo&quot;}, {&quot;key&quot;: &quot;bar&quot;}])
+
+    idump_into(&quot;foo.json&quot;, values)     # uncompressed
+    idump_into(&quot;foo.json.gz&quot;, values)  # gzip-compressed
+    idump_into(&quot;foo.json.xz&quot;, values)  # lzma-compressed
+    idump_into(&quot;foo.json.bz2&quot;, values) # bz2-compressed
+</code></pre>
+<p><strong>idump_lines</strong></p>
+<pre><code>idump_lines(iterable, **dumps_kwargs)
+
+Generator yielding string lines that form a JSON array
+with the serialized elements of given iterable.
+
+Useful to reduce memory consumption
+Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+
+:param iterable: Iterable[dict]
+:rtype: Iterable[str]
+</code></pre>
+<p><strong>load</strong></p>
+<pre><code>load(fp, *, cls=None, object_hook=None, parse_float=None, parse_int=None, parse_constant=None, object_pairs_hook=None, **kw)
+
+Deserialize ``fp`` (a ``.read()``-supporting file-like object containing
+a JSON document) to a Python object.
+
+``object_hook`` is an optional function that will be called with the
+result of any object literal decode (a ``dict``). The return value of
+``object_hook`` will be used instead of the ``dict``. This feature
+can be used to implement custom decoders (e.g. JSON-RPC class hinting).
+
+``object_pairs_hook`` is an optional function that will be called with the
+result of any object literal decoded with an ordered list of pairs.  The
+return value of ``object_pairs_hook`` will be used instead of the ``dict``.
+This feature can be used to implement custom decoders.  If ``object_hook``
+is also defined, the ``object_pairs_hook`` takes priority.
+
+To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
+kwarg; otherwise ``JSONDecoder`` is used.
+</code></pre>
+<p><strong>load_from</strong></p>
+<pre><code>load_from(filename, encoding='utf-8')
+
+Load JSON from a file.
+- Recognizes (`.gz`, `.xz`, `.bz2`) extensions to load compressed files.
+- Loads falls back to the functions: (`orjson.load`, `ujson.load`, and `json.load`).
+
+Examples:
+    from pymince.json import load_from
+
+    dictionary1 = load_from(&quot;foo.json&quot;)     # uncompressed
+    dictionary2 = load_from(&quot;foo.json.gz&quot;)  # gzip-compressed
+    dictionary3 = load_from(&quot;foo.json.xz&quot;)  # lzma-compressed
+    dictionary4 = load_from(&quot;foo.json.bz2&quot;) # bz2-compressed
+</code></pre>
+<p><strong>load_from_zip</strong></p>
+<pre><code>load_from_zip(zip_path, arcname)
+
+Load JSON from a file named &quot;arcname&quot; inside a zip archive.
+
+Examples:
+    from pymince.json import load_from_zip
+
+    dictionary = load_from_zip(&quot;archive.zip&quot;, &quot;foo.json&quot;)
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../iterator/" class="btn btn-neutral float-left" title="Iterator utils"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../logging/" class="btn btn-neutral float-right" title="Logging utils">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/rmoralespp/pymince" class="fa fa-code-fork" style="color: #fcfcfc"> pymince</a>
+        </span>
+    
+    
+      <span><a href="../iterator/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../logging/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
