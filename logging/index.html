@@ -186,23 +186,6 @@ Examples:
     {&quot;timestamp&quot;:&quot;2022-06-17 18:37:48,789&quot;,&quot;level&quot;:&quot;DEBUG&quot;,&quot;payload&quot;:{&quot;string&quot;:&quot;value1&quot;,&quot;number&quot;:1}}
     {&quot;timestamp&quot;:&quot;2022-06-17 18:37:48,789&quot;,&quot;level&quot;:&quot;DEBUG&quot;,&quot;payload&quot;:{&quot;string&quot;:&quot;value2&quot;,&quot;number&quot;:2}}
 </code></pre>
-<p><strong>timed_block</strong></p>
-<pre><code>timed_block(name, logger=None)
-
-Log the duration of the handled context.
-
-Examples:
-    import logging
-    from pymince.logging import timed_block
-
-    logging.basicConfig(level=logging.DEBUG)
-    with timed_block(&quot;sleeping&quot;):
-        time.sleep(1)
-
-    &gt;&gt;Output&lt;&lt;
-    INFO:root:Generating [sleeping]
-    DEBUG:root:Finished [sleeping in 1.002 s]
-</code></pre>
               
             </div>
           </div><footer>

@@ -193,7 +193,7 @@ Examples:
     from pymince.iterator import consume
     it = iter([1, 2])
     consume(it)
-    next(it) # --&gt; StopIteration
+    next(it) # → StopIteration
 </code></pre>
 <p><strong>grouper</strong></p>
 <pre><code>grouper(iterable, size)
@@ -209,7 +209,7 @@ Examples:
     from pymince.iterator import grouper
 
     groups = grouper([1, 2, 3, 4, 5], 2)
-    list(list(g) for g in groups) # --&gt; [[1, 2], [3, 4], [5]]
+    list(list(g) for g in groups) # → [[1, 2], [3, 4], [5]]
 </code></pre>
 <p><strong>ibool</strong></p>
 <pre><code>ibool(iterable)
@@ -370,8 +370,8 @@ Examples:
     from pymince.iterator import replacer
 
     is_one = lambda n: n == 1
-    replacer([1,2,3,1,2,3], is_one, None) # --&gt; None 2 3 None 2 3
-    replacer([1,2,3,1,2,3], is_one, None, count=1) # --&gt; None 2 3 1 2 3
+    replacer([1,2,3,1,2,3], is_one, None) # → None 2 3 None 2 3
+    replacer([1,2,3,1,2,3], is_one, None, count=1) # → None 2 3 1 2 3
 </code></pre>
 <p><strong>splitter</strong></p>
 <pre><code>splitter(iterable, sep, key=None, maxsplit=-1, container=None)
@@ -417,7 +417,7 @@ respecting the input order.
 Examples:
     from pymince.iterator import uniquer
 
-    uniquer([1, 2, 3, 2]) # --&gt; 1 2 3
+    uniquer([1, 2, 3, 2]) # → 1 2 3
 </code></pre>
 <p><strong>uniques</strong></p>
 <pre><code>uniques(iterable, key=None)

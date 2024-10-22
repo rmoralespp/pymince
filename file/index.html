@@ -107,19 +107,19 @@
 <pre><code>decompress(src_path, dst_path, size=65536)
 
 Decompress the given compressed file in blocks based on its extension format.
-Supports compression formats: gzip =&gt; (.gz), bzip2 =&gt; (.bz2), xz =&gt; (.xz)
+Supports compression formats: gzip ⇒ (.gz), bzip2 ⇒ (.bz2), xz ⇒ (.xz)
 
-:param str src_path: source file path
-:param str dst_path: destination file(unzipped) path
-:param int size: Read up to size bytes from src_path for each block.
-:return: dst_path
+:param str src_path: Source file path
+:param str dst_path: Destination file(unzipped) path
+:param int size: Read up-to-size bytes from &quot;src_path&quot; for each block. Default is 64KB.
+:return: Destination file path
 
  Examples:
     from pymince.file import decompress
 
-    decompress(&quot;/foo/src.txt.gz&quot;, &quot;/baz/dst.txt&quot;)   # --&gt; &quot;/baz/dst.txt&quot;
-    decompress(&quot;/foo/src.txt.bz2&quot;, &quot;/baz/dst.txt&quot;)  # --&gt; &quot;/baz/dst.txt&quot;
-    decompress(&quot;/foo/src.txt.xz&quot;, &quot;/baz/dst.txt&quot;)   # --&gt; &quot;/baz/dst.txt&quot;
+    decompress(&quot;/foo/src.txt.gz&quot;, &quot;/baz/dst.txt&quot;)   # → &quot;/baz/dst.txt&quot;
+    decompress(&quot;/foo/src.txt.bz2&quot;, &quot;/baz/dst.txt&quot;)  # → &quot;/baz/dst.txt&quot;
+    decompress(&quot;/foo/src.txt.xz&quot;, &quot;/baz/dst.txt&quot;)   # → &quot;/baz/dst.txt&quot;
 </code></pre>
 <p><strong>ensure_directory</strong></p>
 <pre><code>ensure_directory(path, cleaning=False)
