@@ -1,8 +1,8 @@
 # Json
 Useful functions for working with JSONs.
-
-- Supports `orjson`, `ujson` libraries or standard `json`.
-- Supports following compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
+- Supports compression/decompression using gzip, bzip2, and xz formats.
+- Supports non-ascii characters.
+- UTF-8 encoding is used by default.
 
 **JSONEncoder**
 ```
@@ -17,13 +17,12 @@ to `json.JSONEncoder`
 - `dataclasses.dataclass` is passed to `dataclasses.asdict`.
 - `frozenset` and `set` are serialized by ordering their values.
 ```
-**dump_from_csv**
+**csv_to_json**
 ```
-dump_from_csv(csv_path, json_path, /, *, fieldnames=None, start=0, stop=None, strip=True, encoding='utf-8', **kwargs)
+csv_to_json(csv_path, json_path, /, *, fieldnames=None, start=0, stop=None, strip=True, encoding='utf-8', **kwargs)
 
 Dump CSV file to a JSON file.
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
-- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
 
 :param str csv_path:
 :param str json_path:
@@ -42,8 +41,7 @@ Dump CSV file to a JSON file.
 dump_into(filename, obj, encoding='utf-8', **kwargs)
 
 Dump JSON to a file.
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
-- Dumps falls back to the functions: (`orjson.dump`, `ujson.dump`, and `json.dump`).
+Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
 
 Examples:
     from pymince.json import dump_into
@@ -70,11 +68,8 @@ idump_fork(path_items, encoding='utf-8', dump_if_empty=True, **dumps_kwargs)
 
 Incrementally dumps different groups of elements into
 the indicated JSON file.
-
 Useful to reduce memory consumption
-
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
-- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
 
 :param Iterable[file_path, Iterable[dict]] path_items: group items by file path
 :param encoding: 'utf-8' by default.
@@ -97,8 +92,7 @@ Examples:
 idump_into(filename, iterable, encoding='utf-8', **kwargs)
 
 Dump an iterable incrementally into a JSON file.
-- Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
-- Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
 
 The result will always be an array with the elements of the iterable.
 Useful to reduce memory consumption
@@ -121,7 +115,6 @@ Generator yielding string lines that form a JSON array
 with the serialized elements of given iterable.
 
 Useful to reduce memory consumption
-Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
 :param iterable: Iterable[dict]
 :rtype: Iterable[str]
@@ -152,8 +145,7 @@ kwarg; otherwise ``JSONDecoder`` is used.
 load_from(filename, encoding='utf-8')
 
 Load JSON from a file.
-- Recognizes (`.gz`, `.xz`, `.bz2`) extensions to load compressed files.
-- Loads falls back to the functions: (`orjson.load`, `ujson.load`, and `json.load`).
+Recognizes (`.gz`, `.xz`, `.bz2`) extensions to load compressed files.
 
 Examples:
     from pymince.json import load_from

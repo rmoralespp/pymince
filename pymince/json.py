@@ -2,9 +2,9 @@
 
 """
 Useful functions for working with JSONs.
-
-- Supports `orjson`, `ujson` libraries or standard `json`.
-- Supports following compression formats: gzip => (.gz), bzip2 => (.bz2), xz => (.xz)
+- Supports compression/decompression using gzip, bzip2, and xz formats.
+- Supports non-ascii characters.
+- UTF-8 encoding is used by default.
 """
 
 import csv
@@ -23,31 +23,18 @@ import zipfile
 import pymince._constants
 import pymince.file
 
-# Use the fastest available JSON library for serialization/deserialization, prioritizing `orjson`,
-# then `ujson`, and defaulting to the standard `json` if none are installed.
-try:
-    import orjson
-except ImportError:
-    orjson = None
-
-try:
-    import ujson
-except ImportError:
-    ujson = None
-
-PROVIDER = orjson or ujson or json
+PROVIDER = json
 ENCODING = pymince._constants.utf_8
 
 json_dumps = functools.partial(PROVIDER.dumps, ensure_ascii=False)
 json_dump = functools.partial(PROVIDER.dump, ensure_ascii=False)
-json_load = (orjson or ujson or json).load
+json_load = PROVIDER.load
 
 
 def load_from(filename, encoding=ENCODING):
     """
     Load JSON from a file.
-    - Recognizes (`.gz`, `.xz`, `.bz2`) extensions to load compressed files.
-    - Loads falls back to the functions: (`orjson.load`, `ujson.load`, and `json.load`).
+    Recognizes (`.gz`, `.xz`, `.bz2`) extensions to load compressed files.
 
     Examples:
         from pymince.json import load_from
@@ -58,15 +45,14 @@ def load_from(filename, encoding=ENCODING):
         dictionary4 = load_from("foo.json.bz2") # bz2-compressed
     """
 
-    with pymince.file.xopen(filename, mode="rt", encoding=encoding) as file:
-        return json.load(file)
+    with pymince.file.xopen(filename, mode="rt", encoding=encoding) as fd:
+        return json.load(fd)
 
 
 def dump_into(filename, obj, encoding=ENCODING, **kwargs):
     """
     Dump JSON to a file.
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
-    - Dumps falls back to the functions: (`orjson.dump`, `ujson.dump`, and `json.dump`).
+    Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
 
     Examples:
         from pymince.json import dump_into
@@ -110,7 +96,7 @@ def load_from_zip(zip_path, arcname):
         return json.load(file)
 
 
-def dump_from_csv(
+def csv_to_json(
     csv_path,
     json_path,
     /,
@@ -124,8 +110,7 @@ def dump_from_csv(
 ):
     """
     Dump CSV file to a JSON file.
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
-    - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+    Use (`.gz`, `.xz`, `.bz2`) extensions to create a compressed file.
 
     :param str csv_path:
     :param str json_path:
@@ -163,7 +148,6 @@ def idump_lines(iterable, **dumps_kwargs):
     with the serialized elements of given iterable.
 
     Useful to reduce memory consumption
-    Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
 
     :param iterable: Iterable[dict]
     :rtype: Iterable[str]
@@ -187,8 +171,7 @@ def idump_lines(iterable, **dumps_kwargs):
 def idump_into(filename, iterable, encoding=ENCODING, **kwargs):
     """
     Dump an iterable incrementally into a JSON file.
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
-    - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+    Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
 
     The result will always be an array with the elements of the iterable.
     Useful to reduce memory consumption
@@ -212,11 +195,8 @@ def idump_fork(path_items, encoding=ENCODING, dump_if_empty=True, **dumps_kwargs
     """
     Incrementally dumps different groups of elements into
     the indicated JSON file.
-
     Useful to reduce memory consumption
-
-    - Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
-    - Dumps falls back to the functions: (`orjson.dumps`, `ujson.dumps`, and `json.dumps`).
+    Use (`.gz`, `.xz`, `.bz2`) extensions to create compressed files.
 
     :param Iterable[file_path, Iterable[dict]] path_items: group items by file path
     :param encoding: 'utf-8' by default.

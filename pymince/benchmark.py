@@ -9,6 +9,10 @@ import tracemalloc
 
 
 class _Benchmark:
+    """
+    Base class for benchmarking utilities.
+    Context manager and decorator for measuring time and memory usage.
+    """
 
     def __init__(self, name=None, logger=None):
         self.name = name or self.__class__.__name__

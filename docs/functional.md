@@ -54,10 +54,10 @@ Examples:
         return 'anything'
 
     n = 0
-    inc_once()  #  --> 'anything'
-    inc_once()  #  --> 'anything'
-    inc_once()  #  --> 'anything'
-    print(n)    #  --> 1
+    inc_once()  #  → 'anything'
+    inc_once()  #  → 'anything'
+    inc_once()  #  → 'anything'
+    print(n)    #  → 1
 ```
 **pipe**
 ```
@@ -86,26 +86,29 @@ Decorator that retries to call the wrapped function
 if any of given exceptions are thrown.
 
 :param exceptions: Lists of exceptions that trigger a retry attempt.
-:param int delay: seconds delay between attempts. default: 0.
-:param int tries: number of attempts. default: 1
+:param int delay: Seconds delay between attempts. Default is 0.
+:param int tries: Number of attempts. Default is 1.
+:return: The result of the wrapped function after the final attempt.
 
 Examples:
 @retry_if_errors(ValueError, TypeError, delay=0, tries=1)
 def foo():
     return 1
 ```
-**retry_if_none**
+**retry_when**
 ```
-retry_if_none(delay=0, tries=1)
+retry_when(delay=0, tries=1, condition=<function <lambda> at 0x000001C9E6D0F920>)
 
-Decorator that retries to call the wrapped function
-if it returns None.
+Decorator that retries executing the wrapped function based on a condition.
 
-:param int delay: seconds delay between attempts. default: 0.
-:param int tries: number of attempts. default: 1
+:param int delay: Seconds delay between attempts. Default: 0.
+:param int tries: Number of attempts. Default: 1
+:param Callable condition: Function that returns True if the function should be retried.
+                  By default, it retries if the result is None.
+:return: The result of the wrapped function after the final attempt.
 
 Examples:
-    @retry_if_none(delay=0, tries=1)
+    @retry_when(delay=0, tries=1)
     def foo():
         return 1
 ```

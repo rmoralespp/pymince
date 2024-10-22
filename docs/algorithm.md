@@ -29,10 +29,10 @@ sieve_of_eratosthenes(n)
 Primes less than n.
 Based on: https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 
-:param int n: n an integer n > 1
+:param int n: N an integer n > 1
 :rtype: Generator[int]. All prime numbers from 2 through n.
 
 Examples:
     from pymince.algorithm import sieve_of_eratosthenes as primes
-    primes(30) # --> 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
+    primes(30) # → 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
 ```

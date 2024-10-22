@@ -87,21 +87,3 @@ Examples:
     {"timestamp":"2022-06-17 18:37:48,789","level":"DEBUG","payload":{"string":"value1","number":1}}
     {"timestamp":"2022-06-17 18:37:48,789","level":"DEBUG","payload":{"string":"value2","number":2}}
 ```
-**timed_block**
-```
-timed_block(name, logger=None)
-
-Log the duration of the handled context.
-
-Examples:
-    import logging
-    from pymince.logging import timed_block
-
-    logging.basicConfig(level=logging.DEBUG)
-    with timed_block("sleeping"):
-        time.sleep(1)
-
-    >>Output<<
-    INFO:root:Generating [sleeping]
-    DEBUG:root:Finished [sleeping in 1.002 s]
-```

@@ -74,10 +74,10 @@ def once(fn):
             return 'anything'
 
         n = 0
-        inc_once()  #  --> 'anything'
-        inc_once()  #  --> 'anything'
-        inc_once()  #  --> 'anything'
-        print(n)    #  --> 1
+        inc_once()  #  → 'anything'
+        inc_once()  #  → 'anything'
+        inc_once()  #  → 'anything'
+        print(n)    #  → 1
     """
 
     @functools.wraps(fn)
@@ -155,30 +155,34 @@ def suppress(*exceptions, default=None):
     return decorator
 
 
-def retry_if_none(delay=0, tries=1):
+def retry_when(delay=0, tries=1, condition=lambda x: x is None):
     """
-    Decorator that retries to call the wrapped function
-    if it returns None.
+    Decorator that retries executing the wrapped function based on a condition.
 
-    :param int delay: seconds delay between attempts. default: 0.
-    :param int tries: number of attempts. default: 1
+    :param int delay: Seconds delay between attempts. Default: 0.
+    :param int tries: Number of attempts. Default: 1
+    :param Callable condition: Function that returns True if the function should be retried.
+                      By default, it retries if the result is None.
+    :return: The result of the wrapped function after the final attempt.
 
     Examples:
-        @retry_if_none(delay=0, tries=1)
+        @retry_when(delay=0, tries=1)
         def foo():
             return 1
     """
 
+    if tries <= 0:
+        raise ValueError("'tries' must be greater than to 0")
+
     def decorator(function):
         @functools.wraps(function)
         def apply(*args, **kwargs):
-            attempt = 0
-            result = None
-            while attempt < tries and result is None:
+            for attempt in range(tries):
                 result = function(*args, **kwargs)
-                if delay:
+                if not condition(result):
+                    break
+                if delay:  # Avoid sleeping after the attempt
                     time.sleep(delay)
-                attempt += 1
             return result
 
         return apply
@@ -192,8 +196,9 @@ def retry_if_errors(*exceptions, delay=0, tries=1):
     if any of given exceptions are thrown.
 
     :param exceptions: Lists of exceptions that trigger a retry attempt.
-    :param int delay: seconds delay between attempts. default: 0.
-    :param int tries: number of attempts. default: 1
+    :param int delay: Seconds delay between attempts. Default is 0.
+    :param int tries: Number of attempts. Default is 1.
+    :return: The result of the wrapped function after the final attempt.
 
     Examples:
     @retry_if_errors(ValueError, TypeError, delay=0, tries=1)
@@ -201,18 +206,20 @@ def retry_if_errors(*exceptions, delay=0, tries=1):
         return 1
     """
 
+    if tries <= 0:
+        raise ValueError("'tries' must be greater than to 0")
+
     def decorator(function):
         @functools.wraps(function)
         def apply(*args, **kwargs):
-            attempt = 0
-            while attempt < tries:
+            for attempt in range(tries):
                 try:
                     return function(*args, **kwargs)
                 except exceptions:
-                    if delay:
+                    if delay:  # Avoid sleeping after the attempt
                         time.sleep(delay)
-                    attempt += 1
-            return function(*args, **kwargs)
+
+            raise ValueError(f"Failed after {tries} attempts")
 
         return apply
 
@@ -224,4 +231,5 @@ def identity(x):
     Takes a single argument and returns it unchanged.
     Identity function, as defined in https://en.wikipedia.org/wiki/Identity_function.
     """
+
     return x

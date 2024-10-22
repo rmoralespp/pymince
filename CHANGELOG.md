@@ -1,7 +1,13 @@
 ## Releases ##
 
-- **Added:** Generate documentation site with `mkdocs`. 
+- **Added:** Generate documentation site with `mkdocs`.
 - **Changed:** Simplify the README.
+- **Changed:** [BREAKING] Remove `logging.timed_block`. Use instead `benchmark.Timed`.
+- **Changed:** [BREAKING] Rename `functional.retry_if_none` to `functional.retry_when`. Now retries based on the given
+  condition, By default, it retries if the result is None.
+- **Changed:** [BREAKING] `functional.retry_if_errors` avoid additionally retrying, raise ValueError.
+- **Changed:** [BREAKING] Remove `orjson`, `ujson` libraries supports. Use instead `json` module.
+- **Changed:** [BREAKING] Rename `json.dump_from_csv` to `json.csv_to_json`.
 
 ## v2.11.4 (2024-10-01) ##
 

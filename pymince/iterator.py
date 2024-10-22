@@ -32,8 +32,8 @@ def replacer(iterable, matcher, new_value, count=-1):
         from pymince.iterator import replacer
 
         is_one = lambda n: n == 1
-        replacer([1,2,3,1,2,3], is_one, None) # --> None 2 3 None 2 3
-        replacer([1,2,3,1,2,3], is_one, None, count=1) # --> None 2 3 1 2 3
+        replacer([1,2,3,1,2,3], is_one, None) # → None 2 3 None 2 3
+        replacer([1,2,3,1,2,3], is_one, None, count=1) # → None 2 3 1 2 3
     """
 
     changed = 0
@@ -76,7 +76,7 @@ def uniquer(iterable, key=None):
     Examples:
         from pymince.iterator import uniquer
 
-        uniquer([1, 2, 3, 2]) # --> 1 2 3
+        uniquer([1, 2, 3, 2]) # → 1 2 3
     """
 
     get = key or pymince.functional.identity
@@ -99,7 +99,7 @@ def grouper(iterable, size):
         from pymince.iterator import grouper
 
         groups = grouper([1, 2, 3, 4, 5], 2)
-        list(list(g) for g in groups) # --> [[1, 2], [3, 4], [5]]
+        list(list(g) for g in groups) # → [[1, 2], [3, 4], [5]]
     """
 
     slicer = itertools.islice
@@ -121,7 +121,7 @@ def consume(iterator, n=None):
         from pymince.iterator import consume
         it = iter([1, 2])
         consume(it)
-        next(it) # --> StopIteration
+        next(it) # → StopIteration
     """
 
     if n is None:
@@ -493,7 +493,7 @@ class ipush:
         self._suffix = collections.deque()
 
     def append(self, v):
-        """Append a single value in back of the iterator."""
+        """Append a single value in the back of the iterator."""
         self._suffix.append(v)
 
     def prepend(self, v):

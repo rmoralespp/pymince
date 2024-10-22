@@ -2,37 +2,8 @@
 
 """Logging utilities."""
 
-import contextlib
 import json
 import logging
-import time
-
-
-@contextlib.contextmanager
-def timed_block(name, logger=None):
-    """
-    Log the duration of the handled context.
-
-    Examples:
-        import logging
-        from pymince.logging import timed_block
-
-        logging.basicConfig(level=logging.DEBUG)
-        with timed_block("sleeping"):
-            time.sleep(1)
-
-        >>Output<<
-        INFO:root:Generating [sleeping]
-        DEBUG:root:Finished [sleeping in 1.002 s]
-    """
-
-    on_logger = logger or logging.getLogger()
-    on_logger.info("Generating [%s]", name)
-    t0 = time.time()
-    try:
-        yield None
-    finally:
-        on_logger.debug("Finished [%s in %.3f s]", name, time.time() - t0)
 
 
 class StructuredFormatter(logging.Formatter):
@@ -122,7 +93,7 @@ class ColoredFormatter(logging.Formatter):
 
         # Use custom colors
         import colorama
-    
+
         black = colorama.Fore.BLACK
         bold_black_on_green = colorama.Back.GREEN + colorama.Fore.BLACK + colorama.Style.BRIGHT
         bold_green_on_black = colorama.Back.BLACK + colorama.Fore.GREEN + colorama.Style.BRIGHT

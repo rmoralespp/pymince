@@ -107,7 +107,7 @@ class DigestGetter:
         ).encode
 
     def to_string(self, dictionary):
-        # Non recursive copy.
+        # Non-recursive copy.
         if self.include:
             data = {k: v for k, v in dictionary.items() if k in self.include}
         elif self.exclude:
