@@ -1,5 +1,7 @@
 ## Releases ##
 
+## v2.12.0 (2024-10-22) ##
+
 - **Added:** Generate documentation site with `mkdocs`.
 - **Changed:** Simplify the README.
 - **Changed:** [BREAKING] Remove `logging.timed_block`. Use instead `benchmark.Timed`.
