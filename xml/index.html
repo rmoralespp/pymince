@@ -65,6 +65,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging utils</a>
                   </li>
+                  <li class="toctree-l1"><a class="" href="../patterns.md">Patterns utils</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../std/">Std utils</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../text/">Text utils</a>
@@ -114,7 +116,7 @@ This function is based on: https://github.com/python/cpython/issues/93618
 '''
 The code below deletes a root child once it is completed, then processes and removes
 it from the memory (if nothing more references to it ofc).
-This allows to process 7GB XML with with a memory usage up to 10MB (in case of great number of root children).
+This allows processing 7GB XML with a memory usage up to 10MB (in the case of a great number of root children).
 '''
 
 :param str filename: XML filename

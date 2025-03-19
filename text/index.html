@@ -65,6 +65,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging utils</a>
                   </li>
+                  <li class="toctree-l1"><a class="" href="../patterns.md">Patterns utils</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../std/">Std utils</a>
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Text utils</a>
@@ -114,6 +116,11 @@ Examples:
     are_anagram(&quot;listen&quot;, &quot;silent&quot;)      # --&gt; True
     are_anagram(&quot;they see&quot;, &quot;the eyes&quot;)  # --&gt; True
 </code></pre>
+<p><strong>camel2snake</strong></p>
+<pre><code>camel2snake(camel_str)
+
+Convert CamelCase to snake_case.
+</code></pre>
 <p><strong>get_random_secret</strong></p>
 <pre><code>get_random_secret(length, alphabet='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
@@ -142,7 +149,7 @@ that is preceded and followed by one or more non whitespace characters.
 <pre><code>is_int(text)
 
 Check if the string is the representation of
-a integer number.
+an integer number.
 
 True: &quot;10&quot;, &quot;+10&quot;, &quot;-10&quot;, &quot;0&quot;
 </code></pre>
@@ -282,8 +289,8 @@ Examples:
 Replace matching values ​​in the given string with new_value.
 
 :param str value:
-:param old_values: iterable of values ​​to replace.
-:param str new_value: replacement value.
+:param old_values: Iterable of values ​​to replace.
+:param str new_value: Replacement value.
 :param int count:
     Maximum number of occurrences to replace.
     -1 (the default value) means replace all occurrences.
