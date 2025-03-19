@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 
 class Singleton(type):
-    """Metaclass that makes a class a Singleton."""
+    """
+    Metaclass that makes a class a Singleton.
+
+    Example:
+    class MyClass(metaclass=Singleton):
+        pass
+
+    """
 
     _instances = dict()
 

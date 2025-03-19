@@ -97,7 +97,7 @@ def foo():
 ```
 **retry_when**
 ```
-retry_when(delay=0, tries=1, condition=<function <lambda> at 0x0000011B7D1EF9C0>)
+retry_when(delay=0, tries=1, condition=<function <lambda> at 0x0000023520A3F9C0>)
 
 Decorator that retries executing the wrapped function based on a condition.
 
