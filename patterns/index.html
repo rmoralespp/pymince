@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/rmoralespp/pymince/dates/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/rmoralespp/pymince/patterns/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Dates utils - pymince</title>
+    <title>Patterns utils - pymince</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Dates utils";
-        var mkdocs_page_input_path = "dates.md";
-        var mkdocs_page_url = "/rmoralespp/pymince/dates/";
+        var mkdocs_page_name = "Patterns utils";
+        var mkdocs_page_input_path = "patterns.md";
+        var mkdocs_page_url = "/rmoralespp/pymince/patterns/";
       </script>
     
     <!--[if lt IE 9]>
@@ -51,9 +51,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../boolean/">Boolean utils</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Dates utils</a>
-    <ul class="current">
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../dates/">Dates utils</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../dictionary/">Dictionary utils</a>
                   </li>
@@ -67,7 +65,9 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging utils</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../patterns/">Patterns utils</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Patterns utils</a>
+    <ul class="current">
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../std/">Std utils</a>
                   </li>
@@ -93,9 +93,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Api usage</li>
-      <li class="breadcrumb-item active">Dates utils</li>
+      <li class="breadcrumb-item active">Patterns utils</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/rmoralespp/pymince/edit/master/docs/dates.md">Edit on pymince</a>
+          <a href="https://github.com/rmoralespp/pymince/edit/master/docs/patterns.md">Edit on pymince</a>
     </li>
   </ul>
   <hr/>
@@ -103,96 +103,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="dates">Dates</h1>
-<p>Contains date utilities.</p>
-<p><strong>IsoWeekDay</strong></p>
-<pre><code>IsoWeekDay(*values)
+                <h1 id="patterns">Patterns</h1>
+<p><strong>Singleton</strong></p>
+<pre><code>Singleton()
 
-Python Enum containing Days of the Week, according to ISO,
-where Monday == 1 ... Sunday == 7.
-
-Provides an 'of' method can be used to verbalize a datetime.datetime.isoweekday
-return value.
-
-Example:
-    from pymince.dates import IsoWeekDay
-
-    friday = datetime.datetime(2023, 2, 17)
-    IsoWeekDay.of(friday)   # pymince.dates.IsoWeekDay.FRIDAY
-</code></pre>
-<p><strong>WeekDay</strong></p>
-<pre><code>WeekDay(*values)
-
-Python Enum containing Days of the Week,
-where Monday == 0 ... Sunday == 6.
-
-Provides an 'of' method can be used to verbalize a datetime.datetime.weekday
-return value.
-
-Example:
-    from pymince.dates import WeekDay
-
-    friday = datetime.datetime(2023, 2, 17)
-    WeekDay.of(friday)  # pymince.dates.WeekDay.FRIDAY
-</code></pre>
-<p><strong>irange</strong></p>
-<pre><code>irange(start_date, stop_date=None, time_step=None)
-
-Returns a generator that produces a sequence of datetime from &quot;start_date&quot; (inclusive)
-to &quot;stop_date&quot; (exclusive) by &quot;time_step&quot;.
-
-:param datetime.datetime start_date: Inclusive.
-:param datetime.datetime stop_date: Exclusive. `datetime.now` is used by default.
-:param datetime.delta time_step: one-day `timedelta` is used by default.
-
- Examples:
-    import datetime
-
-    from pymince.dates import irange
-
-    ini = datetime.datetime.fromisoformat(&quot;2022-10-31&quot;)
-    end = datetime.datetime.fromisoformat(&quot;2022-11-02&quot;)
-    day = datetime.timedelta(days=1)
-
-    it = irange(ini, stop_date=end, time_step=day)
-
-    next(it) # → datetime.datetime(2022, 10, 31, 0, 0)
-    next(it) # → datetime.datetime(2022, 11, 1, 0, 0)
-    next(it) # → raise StopIteration
-</code></pre>
-<p><strong>string2year</strong></p>
-<pre><code>string2year(value, gte=None, lte=None, shift=None)
-
-Function to convert a string year representation to integer year.
-
-:param str value: Value to convert.
-:param Optional[int] gte: if it is specified is required that: year &gt;= gte
-:param Optional[int] lte: if it is specified is required that: year &lt;= lte
-:param Optional[int] shift: use a two-digit year on shift
-
-:raise: &quot;ValueError&quot; if &quot;value&quot; cannot be converted.
-:rtype: int
-
-Examples:
-    from pymince.dates import string2year
-
-    string2year(&quot;53&quot;, shift=None) # → 2053
-    string2year(&quot;53&quot;, shift=1953) # → 1953
-    string2year(&quot;52&quot;, shift=1953) # → 2052
-    string2year(&quot;54&quot;, shift=1953) # → 1954
-
-    string2year(&quot;1954&quot;) # → 1954
-
-    string2year(&quot;123&quot;) # → ValueError
-    string2year(&quot;1955&quot;, gte=1956) # → ValueError
-    string2year(&quot;1955&quot;, lte=1954) # → ValueError
+Metaclass that makes a class a Singleton.
 </code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../boolean/" class="btn btn-neutral float-left" title="Boolean utils"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../dictionary/" class="btn btn-neutral float-right" title="Dictionary utils">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../logging/" class="btn btn-neutral float-left" title="Logging utils"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../std/" class="btn btn-neutral float-right" title="Std utils">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -219,10 +141,10 @@ Examples:
         </span>
     
     
-      <span><a href="../boolean/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../logging/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../dictionary/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../std/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
