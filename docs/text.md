@@ -13,6 +13,12 @@ Examples:
     are_anagram("listen", "silent")      # --> True
     are_anagram("they see", "the eyes")  # --> True
 ```
+**camel2snake**
+```
+camel2snake(camel_str)
+
+Convert CamelCase to snake_case.
+```
 **get_random_secret**
 ```
 get_random_secret(length, alphabet='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
@@ -46,7 +52,7 @@ that is preceded and followed by one or more non whitespace characters.
 is_int(text)
 
 Check if the string is the representation of
-a integer number.
+an integer number.
 
 True: "10", "+10", "-10", "0"
 ```
@@ -199,8 +205,8 @@ replace(value, old_values, new_value, count=-1)
 Replace matching values ​​in the given string with new_value.
 
 :param str value:
-:param old_values: iterable of values ​​to replace.
-:param str new_value: replacement value.
+:param old_values: Iterable of values ​​to replace.
+:param str new_value: Replacement value.
 :param int count:
     Maximum number of occurrences to replace.
     -1 (the default value) means replace all occurrences.

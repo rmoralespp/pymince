@@ -177,7 +177,7 @@ def retry_when(delay=0, tries=1, condition=lambda x: x is None):
     def decorator(function):
         @functools.wraps(function)
         def apply(*args, **kwargs):
-            for attempt in range(tries):
+            for _ in range(tries):
                 result = function(*args, **kwargs)
                 if not condition(result):
                     break
@@ -212,7 +212,7 @@ def retry_if_errors(*exceptions, delay=0, tries=1):
     def decorator(function):
         @functools.wraps(function)
         def apply(*args, **kwargs):
-            for attempt in range(tries):
+            for _ in range(tries):
                 try:
                     return function(*args, **kwargs)
                 except exceptions:

@@ -20,6 +20,7 @@ import pymince.std
 import pymince.text
 import pymince.warnings
 import pymince.xml
+import pymince.patterns
 
 modules = (
     pymince.algorithm,
@@ -32,6 +33,7 @@ modules = (
     pymince.iterator,
     pymince.json,
     pymince.logging,
+    pymince.patterns,
     pymince.std,
     pymince.text,
     pymince.warnings,
@@ -83,7 +85,6 @@ def module2md(module):
 
     module_name, _ = os.path.splitext(os.path.basename(module.__file__))
     module_desc = cleandoc(module)
-    module_desc = module_desc
 
     lines = itertools.chain((f"# {module_name.capitalize()}", module_desc, ""), members2markdown())
     return (module_name, "\n".join(lines))

@@ -7,6 +7,7 @@ import functools
 import itertools
 import operator
 import statistics
+import sys
 
 import pymince._constants
 import pymince.functional
@@ -86,13 +87,13 @@ def uniquer(iterable, key=None):
     yield from (add(check) or v for v in iter(iterable) if (check := get(v)) not in bag)
 
 
-def grouper(iterable, size):
+def grouper(iterable, n):
     """
     Make a generator that returns each element being iterable
     with "size" as the maximum number of elements.
 
     :param iterable:
-    :param int size: maximum size of element groups.
+    :param int n: maximum size of element groups.
     :rtype: Generator
 
     Examples:
@@ -102,14 +103,21 @@ def grouper(iterable, size):
         list(list(g) for g in groups) # → [[1, 2], [3, 4], [5]]
     """
 
-    slicer = itertools.islice
-    values = iter(iterable)
-    while True:
-        sliced = slicer(values, size)
-        if it := ibool(sliced):
-            yield it
-        else:
-            break
+    if n < 1:
+        raise ValueError('n must be at least one')
+
+    version = sys.version_info
+    if version.major == 3 and version.minor >= 12:
+        yield from itertools.batched(iterable, n)
+    else:
+        slicer = itertools.islice
+        values = iter(iterable)
+        while True:
+            sliced = slicer(values, n)
+            if it := ibool(sliced):
+                yield it
+            else:
+                break
 
 
 def consume(iterator, n=None):
@@ -261,7 +269,7 @@ def splitter(iterable, sep, key=None, maxsplit=-1, container=None):
 
     :param iterable:
     :param sep: The delimiter to split the iterable.
-    :param key
+    :param key:
         A function to compare the equality of each element with the given delimiter.
         If the key function is not specified or is None, the element itself is used for compare.
     :param maxsplit:
@@ -413,7 +421,7 @@ def sub(iterable):
 
 
 def truediv(iterable):
-    """Return the division of an non-empty iterable of numbers."""
+    """Return the division of a non-empty iterable of numbers."""
 
     return functools.reduce(operator.truediv, iter(iterable))
 

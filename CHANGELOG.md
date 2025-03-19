@@ -1,5 +1,13 @@
 ## Releases ##
 
+## v2.13.0 (2025-03-19) ##
+
+- **Added:** `patterns.Singleton` Metaclass to create singletons.
+- **Added:** `text.camel2snake` Utility to convert camel case to snake case.
+- **Changed:** The default `stop_date` param for `dates.irange` is now `datetime.now()` (naive) if not provided.
+- **Changed:** `iterator.grouper` now uses `itertools.batched` internally if a Python version is 3.12 or higher.
+- **Changed:** Update `pyproject.toml`
+
 ## v2.12.0 (2024-10-22) ##
 
 - **Added:** Generate documentation site with `mkdocs`.

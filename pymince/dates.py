@@ -13,7 +13,7 @@ def irange(start_date, stop_date=None, time_step=None):
     to "stop_date" (exclusive) by "time_step".
 
     :param datetime.datetime start_date: Inclusive.
-    :param datetime.datetime stop_date: Exclusive. `utcnow` is used by default.
+    :param datetime.datetime stop_date: Exclusive. `datetime.now` is used by default.
     :param datetime.delta time_step: one-day `timedelta` is used by default.
 
      Examples:
@@ -33,7 +33,7 @@ def irange(start_date, stop_date=None, time_step=None):
     """
 
     this = start_date
-    stop = stop_date or datetime.datetime.utcnow()
+    stop = stop_date or datetime.datetime.now()
     step = time_step or datetime.timedelta(days=1)
     while this < stop:
         yield this
@@ -90,7 +90,7 @@ class WeekDay(enum.IntEnum):
     Python Enum containing Days of the Week,
     where Monday == 0 ... Sunday == 6.
 
-    Provides a 'of' method can be used to verbalize a datetime.datetime.weekday
+    Provides an 'of' method can be used to verbalize a datetime.datetime.weekday
     return value.
 
     Example:
@@ -119,14 +119,14 @@ class IsoWeekDay(enum.IntEnum):
     Python Enum containing Days of the Week, according to ISO,
     where Monday == 1 ... Sunday == 7.
 
-    Provides a 'of' method can be used to verbalize a datetime.datetime.isoweekday
+    Provides an 'of' method can be used to verbalize a datetime.datetime.isoweekday
     return value.
 
     Example:
         from pymince.dates import IsoWeekDay
 
         friday = datetime.datetime(2023, 2, 17)
-        IsoWeekDay.of(friday)  # pymince.dates.IsoWeekDay.FRIDAY
+        IsoWeekDay.of(friday)   # pymince.dates.IsoWeekDay.FRIDAY
     """
 
     MONDAY = 1

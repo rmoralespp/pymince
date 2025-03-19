@@ -101,13 +101,13 @@ Examples:
 ```
 **grouper**
 ```
-grouper(iterable, size)
+grouper(iterable, n)
 
 Make a generator that returns each element being iterable
 with "size" as the maximum number of elements.
 
 :param iterable:
-:param int size: maximum size of element groups.
+:param int n: maximum size of element groups.
 :rtype: Generator
 
 Examples:
@@ -297,7 +297,7 @@ A separator will never appear in the output.
 
 :param iterable:
 :param sep: The delimiter to split the iterable.
-:param key
+:param key:
     A function to compare the equality of each element with the given delimiter.
     If the key function is not specified or is None, the element itself is used for compare.
 :param maxsplit:
@@ -324,7 +324,7 @@ Return the subtraction of a non-empty iterable of numbers and sets.
 ```
 truediv(iterable)
 
-Return the division of an non-empty iterable of numbers.
+Return the division of a non-empty iterable of numbers.
 ```
 **uniquer**
 ```

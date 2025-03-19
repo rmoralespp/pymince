@@ -7,14 +7,14 @@ import pymince.iterator
 def test_grouper_negative():
     groups = pymince.iterator.grouper(iter((1, 2, 3)), -1)
     with pytest.raises(ValueError):
-        tuple(tuple(page) for page in groups)
+        _ = tuple(groups)
 
 
 def test_grouper_zero():
     data = (1, 2, 3)
     groups = pymince.iterator.grouper(iter(data), 0)
-    result = tuple(tuple(page) for page in groups)
-    assert result == ()
+    with pytest.raises(ValueError):
+        _ = tuple(groups)
 
 
 def test_grouper_one():

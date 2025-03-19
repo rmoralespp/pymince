@@ -22,7 +22,7 @@ def test_structured_formatter(mock_handle_error, capsys):
 
     payload = {"key": "a", "numb": 1, "bool": True, "nested": [1, 2, 3]}
     # execute log.debug
-    logger.debug("", payload)
+    logger.debug("", payload)  # noqa: PLE1205
     # perform asserts
     captured = json.loads(capsys.readouterr().out)
     assert captured["payload"] == payload

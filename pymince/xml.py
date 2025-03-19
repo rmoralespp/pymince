@@ -15,7 +15,7 @@ def iterparse(filename):
     '''
     The code below deletes a root child once it is completed, then processes and removes
     it from the memory (if nothing more references to it ofc).
-    This allows to process 7GB XML with with a memory usage up to 10MB (in case of great number of root children).
+    This allows processing 7GB XML with a memory usage up to 10MB (in the case of a great number of root children).
     '''
 
     :param str filename: XML filename

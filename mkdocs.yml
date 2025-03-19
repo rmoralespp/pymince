@@ -19,6 +19,7 @@ nav:
   - Iterator utils: iterator.md
   - Json utils: json.md
   - Logging utils: logging.md
+  - Patterns utils: patterns.md
   - Std utils: std.md
   - Text utils: text.md
   - Warnings utils: warnings.md

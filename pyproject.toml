@@ -1,6 +1,7 @@
 [tool.ruff]
 line-length = 120
 
+[tool.ruff.lint]
 # https://github.com/charliermarsh/ruff#reference
 select = [
     # pyflakes
@@ -67,11 +68,11 @@ select = [
     "COM812", # Trailing comma missing
 
     # Ruff-specific rules
-    "RUF004", # Keyword argument ... must come after starred arguments
+    "B026", # Keyword argument ... must come after starred arguments
     "RUF100", # Unused noqa directive
 ]
 
-extend-ignore = [
+ignore = [
     # Disabled by default. :)
     # https://github.com/gforcada/flake8-builtins/pull/76
     "A003", # Class attribute `...` is shadowing a python builtin

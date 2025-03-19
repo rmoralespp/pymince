@@ -24,6 +24,7 @@ _percentage_regexp = re.compile(r"^(?:0|[1-9]\d*)(?:\.\d+)?(?:\s)?%$")
 _email_address_regexp = re.compile(r"^\S+@\S+$")
 _roman_regex = re.compile(r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")
 _re_newlines = re.compile(r"\r\n|\r")  # used in normalize_newlines
+_camel2snake = re.compile(r"(?!^)([A-Z]+)")
 
 
 def get_random_string(length, alphabet=string.ascii_letters):
@@ -68,8 +69,8 @@ def replace(value, old_values, new_value, count=-1):
     Replace matching values \u200b\u200bin the given string with new_value.
 
     :param str value:
-    :param old_values: iterable of values \u200b\u200bto replace.
-    :param str new_value: replacement value.
+    :param old_values: Iterable of values \u200b\u200bto replace.
+    :param str new_value: Replacement value.
     :param int count:
         Maximum number of occurrences to replace.
         -1 (the default value) means replace all occurrences.
@@ -182,6 +183,12 @@ def slugify(value, allow_unicode=False):
     return re.sub(r"[-\s]+", "-", value).strip("-_")
 
 
+def camel2snake(camel_str):
+    """Convert CamelCase to snake_case."""
+
+    return _camel2snake.sub(r"_\1", camel_str).lower()
+
+
 def is_url(text, schemes=None, hostnames=None):
     """
     Check if the string is a URL according to the
@@ -227,7 +234,7 @@ def is_binary(text):
 def is_int(text):
     """
     Check if the string is the representation of
-    a integer number.
+    an integer number.
 
     True: "10", "+10", "-10", "0"
     """

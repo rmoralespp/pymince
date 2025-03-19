@@ -8,14 +8,14 @@ IsoWeekDay(*values)
 Python Enum containing Days of the Week, according to ISO,
 where Monday == 1 ... Sunday == 7.
 
-Provides a 'of' method can be used to verbalize a datetime.datetime.isoweekday
+Provides an 'of' method can be used to verbalize a datetime.datetime.isoweekday
 return value.
 
 Example:
     from pymince.dates import IsoWeekDay
 
     friday = datetime.datetime(2023, 2, 17)
-    IsoWeekDay.of(friday)  # pymince.dates.IsoWeekDay.FRIDAY
+    IsoWeekDay.of(friday)   # pymince.dates.IsoWeekDay.FRIDAY
 ```
 **WeekDay**
 ```
@@ -24,7 +24,7 @@ WeekDay(*values)
 Python Enum containing Days of the Week,
 where Monday == 0 ... Sunday == 6.
 
-Provides a 'of' method can be used to verbalize a datetime.datetime.weekday
+Provides an 'of' method can be used to verbalize a datetime.datetime.weekday
 return value.
 
 Example:
@@ -41,7 +41,7 @@ Returns a generator that produces a sequence of datetime from "start_date" (incl
 to "stop_date" (exclusive) by "time_step".
 
 :param datetime.datetime start_date: Inclusive.
-:param datetime.datetime stop_date: Exclusive. `utcnow` is used by default.
+:param datetime.datetime stop_date: Exclusive. `datetime.now` is used by default.
 :param datetime.delta time_step: one-day `timedelta` is used by default.
 
  Examples:
